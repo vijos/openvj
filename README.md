@@ -9,6 +9,6 @@ The project here is a new-architecture experimental branch of Vijos. It is NOT r
 
 DO NOT use this in production environment until it has a stable trunk!
 
-# Licence
+# License
 
 GNU Affero General Public License (AGPL) V3
