@@ -8,4 +8,5 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
-/include/const/config.php
+web.config
+define.config.php

@@ -13,5 +13,4 @@ define('SVR_NODE_PORT_CLIENTSSL'  , {node_io_client_ssl});  //default: 4901
 define('SVR_LOG_SIZELIMIT'        , {log_sizelimit});       //default: 1 * 1024 * 1024 (kb)		
 define('SVR_SESSION_DURATION'     , {sess_duration});       //default: 2400 (40min)
 
-global $_ALLOWED_HOSTS;
-$_ALLOWED_HOSTS = array('www.vijos.org', 'vijos.org', '127.0.0.1', 'localhost');
+$g_allowed_hosts = array('www.vijos.org', 'vijos.org', '127.0.0.1', 'localhost');
