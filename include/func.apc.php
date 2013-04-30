@@ -10,13 +10,14 @@ namespace apc;
 //@deprecated
 function unmodified($path)
 {
-	if (!($path = realpath($path)))
-		trigger_error("File not found", E_USER_ERROR);
-	
-	$mtime = filemtime($path);
-	if (apc_fetch('timestamp.'.$path) === $mtime)
-		return TRUE;
+    if (!($path = realpath($path)))
+        trigger_error("File not found", E_USER_ERROR);
 
-	apc_store('timestamp.'.$path, $mtime);
-	return FALSE;
+    $mtime = filemtime($path);
+    if (apc_fetch('timestamp.'.$path) === $mtime)
+        return true;
+
+    apc_store('timestamp.'.$path, $mtime);
+
+    return false;
 }

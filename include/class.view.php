@@ -6,16 +6,14 @@
 
 class View extends Blitz
 {
-	private $m_params = array();
-	
-	function __construct($path)
-	{
-		parent::__construct($path);
-		parent::setGlobals(array('footer_revision' => SYS_REVISION));
-	}
-	
-	function execution_time()
-	{
-		return round((microtime(TRUE) - ENV_REQUEST_TIME) * 1000, 5);
-	}
+    function __construct($path)
+    {
+        parent::__construct($path);
+        parent::setGlobals(array('footer_revision' => SYS_REVISION));
+    }
+
+    function execution_time()
+    {
+        return round((microtime(true) - ENV_REQUEST_TIME) * 1000, 5);
+    }
 }

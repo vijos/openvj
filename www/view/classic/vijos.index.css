@@ -1,13 +1,18 @@
 @charset "utf-8";
 
-#pagecol0{width:540px}
-#pagecol1{width:200px}
+#pagecol0 {
+    width: 540px
+}
 
-#gotoprob form, #login{
-	text-align:center;
+#pagecol1 {
+    width: 200px
+}
+
+#gotoprob form, #login {
+    text-align: center;
 }
 
 #gotoprob form {
-	 margin-top:5px;
-	 margin-bottom:0px;
+    margin-top: 5px;
+    margin-bottom: 0px;
 }
