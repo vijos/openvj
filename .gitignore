@@ -1,12 +1,8 @@
-############
-## Windows
-############
-
-# Windows image file caches
 Thumbs.db
-
-# Folder config file
 Desktop.ini
 
 web.config
 define.config.php
+
+# PHPStorm
+.idea/
