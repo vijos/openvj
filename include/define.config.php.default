@@ -1,16 +1,16 @@
 <?php
 
-define('SVR_DEBUG'                , {debug});               //default: true
-define('SVR_HOST'                 , {host});                //default: vijos.org
-define('SVR_SALT_SETTINGS'        , {salt_settings});       //default: 
-define('SVR_MONGO_SERVER'         , {mongo_connect});       //default: mongodb://localhost:27017/vijos
-define('SVR_MONGO_TIMEOUT'        , {mongo_timeout});       //default: 1000
-define('SVR_NODE_HOST_IO'         , {node_io});             //default: vijos.org
-define('SVR_NODE_HOST_CLIENT'     , {node_client});         //default: vijos.org
-define('SVR_NODE_PORT_IO'         , {node_io_port});        //default: 4800
-define('SVR_NODE_PORT_CLIENT'     , {node_io_client});      //default: 4900
-define('SVR_NODE_PORT_CLIENTSSL'  , {node_io_client_ssl});  //default: 4901
-define('SVR_LOG_SIZELIMIT'        , {log_sizelimit});       //default: 1 * 1024 * 1024 (kb)		
-define('SVR_SESSION_DURATION'     , {sess_duration});       //default: 2400 (40min)
+define('SVR_DEBUG'                , true);
+define('SVR_HOST'                 , 'vijos.org');
+define('SVR_SALT_SETTINGS'        , '');
+define('SVR_MONGO_SERVER'         , 'mongodb://localhost:27107/vijos');
+define('SVR_MONGO_TIMEOUT'        , 1000);
+define('SVR_NODE_HOST_IO'         , 'vijos.org');
+define('SVR_NODE_HOST_CLIENT'     , 'vijos.org');
+define('SVR_NODE_PORT_IO'         , 4800);
+define('SVR_NODE_PORT_CLIENT'     , 4900);
+define('SVR_NODE_PORT_CLIENTSSL'  , 4901);
+define('SVR_LOG_SIZELIMIT'        , 1 * 1024 * 1024);
+define('SVR_SESSION_DURATION'     , 2400);
 
 $_ALLOWED_HOSTS = array('www.vijos.org', 'vijos.org', '127.0.0.1', 'localhost');
