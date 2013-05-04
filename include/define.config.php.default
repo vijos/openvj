@@ -13,4 +13,13 @@ define('SVR_NODE_PORT_CLIENTSSL'  , 4901);
 define('SVR_LOG_SIZELIMIT'        , 1 * 1024 * 1024);
 define('SVR_SESSION_DURATION'     , 2400);
 
+global $_ALLOWED_HOSTS;
 $_ALLOWED_HOSTS = array('www.vijos.org', 'vijos.org', '127.0.0.1', 'localhost');
+
+global $_CONFIG;
+$_CONFIG = array
+(
+    'TZ'        => 'Asia/Shanghai',
+    'TITLE'     => 'Vijos',
+    'TEMPLATE'  => 'classic'
+);
