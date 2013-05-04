@@ -30,9 +30,24 @@ header('X-Frame-Options: SAMEORIGIN');
 require_once __DIR__.'/define.config.php';
 require_once __DIR__.'/define.global.php';
 
+// Error Reporting
+if (!SVR_DEBUG)
+	error_reporting(0);
+else
+	error_reporting(E_ALL | E_STRICT);
+
 // Check whether the requested hostname is in the allowed host list, which is
 // defined in define/global.php. If not, generate a HTTP 403 error
 if (!in_array(ENV_HOST, $_ALLOWED_HOSTS)) {
     header('HTTP/1.1 403 Forbidden');
     exit('Bad Request: Header field "host" invalid.');
 }
+
+// Using UTF-8 as default mbstring encoding
+mb_internal_encoding('UTF-8');
+
+// Start buffer
+ob_start();
+
+// Set timezone
+date_default_timezone_set($_CONFIG['TZ']);
