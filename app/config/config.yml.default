@@ -1,0 +1,20 @@
+debug: true
+canonical: "openvj.org"
+
+translation:
+    default: zh_CN
+    availables:
+        - zh_CN
+
+security:
+    enforce_https: false
+    host_only: false
+    hosts:
+        - "*.openvj.org"
+        - "openvj.org"
+        - "127.0.0.1"
+        - "localhost"
+
+session:
+    name: VJSESS
+    ttl: 21600

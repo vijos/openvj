@@ -1,0 +1,28 @@
+{
+    "name": "openvj/openvj",
+    "license": "AGPL",
+    "type": "project",
+    "autoload": {
+        "psr-4": {"VJ\\": "src/"}
+    },
+    "require": {
+        "php": ">=5.6",
+        "twig/twig": "~1.0",
+        "monolog/monolog": "~1.12",
+        "elasticsearch/elasticsearch": "dev-master",
+        "symfony/http-foundation": "~2.6",
+        "ircmaxell/filterus": "dev-master",
+        "ircmaxell/random-lib": "dev-master",
+        "nategood/httpful": "dev-master",
+        "pimple/pimple": "~3.0",
+        "ezyang/htmlpurifier": "dev-master",
+        "breeswish/php-marked": "dev-master",
+        "symfony/translation": "~2.6",
+        "symfony/yaml": "~2.6",
+        "nikic/fast-route": "dev-master",
+        "filp/whoops": "~1.1",
+        "symfony/config": "~2.6",
+        "evenement/evenement": "~2.0",
+        "respect/validation": "~0.7"
+    }
+}

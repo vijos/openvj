@@ -1,0 +1,8 @@
+/vendor/
+/app/cache/*
+/app/logs/*
+/app/config/config.yml
+/app/config/db.yml
+/.idea/
+!.gitkeep
+.DS_Store

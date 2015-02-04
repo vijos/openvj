@@ -1,0 +1,12 @@
+mongodb:
+    server: mongodb://localhost:27017
+    username: ~
+    password: ~
+    db: openvj
+    replicaSet: ~
+    connectTimeoutMS: 2000
+
+redis:
+    host: 127.0.0.1
+    port: 6379
+    db: 0
