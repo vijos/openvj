@@ -53,7 +53,7 @@ trait RouteTrait
                     if (is_string($ret)) {
                         $response->setContent($ret);
                     }
-                    if ($response->headers->get('content-type', 'undefined') === 'undefined') {
+                    if ($response->headers->get('content-type') === null) {
                         $response->headers->set('content-type', 'text/html');
                     }
                     $response->setCharset('UTF-8');
