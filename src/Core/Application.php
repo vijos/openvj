@@ -17,11 +17,13 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use RandomLib\Factory;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
 use VJ\Core\Exception\UserException;
+use VJ\Core\Session\MongoDBSessionHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -57,6 +59,7 @@ class Application
         $this->initErrHandlers();
         $this->initMongoDB();
         $this->initRedis();
+        $this->initSessionStorage();
         $this->initRandomGenerator();
         $this->initTranslation();
         $this->initHttp();
@@ -145,6 +148,16 @@ class Application
             $redis->connect(self::get('config')['redis']['host'], self::get('config')['redis']['port']);
             $redis->select(self::get('config')['redis']['db']);
             return $redis;
+        });
+    }
+
+    private function initSessionStorage()
+    {
+        self::set('session_storage', function () {
+            return new NativeSessionStorage([
+                'name' => 'VJSESS',
+                'cookie_httponly' => true,
+            ], new MongoDBSessionHandler(Application::coll('Session')));
         });
     }
 
