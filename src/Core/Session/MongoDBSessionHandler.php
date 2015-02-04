@@ -12,23 +12,36 @@ namespace VJ\Core\Session;
 
 class MongoDBSessionHandler implements \SessionHandlerInterface
 {
+    /** @var \MongoCollection $collection */
     private $collection;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(\MongoCollection $collection)
     {
         $this->collection = $collection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function open($savePath, $sessionName)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function close()
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function destroy($sessionId)
     {
         $this->collection->remove([
@@ -40,17 +53,29 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    /**
+     * 将原始 Session ID 不可逆编码，进一步提高安全性
+     * 这里使用 sha1 算法
+     * @param string $sessionIdRaw
+     * @return string
+     */
     private function encodeSessionId($sessionIdRaw)
     {
         return sha1($sessionIdRaw);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function gc($maxlifetime)
     {
         // 使用 MongoDB TTL Index 特性，因此这里不需要 gc
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function write($sessionId, $data)
     {
         $this->collection->update([
@@ -68,6 +93,9 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function read($sessionId)
     {
         $record = $this->collection->findOne([
@@ -76,12 +104,12 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
 
         if ($record == null) {
             return '';
-        } else {
-            if ($record['expireat']->sec > time()) {
-                return '';
-            } else {
-                return serialize($record['data']);
-            }
         }
+
+        if ($record['expireat']->sec > time()) {
+            return '';
+        }
+
+        return serialize($record['data']);
     }
 }
