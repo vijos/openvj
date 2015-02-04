@@ -1,0 +1,13 @@
+routing:
+    index: 
+        path: /
+        methods: [GET]
+        controller: index:index
+    user.login:
+        path: /login
+        methods: [GET, POST]
+        controller: user:login
+    user.register:
+        path: /register
+        methods: [GET, POST]
+        controller: user:register

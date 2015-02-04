@@ -1,0 +1,8 @@
+services:
+    vj2_redirection_service:
+        event: ['route.dispatch.before']
+        class: \VJ\EventListener\VJRedirectionService
+
+    https_redirection_service:
+        event: ['route.dispatch.before']
+        class: \VJ\EventListener\HttpsRedirectionService
