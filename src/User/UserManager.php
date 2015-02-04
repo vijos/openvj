@@ -98,14 +98,7 @@ class UserManager
             return false;
         }
 
-        /** @var \MongoDate $expireAt */
-        $expireAt = $record['expireat'];
-        if ($expireAt->sec > time()) {
-            // token expired
-            // we remove all expired tokens here
-            Application::coll('RememberMeToken')->remove([
-                'expireat' => ['$lte' => new \MongoDate()]
-            ]);
+        if ($record['expireat']->sec > time()) {
             return false;
         }
 
