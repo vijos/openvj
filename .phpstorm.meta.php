@@ -17,6 +17,8 @@ namespace PHPSTORM_META {                                                 // we 
             'random_factory' instanceof \RandomLib\Factory,
             'random' instanceof \RandomLib\Generator,
             'random_secure' instanceof \RandomLib\Generator,
+            'session_storage' instanceof \Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface,
+            'session' instanceof \Symfony\Component\HttpFoundation\Session\Session
         ]
     ];
 

@@ -15,12 +15,15 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
     /** @var \MongoCollection $collection */
     private $collection;
 
+    private $ttl;
+
     /**
      * {@inheritdoc}
      */
-    public function __construct(\MongoCollection $collection)
+    public function __construct(\MongoCollection $collection, $ttl)
     {
         $this->collection = $collection;
+        $this->ttl = $ttl;
     }
 
     /**
@@ -83,7 +86,7 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
         ], [
             '$set' => [
                 'data' => unserialize($data),   // we use MongoDB native data storage
-                'expireat' => new \MongoDate(time() + (int)ini_get('session.gc_maxlifetime')),
+                'expireat' => new \MongoDate(time() + $this->ttl),
             ]
         ], [
             'upsert' => true,

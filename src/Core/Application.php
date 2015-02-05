@@ -17,6 +17,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use RandomLib\Factory;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\MessageSelector;
@@ -31,7 +32,7 @@ use Whoops\Run;
 
 class Application
 {
-    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait;
+    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, SessionTrait;
 
     public static $container;
 
@@ -59,7 +60,7 @@ class Application
         $this->initErrHandlers();
         $this->initMongoDB();
         $this->initRedis();
-        $this->initSessionStorage();
+        $this->initSession();
         $this->initRandomGenerator();
         $this->initTranslation();
         $this->initHttp();
@@ -151,13 +152,17 @@ class Application
         });
     }
 
-    private function initSessionStorage()
+    private function initSession()
     {
         self::set('session_storage', function () {
             return new NativeSessionStorage([
-                'name' => 'VJSESS',
+                'name' => self::get('config')['session']['name'],
                 'cookie_httponly' => true,
-            ], new MongoDBSessionHandler(Application::coll('Session')));
+            ], new MongoDBSessionHandler(Application::coll('Session'), (int)self::get('config')['session']['ttl']));
+        });
+
+        self::set('session', function () {
+            return new Session(self::get('session_storage'));
         });
     }
 

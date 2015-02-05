@@ -17,4 +17,4 @@ security:
 
 session:
     name: VJSESS
-    ttl: 21600
+    ttl: 21600 # 6 hours
