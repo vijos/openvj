@@ -12,19 +12,15 @@ namespace VJ\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
-use VJ\Core\EventListener;
 use VJ\Core\Request;
 use VJ\Core\Response;
 
-class HttpsRedirectionService extends EventListener
+class HttpsRedirectionService
 {
     // route.dispatch.before
-    public function onEvent($event, ...$argv)
+    public function onEvent($event, Request $request, Response $response)
     {
-        $this->redirect(
-            Application::get('config')['security']['enforce_https'],
-            $argv[0],
-            $argv[1]);
+        $this->redirect(Application::get('config')['security']['enforce_https'], $request, $response);
     }
 
     public function redirect($enforceHttps, Request $request, Response $response)

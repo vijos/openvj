@@ -11,19 +11,15 @@
 namespace VJ\EventListener;
 
 use VJ\Core\Application;
-use VJ\Core\EventListener;
 use VJ\Core\Request;
 use VJ\Core\Response;
 
-class VJRedirectionService extends EventListener
+class VJRedirectionService
 {
     // route.dispatch.before
-    public function onEvent($event, ...$argv)
+    public function onEvent($event, Request $request, Response $response)
     {
-        $this->redirect(
-            Application::get('config')['security']['enforce_https'],
-            $argv[0],
-            $argv[1]);
+        $this->redirect(Application::get('config')['security']['enforce_https'], $request, $response);
     }
 
     /**
