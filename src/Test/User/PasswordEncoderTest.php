@@ -88,6 +88,24 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'openvj|$2y$10$a4c4faf1b8cb70c640c1eeWT./4q1ijyFoaSAi2lYr2zXW/MKJify';
         $this->assertTrue(PasswordEncoder::verify($password, $salt, $hash));
-
     }
+
+    public function testGenerateSalt()
+    {
+        $salt1 = PasswordEncoder::generateSalt();
+        $salt2 = PasswordEncoder::generateSalt();
+        $this->assertEquals(60, strlen($salt1));
+        $this->assertEquals(60, strlen($salt2));
+        $this->assertNotEquals($salt1, $salt2);
+    }
+
+    public function testGenerateHash()
+    {
+        $hash = PasswordEncoder::generateHash('hello_world');
+        $this->assertNotNull($hash['salt']);
+        $this->assertNotNull($hash['hash']);
+        $this->assertFalse(PasswordEncoder::verify('hello', $hash['salt'], $hash['hash']));
+        $this->assertTrue(PasswordEncoder::verify('hello_world', $hash['salt'], $hash['hash']));
+    }
+
 } 

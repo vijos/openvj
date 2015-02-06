@@ -22,10 +22,11 @@ class UserCredential
      *
      * @param string $field
      * @param string $password
+     * @param bool $secretly
      * @return array
      * @throws UserException
      */
-    public static function checkPasswordCredential($field, $password)
+    public static function checkPasswordCredential($field, $password, $secretly = false)
     {
         if (Validator::email()->validate($field)) {
             $user = UserManager::getUserByEmail($field);
@@ -34,17 +35,23 @@ class UserCredential
         }
 
         if (!UserManager::isUserValid($user)) {
-            Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
+            if (!$secretly) {
+                Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
+            }
             throw new UserException('error.checkCredential.user_not_valid');
         }
 
         $verified = PasswordEncoder::verify($password, $user['salt'], $user['hash']);
         if (!$verified) {
-            Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
+            if (!$secretly) {
+                Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
+            }
             throw new UserException('error.checkCredential.wrong_password');
         }
 
-        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $field, $password]);
+        if (!$secretly) {
+            Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $field, $password]);
+        }
         return $user;
     }
 
@@ -52,10 +59,11 @@ class UserCredential
      * 检查记忆令牌是否正确
      *
      * @param string $clientToken
+     * @param bool $secretly
      * @return array
      * @throws UserException
      */
-    public static function checkCookieTokenCredential($clientToken)
+    public static function checkCookieTokenCredential($clientToken, $secretly = false)
     {
         try {
             $token = RememberMeEncoder::parseClientToken($clientToken);
@@ -82,7 +90,9 @@ class UserCredential
             throw new UserException('error.checkCredential.user_not_valid');
         }
 
-        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
+        if (!$secretly) {
+            Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
+        }
         return $user;
     }
 
@@ -130,6 +140,35 @@ class UserCredential
             ]);
             return true;
         } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * 设置用户密码
+     *
+     * @param int $uid
+     * @param string $password
+     * @return bool
+     */
+    public static function setCredential($uid, $password)
+    {
+        $newHashSaltPair = PasswordEncoder::generateHash($password);
+        $status = Application::coll('User')->update([
+            '_id' => (int)$uid
+        ], [
+            '$set' => [
+                'hash' => $newHashSaltPair['hash'],
+                'salt' => $newHashSaltPair['salt'],
+            ]
+        ]);
+
+        if ($status['n'] === 1) {
+            $ip = Application::get('request')->getClientIp();
+            $ua = Application::get('request')->headers->get('user-agent');
+            Application::info('credential.set: uid=' . $uid . ', IP=' . $ip . ', UserAgent=' . $ua);
+            return true;
+        } else {
             return false;
         }
     }

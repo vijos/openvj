@@ -10,3 +10,7 @@ services:
     login_log_service:
         event: ['user.login.succeeded', 'user.login.failed.wrong_password', 'user.login.failed.user_invalid']
         class: \VJ\EventListener\LoginLogService
+
+    vj2_credential_upgrade_service:
+        event: ['user.login.succeeded']
+        class: \VJ\EventListener\VJCredentialUpgradeService
