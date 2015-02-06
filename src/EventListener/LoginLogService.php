@@ -20,16 +20,6 @@ class LoginLogService
         $ip = Application::get('request')->getClientIp();
         $userAgent = Application::get('request')->headers->get('user-agent');
 
-        if ($event === 'user.login.succeeded') {
-            Application::info('login.attempt.successful: uid=' . $user['_id'] . ', IP=' . $ip . ', UserAgent=' . $userAgent);
-        } else {
-            if ($type == VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD) {
-                Application::info('login.attempt.failed: uid=' . $user['_id'] . ', IP=' . $ip . ', UserAgent=' . $userAgent);
-            } else {
-                Application::info('login.attempt.not_found: login=' . $user . ', IP=' . $ip . ', UserAgent=' . $userAgent);
-            }
-        }
-
         if (
             $type == VJ::LOGIN_TYPE_INTERACTIVE
             || $type == VJ::LOGIN_TYPE_COOKIE

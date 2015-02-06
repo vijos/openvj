@@ -37,6 +37,7 @@ class UserCredential
         if (!UserManager::isUserValid($user)) {
             if (!$secretly) {
                 Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
+                Application::info('credential.login.not_found', ['login' => $field]);
             }
             throw new UserException('error.checkCredential.user_not_valid');
         }
@@ -45,12 +46,14 @@ class UserCredential
         if (!$verified) {
             if (!$secretly) {
                 Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
+                Application::info('credential.login.wrong_password', ['uid' => $user['_id']]);
             }
             throw new UserException('error.checkCredential.wrong_password');
         }
 
         if (!$secretly) {
             Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $field, $password]);
+            Application::info('credential.login.ok', ['uid' => $user['_id']]);
         }
         return $user;
     }
@@ -92,6 +95,7 @@ class UserCredential
 
         if (!$secretly) {
             Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
+            Application::info('credential.login.ok', ['uid' => $user['_id']]);
         }
         return $user;
     }
@@ -164,9 +168,7 @@ class UserCredential
         ]);
 
         if ($status['n'] === 1) {
-            $ip = Application::get('request')->getClientIp();
-            $ua = Application::get('request')->headers->get('user-agent');
-            Application::info('credential.set: uid=' . $uid . ', IP=' . $ip . ', UserAgent=' . $ua);
+            Application::info('credential.set', ['uid' => $uid]);
             return true;
         } else {
             return false;

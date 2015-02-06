@@ -46,7 +46,7 @@ class VJCredentialUpgradeService
             return false;
         }
 
-        Application::info('credential.upgrade: uid=' . $user['_id']);
+        Application::info('credential.upgrade', ['uid' => $user['_id']]);
         return UserCredential::setCredential($uid, $password);
     }
 }
