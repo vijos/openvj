@@ -16,26 +16,36 @@ use VJ\Core\Application;
 class RememberMeEncoder
 {
     /**
-     * 解析客户端 token 为数据库可接受的格式
+     * 解析客户端 token
      *
-     * @param string $token
+     * @param string $clientToken
      * @return array
      */
-    public static function parseClientToken($token)
+    public static function parseClientToken($clientToken)
     {
-        $token_parts = explode('|', $token);
-        if (count($token_parts) !== 2) {
+        if (!is_string($clientToken)) {
+            throw new \InvalidArgumentException();
+        }
+        $token_parts = explode('|', $clientToken);
+        if (count($token_parts) !== 3) {
             throw new \InvalidArgumentException();
         }
         if (!Validator::int()->validate($token_parts[0])) {
             throw new \InvalidArgumentException();
         }
-        if (strlen($token_parts[1]) !== 32) {
+        if (!Validator::int()->validate($token_parts[1])) {
+            throw new \InvalidArgumentException();
+        }
+        if ((int)$token_parts[1] <= 0) {
+            throw new \InvalidArgumentException();
+        }
+        if (strlen($token_parts[2]) !== 32) {
             throw new \InvalidArgumentException();
         }
         return [
             'uid' => (int)$token_parts[0],
-            'token' => hash('sha256', $token_parts[1]),
+            'expire' => (int)$token_parts[1],
+            'token' => hash('sha256', $clientToken),
         ];
     }
 
@@ -43,13 +53,13 @@ class RememberMeEncoder
      * 生成一个返回给客户端的 token
      *
      * @param int $uid
+     * @param int $expire
      * @return string
      */
-    public static function generateClientToken($uid)
+    public static function generateClientToken($uid, $expire)
     {
-        $uid = (int)$uid;
         $token = Application::get('random')->generateString(32);
-        return $uid . '|' . $token;
+        return (int)$uid . '|' . (int)$expire . '|' . $token;
     }
 
 } 
