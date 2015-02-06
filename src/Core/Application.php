@@ -96,10 +96,19 @@ class Application
         self::set('log', function () {
             $logger = new Logger('VJ');
             if (self::get('config')['debug']) {
-                $logger->pushHandler(new RotatingFileHandler(self::$LOGS_DIRECTORY . '/vj-debug', 0, Logger::DEBUG));
+                $logger->pushHandler(new RotatingFileHandler(
+                    self::$LOGS_DIRECTORY . '/debug' . (MODE_TEST ? '-test' : ''),
+                    0, Logger::DEBUG
+                ));
             }
-            $logger->pushHandler(new RotatingFileHandler(self::$LOGS_DIRECTORY . '/vj-info', 0, Logger::INFO));
-            $logger->pushHandler(new RotatingFileHandler(self::$LOGS_DIRECTORY . '/vj-error', 0, Logger::ERROR));
+            $logger->pushHandler(new RotatingFileHandler(
+                self::$LOGS_DIRECTORY . '/info' . (MODE_TEST ? '-test' : ''),
+                0, Logger::INFO
+            ));
+            $logger->pushHandler(new RotatingFileHandler(
+                self::$LOGS_DIRECTORY . '/error' . (MODE_TEST ? '-test' : ''),
+                0, Logger::ERROR
+            ));
             return $logger;
         });
     }
