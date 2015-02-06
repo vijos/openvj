@@ -29,7 +29,7 @@ trait LoggerTrait
      */
     public static function info($message, $context = array())
     {
-        return Application::get('log')->addInfo($message, $context);
+        return Application::get('log')->addInfo($message, self::getClientInfo() + $context);
     }
 
     /**
@@ -39,7 +39,7 @@ trait LoggerTrait
      */
     public static function notice($message, $context = array())
     {
-        return Application::get('log')->addNotice($message, $context);
+        return Application::get('log')->addNotice($message, self::getClientInfo() + $context);
     }
 
     /**
@@ -49,7 +49,7 @@ trait LoggerTrait
      */
     public static function warn($message, $context = array())
     {
-        return Application::get('log')->addWarning($message, $context);
+        return Application::get('log')->addWarning($message, self::getClientInfo() + $context);
     }
 
     /**
@@ -59,7 +59,7 @@ trait LoggerTrait
      */
     public static function error($message, $context = array())
     {
-        return Application::get('log')->addError($message, $context);
+        return Application::get('log')->addError($message, self::getClientInfo() + $context);
     }
 
     /**
@@ -69,7 +69,7 @@ trait LoggerTrait
      */
     public static function critical($message, $context = array())
     {
-        return Application::get('log')->addCritical($message, $context);
+        return Application::get('log')->addCritical($message, self::getClientInfo() + $context);
     }
 
     /**
@@ -81,5 +81,16 @@ trait LoggerTrait
     public static function log($level, $message, $context = array())
     {
         return Application::get('log')->addRecord($level, $message, $context);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getClientInfo()
+    {
+        return [
+            'ip' => Application::get('request')->getClientIp(),
+            'userAgent' => Application::get('request')->headers->get('user-agent')
+        ];
     }
 } 
