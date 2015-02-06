@@ -11,6 +11,7 @@
 global $T_START;
 $T_START = microtime(true);
 
+const MODE_TEST = false;
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = new \VJ\Core\Application();

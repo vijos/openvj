@@ -125,20 +125,25 @@ class Application
     private function initMongoDB()
     {
         self::set('mongo_client', function () {
-            $mongoClient = new \MongoClient(self::get('config')['mongodb']['server'], [
+            $options = [
                 'connect' => true,
-                'db' => self::get('config')['mongodb']['db'],
-                'username' => self::get('config')['mongodb']['username'],
-                'password' => self::get('config')['mongodb']['password'],
-                'replicaSet' => self::get('config')['mongodb']['replicaSet'],
                 'connectTimeoutMS' => self::get('config')['mongodb']['connectTimeoutMS'],
-            ]);
+            ];
+            if (isset(self::get('config')['mongodb']['username'])) {
+                $options['db'] = self::get('config')['mongodb']['db'] . (MODE_TEST ? '-test' : '');
+                $options['username'] = self::get('config')['mongodb']['username'];
+                $options['password'] = self::get('config')['mongodb']['password'];
+            }
+            if (isset(self::get('config')['mongodb']['replicaSet'])) {
+                $options['replicaSet'] = self::get('config')['mongodb']['replicaSet'];
+            }
+            $mongoClient = new \MongoClient(self::get('config')['mongodb']['server'], $options);
             return $mongoClient;
         });
 
         self::set('mongodb', function () {
             $mongoClient = self::get('mongo_client');
-            return $mongoClient->selectDB(self::get('config')['mongodb']['db']);
+            return $mongoClient->selectDB(self::get('config')['mongodb']['db'] . (MODE_TEST ? '-test' : ''));
         });
     }
 
