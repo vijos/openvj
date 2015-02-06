@@ -14,5 +14,7 @@ class VJ
 {
     const LOGIN_TYPE_INTERACTIVE = 0;
     const LOGIN_TYPE_COOKIE = 1;
+    const LOGIN_TYPE_FAILED_WRONG_PASSWORD = 50;
+    const LOGIN_TYPE_FAILED_USER_INVALID = 51;
 
 }

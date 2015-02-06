@@ -13,6 +13,7 @@ namespace VJ\User;
 use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\UserException;
+use VJ\VJ;
 
 class UserCredential
 {
@@ -33,14 +34,17 @@ class UserCredential
         }
 
         if (!UserManager::isUserValid($user)) {
+            Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
             throw new UserException('error.checkCredential.user_not_valid');
         }
 
         $verified = PasswordEncoder::verify($password, $user['salt'], $user['hash']);
         if (!$verified) {
+            Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
             throw new UserException('error.checkCredential.wrong_password');
         }
 
+        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $field, $password]);
         return $user;
     }
 
@@ -78,6 +82,7 @@ class UserCredential
             throw new UserException('error.checkCredential.user_not_valid');
         }
 
+        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
         return $user;
     }
 

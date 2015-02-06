@@ -6,3 +6,7 @@ services:
     https_redirection_service:
         event: ['route.dispatch.before']
         class: \VJ\EventListener\HttpsRedirectionService
+
+    login_log_service:
+        event: ['user.login.succeeded', 'user.login.failed.wrong_password', 'user.login.failed.user_invalid']
+        class: \VJ\EventListener\LoginLogService

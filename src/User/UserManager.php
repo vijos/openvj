@@ -94,7 +94,6 @@ class UserManager
         }
 
         self::prepareLoginSession($user, VJ::LOGIN_TYPE_INTERACTIVE);
-        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $usernameEmail, $password]);
 
         return $user;
     }
@@ -123,7 +122,6 @@ class UserManager
         self::generateRememberMeToken($user, $token['expire']);
 
         self::prepareLoginSession($user, VJ::LOGIN_TYPE_COOKIE);
-        Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
 
         return $user;
     }
