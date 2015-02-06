@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7109146eed1fe6925ac5516168f1b88c",
+    "hash": "7dbff949e9ffec11d7f36a27f654f066",
     "packages": [
         {
             "name": "breeswish/php-marked",
@@ -456,12 +456,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/filterus.git",
-                "reference": "fac32b1782cc66916b1da07bdbb61679a07ab479"
+                "reference": "2d246407485ae776ae27cb24e63a9b0a96f47cb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/filterus/zipball/fac32b1782cc66916b1da07bdbb61679a07ab479",
-                "reference": "fac32b1782cc66916b1da07bdbb61679a07ab479",
+                "url": "https://api.github.com/repos/ircmaxell/filterus/zipball/2d246407485ae776ae27cb24e63a9b0a96f47cb7",
+                "reference": "2d246407485ae776ae27cb24e63a9b0a96f47cb7",
                 "shasum": ""
             },
             "require": {
@@ -493,7 +493,7 @@
                 "filter",
                 "security"
             ],
-            "time": "2014-07-24 18:37:40"
+            "time": "2015-02-04 19:31:16"
         },
         {
             "name": "ircmaxell/random-lib",
@@ -501,12 +501,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/RandomLib.git",
-                "reference": "7c4e4a239f38670d97f9f96d990f8da963aa4384"
+                "reference": "b1d10a9480f93442ac2af544a7e179c693d024af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/7c4e4a239f38670d97f9f96d990f8da963aa4384",
-                "reference": "7c4e4a239f38670d97f9f96d990f8da963aa4384",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/b1d10a9480f93442ac2af544a7e179c693d024af",
+                "reference": "b1d10a9480f93442ac2af544a7e179c693d024af",
                 "shasum": ""
             },
             "require": {
@@ -547,7 +547,7 @@
                 "random-numbers",
                 "random-strings"
             ],
-            "time": "2015-01-15 16:38:39"
+            "time": "2015-02-04 19:31:31"
         },
         {
             "name": "ircmaxell/security-lib",
@@ -841,16 +841,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "0.7.3",
+            "version": "0.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "cbd06954c2e561209afdd76984ab8a3399af501f"
+                "reference": "d1af494a48be904e8cba003e603b1ae740b18743"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/cbd06954c2e561209afdd76984ab8a3399af501f",
-                "reference": "cbd06954c2e561209afdd76984ab8a3399af501f",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/d1af494a48be904e8cba003e603b1ae740b18743",
+                "reference": "d1af494a48be904e8cba003e603b1ae740b18743",
                 "shasum": ""
             },
             "require": {
@@ -893,21 +893,21 @@
                 "validation",
                 "validator"
             ],
-            "time": "2015-01-19 23:08:17"
+            "time": "2015-02-05 16:38:11"
         },
         {
             "name": "symfony/config",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
-                "reference": "d94f222eff99a22ce313555b78642b4873418d56"
+                "reference": "a9f781ba1221067d1f07c8cec0bc50f81b8d7408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/d94f222eff99a22ce313555b78642b4873418d56",
-                "reference": "d94f222eff99a22ce313555b78642b4873418d56",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/a9f781ba1221067d1f07c8cec0bc50f81b8d7408",
+                "reference": "a9f781ba1221067d1f07c8cec0bc50f81b8d7408",
                 "shasum": ""
             },
             "require": {
@@ -941,21 +941,21 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 08:01:59"
+            "time": "2015-01-21 20:57:55"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "40ff70cadea3785d83cac1c8309514b36113064e"
+                "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/40ff70cadea3785d83cac1c8309514b36113064e",
-                "reference": "40ff70cadea3785d83cac1c8309514b36113064e",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/f75989f3ab2743a82fe0b03ded2598a2b1546813",
+                "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813",
                 "shasum": ""
             },
             "require": {
@@ -999,11 +999,11 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-05 14:28:40"
+            "time": "2015-02-01 16:10:57"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
@@ -1050,17 +1050,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "3f4ba2c658be910fe6cec46ed34ee900bd18bb01"
+                "reference": "8fa63d614d56ccfe033e30411d90913cfc483ff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/3f4ba2c658be910fe6cec46ed34ee900bd18bb01",
-                "reference": "3f4ba2c658be910fe6cec46ed34ee900bd18bb01",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/8fa63d614d56ccfe033e30411d90913cfc483ff6",
+                "reference": "8fa63d614d56ccfe033e30411d90913cfc483ff6",
                 "shasum": ""
             },
             "require": {
@@ -1099,11 +1099,11 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-05 17:41:06"
+            "time": "2015-02-01 16:10:57"
         },
         {
             "name": "symfony/translation",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
@@ -1161,17 +1161,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "82462a90848a52c2533aa6b598b107d68076b018"
+                "reference": "60ed7751671113cf1ee7d7778e691642c2e9acd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/82462a90848a52c2533aa6b598b107d68076b018",
-                "reference": "82462a90848a52c2533aa6b598b107d68076b018",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/60ed7751671113cf1ee7d7778e691642c2e9acd8",
+                "reference": "60ed7751671113cf1ee7d7778e691642c2e9acd8",
                 "shasum": ""
             },
             "require": {
@@ -1204,7 +1204,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 15:33:07"
+            "time": "2015-01-25 04:39:26"
         },
         {
             "name": "twig/twig",
@@ -1262,6 +1262,54 @@
                 "templating"
             ],
             "time": "2015-01-25 17:32:08"
+        },
+        {
+            "name": "zumba/mongounit",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zumba/mongounit.git",
+                "reference": "b6d25b648deba645112c55e12b8b67960d1fc355"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zumba/mongounit/zipball/b6d25b648deba645112c55e12b8b67960d1fc355",
+                "reference": "b6d25b648deba645112c55e12b8b67960d1fc355",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mongo": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zumba\\PHPUnit\\Extensions\\Mongo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Saylor",
+                    "email": "christopher.saylor@zumba.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHPUnit extension that supports mongodb",
+            "homepage": "https://github.com/zumba/mongounit",
+            "keywords": [
+                "database",
+                "mongoclient",
+                "mongodb",
+                "testing"
+            ],
+            "time": "2014-03-31 12:48:59"
         }
     ],
     "packages-dev": [],
@@ -1270,9 +1318,9 @@
     "stability-flags": {
         "elasticsearch/elasticsearch": 20,
         "ircmaxell/filterus": 20,
+        "ircmaxell/random-lib": 20,
         "nategood/httpful": 20,
         "ezyang/htmlpurifier": 20,
-        "ircmaxell/random-lib": 20,
         "breeswish/php-marked": 20,
         "nikic/fast-route": 20
     },
