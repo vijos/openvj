@@ -19,7 +19,7 @@ trait LoggerTrait
      */
     public static function debug($message, $context = array())
     {
-        return Application::get('log')->addDebug($message, $context);
+        return Application::get('log')->addDebug($message, ['trace' => debug_backtrace()] + $context);
     }
 
     /**

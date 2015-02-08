@@ -125,7 +125,7 @@ class Application
                 if ($exception instanceof \MongoConnectionException) {
                     $level = Logger::ALERT;
                 }
-                self::log($level, $exception->getMessage(), $exception->getTrace());
+                self::log($level, $exception->getMessage(), ['trace' => $exception->getTrace()]);
             }
         });
         $whoops->register();
