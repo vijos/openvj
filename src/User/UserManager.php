@@ -53,7 +53,7 @@ class UserManager
      * @param array $user
      * @return bool
      */
-    public static function isUserValid($user)
+    public static function isUserValid(array $user)
     {
         if ($user === null ||
             (isset($user['banned']) && $user['banned']) ||
@@ -71,7 +71,7 @@ class UserManager
      * @param array $user
      * @param int $from
      */
-    private static function prepareLoginSession($user, $from)
+    private static function prepareLoginSession(array $user, $from)
     {
         Application::getSession()->set('user', $user);
         Application::getSession()->set('loginType', $from);
@@ -145,7 +145,7 @@ class UserManager
      * @param array $user
      * @param int|null $expire
      */
-    public static function generateRememberMeToken($user, $expire = null)
+    public static function generateRememberMeToken(array $user, $expire = null)
     {
         $token_field = Application::get('config')['session']['remember_token'];
         if ($expire === null) {
