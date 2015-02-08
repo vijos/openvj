@@ -45,8 +45,8 @@ class RoleManager
             if ($domain === null || $owner === null || !$domain instanceof \MongoId) {
                 throw new \InvalidArgumentException('required domain and owner');
             }
-            if (strlen($name) <= 2 || substr($name, 0, 2) !== '$$') {
-                throw new \InvalidArgumentException('name should starts with "$$"');
+            if (!preg_match('/^\$[0-9a-zA-Z_]{1,20}$/', $name)) {
+                throw new \InvalidArgumentException('invalid name');
             }
         }
 
