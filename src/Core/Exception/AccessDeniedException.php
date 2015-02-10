@@ -10,7 +10,7 @@
 
 namespace VJ\Core\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
+use VJ\Core\Response;
 
 class AccessDeniedException extends UserException
 {

@@ -10,12 +10,12 @@
 
 namespace VJ\Core\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
+use VJ\Core\Response;
 
-class PageNotFoundException extends UserException
+class NotFoundException extends UserException
 {
     public function __construct()
     {
-        parent::__construct('error.user.page_not_found', Response::HTTP_NOT_FOUND);
+        parent::__construct('error.user.not_found', Response::HTTP_NOT_FOUND);
     }
 }
