@@ -17,16 +17,16 @@ class UserException extends \Exception
     private $rawErrorCode;
 
     /**
-     * @param string $messageCode
+     * @param string $exceptionCode
      * @param int $httpCode
      * @param array $placeholder
      */
-    public function __construct($messageCode, $httpCode = 0, $placeholder = array())
+    public function __construct($exceptionCode, $httpCode = 0, $placeholder = array())
     {
-        $this->rawErrorCode = $messageCode;
+        $this->rawErrorCode = $exceptionCode;
 
         parent::__construct(
-            Application::get('i18n')->trans($messageCode, $placeholder), $httpCode
+            Application::transExceptionCode($exceptionCode, $placeholder), $httpCode
         );
     }
 

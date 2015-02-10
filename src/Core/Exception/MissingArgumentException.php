@@ -17,8 +17,8 @@ class MissingArgumentException extends UserException
 {
     public function __construct($name)
     {
-        parent::__construct('error.user.missing_argument', Response::HTTP_BAD_REQUEST, [
-            'name' => Application::get('i18n')->trans('error.argument.' . $name),
+        parent::__construct('missing_argument', Response::HTTP_BAD_REQUEST, [
+            'name' => Application::transExceptionArgumentName($name),
         ]);
     }
 }

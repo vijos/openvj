@@ -11,7 +11,7 @@
 namespace VJ\Core;
 
 use VJ\Core\Exception\AccessDeniedException;
-use VJ\Core\Exception\PageNotFoundException;
+use VJ\Core\Exception\NotFoundException;
 
 class Controller
 {
@@ -29,11 +29,11 @@ class Controller
     }
 
     /**
-     * @throws PageNotFoundException
+     * @throws NotFoundException
      */
     public function notFound()
     {
-        throw new PageNotFoundException();
+        throw new NotFoundException();
     }
 
     /**

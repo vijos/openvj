@@ -12,7 +12,7 @@ namespace VJ\Core;
 
 use FastRoute\Dispatcher;
 use Symfony\Component\HttpFoundation\Response;
-use VJ\Core\Exception\PageNotFoundException;
+use VJ\Core\Exception\NotFoundException;
 
 trait RouteTrait
 {
@@ -33,7 +33,7 @@ trait RouteTrait
             case Dispatcher::NOT_FOUND:
             case Dispatcher::METHOD_NOT_ALLOWED:
 
-                throw new PageNotFoundException();
+                throw new NotFoundException();
                 break;
 
             case Dispatcher::FOUND:

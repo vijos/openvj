@@ -32,7 +32,7 @@ use Whoops\Run;
 
 class Application
 {
-    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, SessionTrait;
+    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, SessionTrait, TranslationTrait;
 
     public static $container;
 

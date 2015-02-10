@@ -16,6 +16,6 @@ class AccessDeniedException extends UserException
 {
     public function __construct()
     {
-        parent::__construct('error.user.access_denied', Response::HTTP_FORBIDDEN);
+        parent::__construct('access_denied', Response::HTTP_FORBIDDEN);
     }
 } 
