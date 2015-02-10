@@ -10,6 +10,7 @@ namespace PHPSTORM_META {                                                 // we 
             'request' instanceof \VJ\Core\Request,
             'response' instanceof \VJ\Core\Response,
             'templating' instanceof \Twig_Environment,
+            'redis' instanceof \Redis,
             'mongo_client' instanceof \MongoClient,
             'mongodb' instanceof \MongoDB,
             'log' instanceof \Monolog\Logger,
