@@ -20,7 +20,7 @@ class MissingArgumentException extends UserException
     public function __construct($name)
     {
         parent::__construct('missing_argument', Response::HTTP_BAD_REQUEST, [
-            'name' => $name,
+            '%name%' => $name,
         ]);
     }
 }

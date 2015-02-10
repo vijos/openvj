@@ -23,8 +23,8 @@ class InvalidArgumentException extends UserException
     public function __construct($name, $msg, $msgPlaceholder = array())
     {
         parent::__construct('invalid_argument', Response::HTTP_BAD_REQUEST, [
-            'name' => $name,
-            'msg' => Application::transExceptionMessage($msg, $msgPlaceholder),
+            '%name%' => $name,
+            '%msg%' => Application::transExceptionMessage($msg, $msgPlaceholder),
         ]);
     }
 }
