@@ -10,6 +10,7 @@
 
 namespace VJ\User;
 
+use Respect\Validation\Validator;
 use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
 use VJ\Core\Exception\UserException;
@@ -23,6 +24,9 @@ class UserManager
      */
     public static function getUserByUid($uid)
     {
+        if (!Validator::int()->validate($uid)) {
+            return null;
+        }
         $user = Application::coll('User')->findOne(['_id' => (int)$uid]);
         return $user;
     }
@@ -59,7 +63,7 @@ class UserManager
      * @param array $user
      * @return bool
      */
-    public static function isUserValid(array $user)
+    public static function isUserValid(array $user = null)
     {
         if ($user === null ||
             (isset($user['banned']) && $user['banned']) ||

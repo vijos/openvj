@@ -12,6 +12,7 @@ namespace VJ\User;
 
 use Respect\Validation\Validator;
 use VJ\Core\Application;
+use VJ\Core\Exception\InvalidArgumentException;
 
 class RememberMeEncoder
 {
@@ -24,26 +25,26 @@ class RememberMeEncoder
     public static function parseClientToken($clientToken)
     {
         if (!is_string($clientToken)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'type_invalid');
         }
         if (!mb_check_encoding($clientToken, 'UTF-8')) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'encoding_invalid');
         }
         $token_parts = explode('|', $clientToken);
         if (count($token_parts) !== 3) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         if (!Validator::int()->validate($token_parts[0])) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         if (!Validator::int()->validate($token_parts[1])) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         if ((int)$token_parts[1] <= 0) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         if (strlen($token_parts[2]) !== 32) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         return [
             'uid' => (int)$token_parts[0],
@@ -61,6 +62,9 @@ class RememberMeEncoder
      */
     public static function generateClientToken($uid, $expire)
     {
+        if (!Validator::int()->validate($uid)) {
+            throw new InvalidArgumentException('uid', 'type_invalid');
+        }
         $token = Application::get('random')->generateString(32);
         return (int)$uid . '|' . (int)$expire . '|' . $token;
     }

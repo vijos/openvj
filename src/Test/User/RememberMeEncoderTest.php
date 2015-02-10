@@ -15,7 +15,7 @@ use VJ\User\RememberMeEncoder;
 class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken1()
     {
@@ -23,7 +23,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken2()
     {
@@ -31,7 +31,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken3()
     {
@@ -39,7 +39,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken4()
     {
@@ -47,7 +47,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken5()
     {
@@ -55,7 +55,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken6()
     {
@@ -63,7 +63,7 @@ class RememberMeEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testParseInvalidClientToken7()
     {

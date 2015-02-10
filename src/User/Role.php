@@ -10,6 +10,7 @@
 
 namespace VJ\User;
 
+use Respect\Validation\Validator;
 use VJ\Core\Application;
 
 class Role
@@ -21,7 +22,7 @@ class Role
      */
     public function __construct($uid = null)
     {
-        if ($uid === null) {
+        if ($uid === null || !Validator::int()->validate($uid)) {
             $this->roles = [];
             return;
         }

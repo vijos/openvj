@@ -11,6 +11,8 @@
 namespace VJ\User;
 
 use VJ\Core\Application;
+use VJ\Core\Exception\InvalidArgumentException;
+use VJ\Core\Exception\MissingArgumentException;
 use VJ\Security\Util;
 
 class PasswordEncoder
@@ -69,20 +71,21 @@ class PasswordEncoder
     public static function encode($password, $salt, $type, $username = null)
     {
         if (strlen($salt) < 22) {
-            throw new \InvalidArgumentException('salt too short');
+            throw new InvalidArgumentException('salt', 'too_short');
         }
 
         if ($type == self::HASH_TYPE_VJ2) {
             if ($username === null) {
-                throw new \InvalidArgumentException('required username');
+                throw new MissingArgumentException('username');
             }
-            return self::HASH_TYPE_VJ2 . '|' . base64_encode($username) . '|' . self::encodeVJ2($password, $salt,
-                $username);
+            return self::HASH_TYPE_VJ2 . '|' .
+            base64_encode($username) . '|' .
+            self::encodeVJ2($password, $salt, $username);
         } else {
             if ($type == self::HASH_TYPE_OPENVJ) {
                 return self::HASH_TYPE_OPENVJ . '|' . self::encodeOpenVJ($password, $salt);
             } else {
-                throw new \InvalidArgumentException('unknown hash type');
+                throw new InvalidArgumentException('type', 'value_invalid');
             }
         }
     }

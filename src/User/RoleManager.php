@@ -10,7 +10,10 @@
 
 namespace VJ\User;
 
+use Respect\Validation\Validator;
 use VJ\Core\Application;
+use VJ\Core\Exception\InvalidArgumentException;
+use VJ\Core\Exception\MissingArgumentException;
 
 class RoleManager
 {
@@ -42,14 +45,20 @@ class RoleManager
     public static function createRole($name, $internal = false, \MongoId $domain = null, $owner = null)
     {
         if (!$internal) {
-            if ($domain === null || $owner === null || !$domain instanceof \MongoId) {
-                throw new \InvalidArgumentException('required domain and owner');
+            if ($domain === null) {
+                throw new MissingArgumentException('domain');
+            }
+            if ($owner === null) {
+                throw new MissingArgumentException('owner');
+            }
+            if (!Validator::int()->validate($owner)) {
+                throw new InvalidArgumentException('owner', 'type_invalid');
             }
             if (!mb_check_encoding($name, 'UTF-8')) {
-                throw new \InvalidArgumentException('invalid name');
+                throw new InvalidArgumentException('name', 'encoding_invalid');
             }
             if (!preg_match('/^\$[0-9a-zA-Z_]{1,20}$/', $name)) {
-                throw new \InvalidArgumentException('invalid name');
+                throw new InvalidArgumentException('name', 'format_invalid');
             }
         }
 

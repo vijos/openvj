@@ -1,3 +1,11 @@
 error:
-    user:
-        page_not_found: 该页面未找到
+    code:
+        not_found: 该页面未找到
+        missing_argument: 缺少参数 %name%
+        invalid_argument: 无效参数 %name%：%msg%
+    msg:
+        too_short:          参数长度过短
+        type_invalid:       参数类型无效
+        value_invalid:      参数取值无效
+        format_invalid:     参数格式无效
+        encoding_invalid:   参数编码无效

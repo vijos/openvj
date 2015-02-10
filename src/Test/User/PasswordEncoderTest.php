@@ -33,7 +33,7 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testEncodeInvalid1()
     {
@@ -41,7 +41,7 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\InvalidArgumentException
      */
     public function testEncodeInvalid2()
     {
@@ -49,7 +49,7 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \VJ\Core\Exception\MissingArgumentException
      */
     public function testEncodeInvalid3()
     {
