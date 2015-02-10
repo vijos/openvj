@@ -10,15 +10,17 @@
 
 namespace VJ\Core\Exception;
 
-use VJ\Core\Application;
 use VJ\Core\Response;
 
 class MissingArgumentException extends UserException
 {
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         parent::__construct('missing_argument', Response::HTTP_BAD_REQUEST, [
-            'name' => Application::transExceptionArgumentName($name),
+            'name' => $name,
         ]);
     }
 }

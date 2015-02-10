@@ -15,10 +15,15 @@ use VJ\Core\Response;
 
 class InvalidArgumentException extends UserException
 {
+    /**
+     * @param string $name
+     * @param string $msg
+     * @param array $msgPlaceholder
+     */
     public function __construct($name, $msg, $msgPlaceholder = array())
     {
         parent::__construct('invalid_argument', Response::HTTP_BAD_REQUEST, [
-            'name' => Application::transExceptionArgumentName($name),
+            'name' => $name,
             'msg' => Application::transExceptionMessage($msg, $msgPlaceholder),
         ]);
     }

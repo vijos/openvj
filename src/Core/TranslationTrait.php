@@ -12,21 +12,31 @@ namespace VJ\Core;
 
 trait TranslationTrait
 {
+    /**
+     * @param string $id
+     * @param array $parameters
+     * @return string
+     */
     public static function trans($id, $parameters = array())
     {
         return Application::get('i18n')->trans($id, $parameters);
     }
 
+    /**
+     * @param string $code
+     * @param array $parameters
+     * @return string
+     */
     public static function transExceptionCode($code, $parameters = array())
     {
         return self::trans('error.code.' . $code, $parameters);
     }
 
-    public static function transExceptionArgumentName($name, $parameters = array())
-    {
-        return self::trans('error.argument.' . $name, $parameters);
-    }
-
+    /**
+     * @param string $msg
+     * @param array $parameters
+     * @return string
+     */
     public static function transExceptionMessage($msg, $parameters = array())
     {
         return self::trans('error.msg.' . $msg, $parameters);
