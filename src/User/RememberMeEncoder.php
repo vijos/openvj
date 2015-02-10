@@ -26,6 +26,9 @@ class RememberMeEncoder
         if (!is_string($clientToken)) {
             throw new \InvalidArgumentException();
         }
+        if (!mb_check_encoding($clientToken, 'UTF-8')) {
+            throw new \InvalidArgumentException();
+        }
         $token_parts = explode('|', $clientToken);
         if (count($token_parts) !== 3) {
             throw new \InvalidArgumentException();

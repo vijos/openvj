@@ -40,6 +40,10 @@ class LoginLogService
      */
     public function appendLog($uid, $type, $ua, $ip)
     {
+        if (!mb_check_encoding($ua, 'UTF-8')) {
+            $ua = null;
+        }
+
         Application::coll('LoginLog')->insert([
             'uid' => (int)$uid,
             'at' => new \MongoDate(),

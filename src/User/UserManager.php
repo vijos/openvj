@@ -33,6 +33,9 @@ class UserManager
      */
     public static function getUserByEmail($email)
     {
+        if (!mb_check_encoding($email, 'UTF-8')) {
+            return null;
+        }
         $user = Application::coll('User')->findOne(['lmail' => EmailCanonicalizer::canonicalize($email)]);
         return $user;
     }
@@ -43,6 +46,9 @@ class UserManager
      */
     public static function getUserByUsername($username)
     {
+        if (!mb_check_encoding($username, 'UTF-8')) {
+            return null;
+        }
         $user = Application::coll('User')->findOne(['luser' => UsernameCanonicalizer::canonicalize($username)]);
         return $user;
     }

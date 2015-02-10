@@ -114,6 +114,10 @@ class UserCredential
         $clientToken = RememberMeEncoder::generateClientToken((int)$uid, (int)$expire);
         $token = RememberMeEncoder::parseClientToken($clientToken);
 
+        if (!mb_check_encoding($userAgent, 'UTF-8')) {
+            $userAgent = null;
+        }
+
         Application::coll('RememberMeToken')->insert([
             'uid' => $token['uid'],
             'token' => $token['token'],
