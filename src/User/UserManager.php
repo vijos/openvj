@@ -13,6 +13,7 @@ namespace VJ\User;
 use Respect\Validation\Validator;
 use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
+use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
 use VJ\VJ;
 
@@ -37,7 +38,7 @@ class UserManager
      */
     public static function getUserByEmail($email)
     {
-        if (!mb_check_encoding($email, 'UTF-8')) {
+        if (!is_string($email) || !mb_check_encoding($email, 'UTF-8')) {
             return null;
         }
         $user = Application::coll('User')->findOne(['lmail' => EmailCanonicalizer::canonicalize($email)]);
@@ -50,7 +51,7 @@ class UserManager
      */
     public static function getUserByUsername($username)
     {
-        if (!mb_check_encoding($username, 'UTF-8')) {
+        if (!is_string($username) || !mb_check_encoding($username, 'UTF-8')) {
             return null;
         }
         $user = Application::coll('User')->findOne(['luser' => UsernameCanonicalizer::canonicalize($username)]);
@@ -98,6 +99,12 @@ class UserManager
      */
     public static function interactiveLogin($usernameEmail, $password, $remember = false)
     {
+        if (!is_string($usernameEmail)) {
+            throw new InvalidArgumentException('usernameEmail', 'type_invalid');
+        }
+        if (!is_string($password)) {
+            throw new InvalidArgumentException('password', 'type_invalid');
+        }
         $user = UserCredential::checkPasswordCredential($usernameEmail, $password);
         if ($remember) {
             self::generateRememberMeToken($user);

@@ -27,6 +27,9 @@ class RoleManager
      */
     public static function overWriteToken($uid, callable $callback)
     {
+        if (!Validator::int()->validate($uid)) {
+            throw new InvalidArgumentException('uid', 'type_invalid');
+        }
         $lastOverWrite = self::$overWriteUid;
         self::$overWriteUid = $uid;
         $callback();
@@ -44,6 +47,16 @@ class RoleManager
      */
     public static function createRole($name, $internal = false, \MongoId $domain = null, $owner = null)
     {
+        if (!is_string($name)) {
+            throw new InvalidArgumentException('name', 'type_invalid');
+        }
+        if (!mb_check_encoding($name, 'UTF-8')) {
+            throw new InvalidArgumentException('name', 'encoding_invalid');
+        }
+        if (!preg_match('/^\$[0-9a-zA-Z_]{1,20}$/', $name)) {
+            throw new InvalidArgumentException('name', 'format_invalid');
+        }
+
         if (!$internal) {
             if ($domain === null) {
                 throw new MissingArgumentException('domain');
@@ -53,12 +66,6 @@ class RoleManager
             }
             if (!Validator::int()->validate($owner)) {
                 throw new InvalidArgumentException('owner', 'type_invalid');
-            }
-            if (!mb_check_encoding($name, 'UTF-8')) {
-                throw new InvalidArgumentException('name', 'encoding_invalid');
-            }
-            if (!preg_match('/^\$[0-9a-zA-Z_]{1,20}$/', $name)) {
-                throw new InvalidArgumentException('name', 'format_invalid');
             }
         }
 

@@ -122,7 +122,7 @@ class UserCredential
         $clientToken = RememberMeEncoder::generateClientToken((int)$uid, (int)$expire);
         $token = RememberMeEncoder::parseClientToken($clientToken);
 
-        if (!mb_check_encoding($userAgent, 'UTF-8')) {
+        if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
             $userAgent = null;
         }
 

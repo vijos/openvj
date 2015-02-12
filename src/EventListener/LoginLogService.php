@@ -40,7 +40,7 @@ class LoginLogService
      */
     public function appendLog($uid, $type, $ua, $ip)
     {
-        if (!mb_check_encoding($ua, 'UTF-8')) {
+        if (!is_string($ua) || !mb_check_encoding($ua, 'UTF-8')) {
             $ua = null;
         }
 
