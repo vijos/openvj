@@ -48,7 +48,7 @@ class LoginLogService
             'uid' => (int)$uid,
             'at' => new \MongoDate(),
             'type' => (int)$type,
-            'ua' => $ua,
+            'ua' => mb_substr($ua, 0, 256),
             'ip' => $ip
         ]);
 

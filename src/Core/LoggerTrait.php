@@ -90,7 +90,7 @@ trait LoggerTrait
     {
         return [
             'ip' => Application::get('request')->getClientIp(),
-            'userAgent' => Application::get('request')->headers->get('user-agent')
+            'userAgent' => mb_substr(Application::get('request')->headers->get('user-agent'), 0, 256)
         ];
     }
 } 
