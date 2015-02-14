@@ -25,7 +25,7 @@ class VJCredentialUpgradeService
         }
 
         // seamlessly upgrade VJ2 password hash to VJ3
-        $this->upgradeUserCredential($user['_id'], $password);
+        $this->upgradeUserCredential($user['uid'], $password);
     }
 
     /**
@@ -46,7 +46,7 @@ class VJCredentialUpgradeService
             return false;
         }
 
-        Application::info('credential.upgrade', ['uid' => $user['_id']]);
+        Application::info('credential.upgrade', ['uid' => $user['uid']]);
         return UserCredential::setCredential($uid, $password);
     }
 }

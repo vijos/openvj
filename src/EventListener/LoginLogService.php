@@ -25,7 +25,7 @@ class LoginLogService
             || $type == VJ::LOGIN_TYPE_COOKIE
             || $type == VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD
         ) {
-            $this->appendLog($user['_id'], $type, $userAgent, $ip);
+            $this->appendLog($user['uid'], $type, $userAgent, $ip);
         }
     }
 

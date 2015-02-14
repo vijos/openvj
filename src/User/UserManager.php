@@ -28,7 +28,7 @@ class UserManager
         if (!Validator::int()->validate($uid)) {
             return null;
         }
-        $user = Application::coll('User')->findOne(['_id' => (int)$uid]);
+        $user = Application::coll('User')->findOne(['uid' => (int)$uid]);
         return $user;
     }
 
@@ -59,17 +59,14 @@ class UserManager
     }
 
     /**
-     * 判断用户是否有效（未被删除、未被封禁）
+     * 判断用户是否有效（未被封禁）
      *
      * @param array $user
      * @return bool
      */
     public static function isUserValid(array $user = null)
     {
-        if ($user === null ||
-            (isset($user['banned']) && $user['banned']) ||
-            (isset($user['deleted']) && $user['deleted'])
-        ) {
+        if ($user === null || (isset($user['banned']) && $user['banned'])) {
             return false;
         } else {
             return true;
@@ -168,7 +165,7 @@ class UserManager
         if ($expire === null) {
             $expire = time() + (int)Application::get('config')['session']['remember_ttl'];
         }
-        $clientToken = UserCredential::createRememberMeClientToken($user['_id'],
+        $clientToken = UserCredential::createRememberMeClientToken($user['uid'],
             Application::get('request')->getClientIp(),
             Application::get('request')->headers->get('user-agent'),
             $expire

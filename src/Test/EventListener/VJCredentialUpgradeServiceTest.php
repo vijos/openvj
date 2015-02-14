@@ -35,7 +35,7 @@ class VJCredentialUpgradeServiceTest extends \PHPUnit_Framework_TestCase
         $dataset->setFixture([
             'User' => [
                 [
-                    '_id' => 0,
+                    'uid' => 0,
                     'user' => 'test_User',
                     'luser' => 'test_user',
                     'mail' => 'test@example.com',
@@ -45,7 +45,7 @@ class VJCredentialUpgradeServiceTest extends \PHPUnit_Framework_TestCase
                     // password: test_password
                 ],
                 [
-                    '_id' => 1,
+                    'uid' => 1,
                     'user' => '世界你好',
                     'luser' => '世界你好',
                     'mail' => null,

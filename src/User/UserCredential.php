@@ -47,14 +47,14 @@ class UserCredential
         if (!$verified) {
             if (!$secretly) {
                 Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
-                Application::info('credential.login.wrong_password', ['uid' => $user['_id']]);
+                Application::info('credential.login.wrong_password', ['uid' => $user['uid']]);
             }
             throw new UserException('checkCredential.wrong_password');
         }
 
         if (!$secretly) {
             Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_INTERACTIVE, $user, $field, $password]);
-            Application::info('credential.login.ok', ['uid' => $user['_id']]);
+            Application::info('credential.login.ok', ['uid' => $user['uid']]);
         }
         return $user;
     }
@@ -96,7 +96,7 @@ class UserCredential
 
         if (!$secretly) {
             Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
-            Application::info('credential.login.ok', ['uid' => $user['_id']]);
+            Application::info('credential.login.ok', ['uid' => $user['uid']]);
         }
         return $user;
     }
@@ -175,7 +175,7 @@ class UserCredential
 
         $newHashSaltPair = PasswordEncoder::generateHash($password);
         $status = Application::coll('User')->update([
-            '_id' => (int)$uid
+            'uid' => (int)$uid
         ], [
             '$set' => [
                 'hash' => $newHashSaltPair['hash'],

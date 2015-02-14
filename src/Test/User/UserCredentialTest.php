@@ -25,7 +25,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     private $fixture = [
         'User' => [
             [ // password: test_password
-                '_id' => 0,
+                'uid' => 0,
                 'user' => 'test_User',
                 'luser' => 'test_user',
                 'mail' => 'test@example.com',
@@ -34,7 +34,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
                 'hash' => 'openvj|$2y$10$5b26d1542f68297831044eOCPuejIMxU6peNfQQUw.HUz8CoxOZ1.',
             ],
             [ // password: test_password
-                '_id' => 1,
+                'uid' => 1,
                 'user' => 'test_User2',
                 'luser' => 'test_user2',
                 'mail' => 'test2@example.com',
