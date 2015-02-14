@@ -11,6 +11,7 @@
 namespace VJ\Core\Exception;
 
 use VJ\Core\Application;
+use VJ\Core\Response;
 
 class UserException extends \Exception
 {
@@ -21,7 +22,7 @@ class UserException extends \Exception
      * @param int $httpCode
      * @param array $placeholder
      */
-    public function __construct($exceptionCode, $httpCode = 0, $placeholder = array())
+    public function __construct($exceptionCode, $httpCode = Response::HTTP_BAD_REQUEST, $placeholder = array())
     {
         $this->rawErrorCode = $exceptionCode;
 
