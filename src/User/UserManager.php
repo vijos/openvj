@@ -167,8 +167,8 @@ class UserManager
             $expire = time() + (int)Application::get('config')['session']['remember_ttl'];
         }
         $clientToken = UserCredential::createRememberMeClientToken($user['uid'],
-            Application::get('request')->getClientIp(),
-            Application::get('request')->headers->get('user-agent'),
+            Util::getClientIp(),
+            Util::getUserAgentSafe(),
             $expire
         );
         Application::get('request')->cookies->set($token_field, $clientToken);
@@ -245,7 +245,7 @@ class UserManager
                 'g' => $email,
                 'gender' => VJ::USER_GENDER_UNKNOWN,
                 'regat' => new \MongoDate(),
-                'regip' => Application::get('request')->getClientIp(),
+                'regip' => Util::getClientIp(),
             ]);
         } catch (\MongoCursorException $e) {
             // 插入失败

@@ -13,6 +13,7 @@ namespace VJ\EventListener;
 use VJ\Core\Application;
 use VJ\Core\Request;
 use VJ\Core\Response;
+use VJ\Util;
 
 class VJRedirectionService
 {
@@ -31,7 +32,7 @@ class VJRedirectionService
     {
         if (stripos($request->getRequestUri(), '.asp') !== false) {
 
-            $ua = $request->headers->get('user-agent');
+            $ua = Util::getUserAgentSafe();
 
             if (
                 $enforceHttps &&

@@ -11,14 +11,15 @@
 namespace VJ\EventListener;
 
 use VJ\Core\Application;
+use VJ\Util;
 use VJ\VJ;
 
 class LoginLogService
 {
     public function onEvent($event, $type, $user)
     {
-        $ip = Application::get('request')->getClientIp();
-        $userAgent = Application::get('request')->headers->get('user-agent');
+        $ip = Util::getClientIp();
+        $userAgent = Util::getUserAgentSafe();
 
         if (
             $type == VJ::LOGIN_TYPE_INTERACTIVE
@@ -48,7 +49,7 @@ class LoginLogService
             'uid' => (int)$uid,
             'at' => new \MongoDate(),
             'type' => (int)$type,
-            'ua' => mb_substr($ua, 0, 256),
+            'ua' => $ua,
             'ip' => $ip
         ]);
 
