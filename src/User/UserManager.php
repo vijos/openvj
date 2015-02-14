@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
+use VJ\Util;
 use VJ\VJ;
 
 class UserManager
@@ -174,4 +175,113 @@ class UserManager
         Application::get('response')->headers->setCookie(new Cookie($token_field, $clientToken));
     }
 
+    /**
+     * 创建用户
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return int UID
+     * @throws InvalidArgumentException
+     * @throws UserException
+     */
+    public static function createUser($username, $password, $email)
+    {
+        if (!is_string($username)) {
+            throw new InvalidArgumentException('username', 'type_invalid');
+        }
+        if (!is_string($password)) {
+            throw new InvalidArgumentException('password', 'type_invalid');
+        }
+        if (!is_string($email)) {
+            throw new InvalidArgumentException('password', 'type_invalid');
+        }
+
+        // 检查用户名
+        if (!mb_check_encoding($username, 'UTF-8')) {
+            throw new InvalidArgumentException('username', 'encoding_invalid');
+        }
+        $username = trim($username);
+        if (!Validator::regex('/^\S*$/')->length(3, 16)->validate($username)) {
+            throw new InvalidArgumentException('username', 'format_invalid');
+        }
+
+        // 检查密码
+        if (!Validator::length(5, 30)->validate($password)) {
+            throw new InvalidArgumentException('password', 'format_invalid');
+        }
+
+        // 检查 email
+        if (!Validator::email()->validate($email)) {
+            throw new InvalidArgumentException('password', 'format_invalid');
+        }
+
+        // 处理用户名
+        $username = Util::removeEmoji($username);
+
+        // 检查用户名和 Email 是否唯一
+        if (self::getUserByUsername($username) !== null) {
+            throw new UserException('createUser.user_exists');
+        }
+        if (self::getUserByEmail($email) !== null) {
+            throw new UserException('createUser.email_exists');
+        }
+
+        // 生成 hash & salt
+        $hashSaltPair = PasswordEncoder::generateHash($password);
+
+        // 插入记录
+        try {
+            $_id = new \MongoId();
+            Application::coll('User')->insert([
+                '_id' => $_id,
+                'uid' => $_id, // 将在成功插入后更新
+                'user' => $username,
+                'luser' => UsernameCanonicalizer::canonicalize($username),
+                'mail' => $email,
+                'lmail' => EmailCanonicalizer::canonicalize($email),
+                'salt' => $hashSaltPair['salt'],
+                'hash' => $hashSaltPair['hash'],
+                'g' => $email,
+                'gender' => VJ::USER_GENDER_UNKNOWN,
+                'regat' => new \MongoDate(),
+                'regip' => Application::get('request')->getClientIp(),
+            ]);
+        } catch (\MongoCursorException $e) {
+            // 插入失败
+            throw new UserException('createUser.user_or_email_exists');
+        }
+
+        // 插入成功：更新 uid
+        // 获取递增 uid
+        $counterRec = Application::coll('System')->findAndModify([
+            '_id' => 'UserCounter'
+        ], [
+            '$inc' => ['count' => 1]
+        ], [], [
+            'new' => true,
+            'upsert' => true
+        ]);
+        $uid = (int)$counterRec['count'];
+
+        try {
+            // 修改 uid
+            Application::coll('User')->update([
+                '_id' => $_id
+            ], [
+                '$set' => ['uid' => $uid]
+            ]);
+        } catch (\MongoCursorException $e) {
+            // 修改 uid 失败，或创建角色失败，或创建资料失败 (uid 与现有记录重复)
+            Application::critical('createUser.uidDuplicate', ['uid' => $uid]);
+            // 删除用户记录
+            Application::coll('User')->remove(['_id' => $_id], ['justOne' => true]);
+            throw new UserException('createUser.internal');
+        }
+
+        // 加入全局域 此处不应有异常
+        DomainManager::joinDomain($uid, DomainManager::getGlobalDomain());
+
+        return $uid;
+    }
 } 

@@ -14,6 +14,7 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\MissingArgumentException;
+use VJ\VJ;
 
 class RoleManager
 {
@@ -24,6 +25,7 @@ class RoleManager
      *
      * @param int $uid
      * @param callable $callback
+     * @throws InvalidArgumentException
      */
     public static function overWriteToken($uid, callable $callback)
     {
@@ -37,13 +39,32 @@ class RoleManager
     }
 
     /**
+     * 获取当前权限控制主体标示符
+     *
+     * @return int
+     */
+    public static function getCurrentToken()
+    {
+        if (self::$overWriteUid !== null) {
+            return self::$overWriteUid;
+        }
+        $user = Application::getSession()->get('user');
+        if ($user == null) {
+            return VJ::USER_ID_GUEST;
+        }
+        return (int)$user['uid'];
+    }
+
+    /**
      * 创建一个角色
      *
      * @param string $name
      * @param bool $internal
-     * @param \MongoId|null $domain
-     * @param int|null $owner
+     * @param \MongoId $domain
+     * @param int $owner
      * @return bool
+     * @throws InvalidArgumentException
+     * @throws MissingArgumentException
      */
     public static function createRole($name, $internal = false, \MongoId $domain = null, $owner = null)
     {

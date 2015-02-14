@@ -10,9 +10,13 @@
 
 namespace VJ\Security;
 
+use VJ\Core\Application;
+
 class Util
 {
     /**
+     * timing attack 安全的字符串比较
+     *
      * @param string $a
      * @param string $b
      * @return bool
@@ -24,5 +28,35 @@ class Util
             $diff |= ord($a[$i]) ^ ord($b[$i]);
         }
         return $diff === 0;
+    }
+
+    /**
+     * 获取 UserAgent
+     *
+     * @return string|null
+     */
+    public static function getUserAgent()
+    {
+        return Application::get('request')->headers->get('user-agent');
+    }
+
+    /**
+     * 获取数据库插入安全的 UserAgent
+     *
+     * @return string|null
+     */
+    public static function getUserAgentSafe()
+    {
+        return mb_substr(self::getUserAgent(), 0, 256);
+    }
+
+    /**
+     * 获取 IP
+     *
+     * @return string
+     */
+    public static function getClientIp()
+    {
+        return Application::get('request')->getClientIp();
     }
 } 
