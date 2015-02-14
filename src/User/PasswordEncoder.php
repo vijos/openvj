@@ -13,7 +13,7 @@ namespace VJ\User;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\MissingArgumentException;
-use VJ\Security\Util;
+use VJ\Util;
 
 class PasswordEncoder
 {

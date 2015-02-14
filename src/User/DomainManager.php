@@ -14,7 +14,7 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
-use VJ\Security\Util;
+use VJ\Util;
 use VJ\VJ;
 
 class DomainManager
@@ -126,7 +126,7 @@ class DomainManager
                 'uid' => RoleManager::getCurrentToken(),
                 'at' => new \MongoDate(),
                 'type' => 'join',
-                'ua' => Util::getUserAgent(),
+                'ua' => Util::getUserAgentSafe(),
                 'ip' => Util::getClientIp(),
                 'target_uid' => $uid,
                 'target_domain' => $domain,

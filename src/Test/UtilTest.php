@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace VJ\Test\Security;
+namespace VJ\Test;
 
-use VJ\Security\Util;
+use VJ\Util;
 
 class UtilTest extends \PHPUnit_Framework_TestCase
 {
