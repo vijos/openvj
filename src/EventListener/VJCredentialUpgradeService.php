@@ -37,7 +37,7 @@ class VJCredentialUpgradeService
      */
     public function upgradeUserCredential($uid, $password)
     {
-        $user = UserManager::getUserByUid($uid);
+        $user = UserManager::getUserObjectByUid($uid);
         if ($user === null) {
             return false;
         }

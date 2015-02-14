@@ -122,7 +122,7 @@ class RoleManager
      * @param \MongoId $domain
      * @return array
      */
-    public static function getDomainRoles(\MongoId $domain)
+    public static function getRolesByDomainId(\MongoId $domain)
     {
         $cursor = Application::coll('Role')->find([
             '$or' => [

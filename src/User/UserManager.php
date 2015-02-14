@@ -24,7 +24,7 @@ class UserManager
      * @param int $uid
      * @return array|null
      */
-    public static function getUserByUid($uid)
+    public static function getUserObjectByUid($uid)
     {
         if (!Validator::int()->validate($uid)) {
             return null;
@@ -37,7 +37,7 @@ class UserManager
      * @param string $email
      * @return array|null
      */
-    public static function getUserByEmail($email)
+    public static function getUserObjectByEmail($email)
     {
         if (!is_string($email) || !mb_check_encoding($email, 'UTF-8')) {
             return null;
@@ -65,7 +65,7 @@ class UserManager
      * @param array $user
      * @return bool
      */
-    public static function isUserValid(array $user = null)
+    public static function isUserObjectValid(array $user = null)
     {
         if ($user === null || (isset($user['banned']) && $user['banned'])) {
             return false;
@@ -80,7 +80,7 @@ class UserManager
      * @param array $user
      * @param int $from
      */
-    private static function prepareLoginSession(array $user, $from)
+    private static function prepareLoginSessionByObject(array $user, $from)
     {
         Application::getSession()->set('user', $user);
         Application::getSession()->set('loginType', $from);
@@ -105,10 +105,10 @@ class UserManager
         }
         $user = UserCredential::checkPasswordCredential($usernameEmail, $password);
         if ($remember) {
-            self::generateRememberMeToken($user);
+            self::generateRememberMeTokenForObject($user);
         }
 
-        self::prepareLoginSession($user, VJ::LOGIN_TYPE_INTERACTIVE);
+        self::prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_INTERACTIVE);
 
         return $user;
     }
@@ -134,9 +134,9 @@ class UserManager
         // 对于有效 token，需要重新生成一份新 token，并继承其过期时间
         $token = RememberMeEncoder::parseClientToken($clientToken);
         self::invalidateRememberMeToken();
-        self::generateRememberMeToken($user, $token['expire']);
+        self::generateRememberMeTokenForObject($user, $token['expire']);
 
-        self::prepareLoginSession($user, VJ::LOGIN_TYPE_COOKIE);
+        self::prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_COOKIE);
 
         return $user;
     }
@@ -157,10 +157,11 @@ class UserManager
 
     /**
      * 创建一个记忆会话
+     *
      * @param array $user
      * @param int|null $expire
      */
-    public static function generateRememberMeToken(array $user, $expire = null)
+    public static function generateRememberMeTokenForObject(array $user, $expire = null)
     {
         $token_field = Application::get('config')['session']['remember_token'];
         if ($expire === null) {
@@ -223,7 +224,7 @@ class UserManager
         if (self::getUserByUsername($username) !== null) {
             throw new UserException('createUser.user_exists');
         }
-        if (self::getUserByEmail($email) !== null) {
+        if (self::getUserObjectByEmail($email) !== null) {
             throw new UserException('createUser.email_exists');
         }
 
@@ -280,7 +281,7 @@ class UserManager
         }
 
         // 加入全局域 此处不应有异常
-        DomainManager::joinDomain($uid, DomainManager::getGlobalDomain());
+        DomainManager::joinDomain($uid, DomainManager::getGlobalDomainId());
 
         return $uid;
     }

@@ -30,12 +30,12 @@ class UserCredential
     public static function checkPasswordCredential($field, $password, $secretly = false)
     {
         if (Validator::email()->validate($field)) {
-            $user = UserManager::getUserByEmail($field);
+            $user = UserManager::getUserObjectByEmail($field);
         } else {
             $user = UserManager::getUserByUsername($field);
         }
 
-        if (!UserManager::isUserValid($user)) {
+        if (!UserManager::isUserObjectValid($user)) {
             if (!$secretly) {
                 Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
                 Application::info('credential.login.not_found', ['login' => $field]);
@@ -88,9 +88,9 @@ class UserCredential
             throw new UserException('checkCredential.invalid_rememberme_token');
         }
 
-        $user = UserManager::getUserByUid($record['uid']);
+        $user = UserManager::getUserObjectByUid($record['uid']);
 
-        if (!UserManager::isUserValid($user)) {
+        if (!UserManager::isUserObjectValid($user)) {
             throw new UserException('checkCredential.user_not_valid');
         }
 
