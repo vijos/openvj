@@ -222,10 +222,10 @@ class UserManager
 
         // 检查用户名和 Email 是否唯一
         if (self::getUserByUsername($username) !== null) {
-            throw new UserException('createUser.user_exists');
+            throw new UserException('UserManager::createUser.user_exists');
         }
         if (self::getUserObjectByEmail($email) !== null) {
-            throw new UserException('createUser.email_exists');
+            throw new UserException('UserManager::createUser.email_exists');
         }
 
         // 生成 hash & salt
@@ -250,7 +250,7 @@ class UserManager
             ]);
         } catch (\MongoCursorException $e) {
             // 插入失败
-            throw new UserException('createUser.user_or_email_exists');
+            throw new UserException('UserManager::createUser.user_or_email_exists');
         }
 
         // 插入成功：更新 uid
@@ -273,15 +273,14 @@ class UserManager
                 '$set' => ['uid' => $uid]
             ]);
         } catch (\MongoCursorException $e) {
-            // 修改 uid 失败，或创建角色失败，或创建资料失败 (uid 与现有记录重复)
+            // 修改 uid 失败（uid 重复），则删除用户记录
             Application::critical('createUser.uidDuplicate', ['uid' => $uid]);
-            // 删除用户记录
             Application::coll('User')->remove(['_id' => $_id], ['justOne' => true]);
-            throw new UserException('createUser.internal');
+            throw new UserException('UserManager::createUser.internal');
         }
 
         // 加入全局域 此处不应有异常
-        DomainManager::joinDomain($uid, DomainManager::getGlobalDomainId());
+        DomainManager::joinDomainById($uid, DomainManager::getGlobalDomainId());
 
         return $uid;
     }

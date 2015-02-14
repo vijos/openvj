@@ -64,7 +64,7 @@ class DomainManager
      * @throws InvalidArgumentException
      * @throws UserException
      */
-    public static function joinDomain($uid, \MongoId $domainId)
+    public static function joinDomainById($uid, \MongoId $domainId)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
