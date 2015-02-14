@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
+use VJ\Core\Response;
 use VJ\Util;
 use VJ\VJ;
 
@@ -205,6 +206,17 @@ class UserManager
         $username = trim($username);
         if (!Validator::regex('/^\S*$/')->length(3, 16)->validate($username)) {
             throw new InvalidArgumentException('username', 'format_invalid');
+        }
+
+        // 检查关键字
+        $keyword = KeywordFilter::isContainGeneral($username);
+        if ($keyword === false) {
+            $keyword = KeywordFilter::isContainName($username);
+        }
+        if ($keyword !== false) {
+            throw new UserException('UserManager::createUser.name_invalid', Response::HTTP_BAD_REQUEST, [
+                'keyword' => $keyword
+            ]);
         }
 
         // 检查密码

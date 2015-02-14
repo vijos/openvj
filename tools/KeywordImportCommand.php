@@ -26,7 +26,7 @@ class KeywordImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->import($output, 'keywords-content-base64.txt', 'content');
+        $this->import($output, 'keywords-general-base64.txt', 'general');
         $this->import($output, 'keywords-name-base64.txt', 'name');
     }
 

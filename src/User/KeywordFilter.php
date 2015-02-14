@@ -42,4 +42,44 @@ class KeywordFilter
 
         return false;
     }
+
+    /**
+     * 测试是否包含通用关键字
+     *
+     * @param $text
+     * @return bool|string
+     */
+    public static function isContainGeneral($text)
+    {
+        return self::isContain($text, 'general', function () {
+            $rec = Application::coll('System')->findOne([
+                '_id' => 'FilterKeyword'
+            ]);
+            if ($rec) {
+                return [];
+            } else {
+                return $rec['general'];
+            }
+        });
+    }
+
+    /**
+     * 测试是否包含用于用户名的额外关键字
+     *
+     * @param $text
+     * @return bool|string
+     */
+    public static function isContainName($text)
+    {
+        return self::isContain($text, 'name', function () {
+            $rec = Application::coll('System')->findOne([
+                '_id' => 'FilterKeyword'
+            ]);
+            if ($rec) {
+                return [];
+            } else {
+                return $rec['name'];
+            }
+        });
+    }
 }
