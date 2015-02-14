@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
 use VJ\Core\Request;
 use VJ\Core\Response;
-use VJ\Util;
 
 class HttpsRedirectionService
 {
@@ -43,7 +42,7 @@ class HttpsRedirectionService
         }
 
         if (!$request->isSecure() && $request->cookies->get('nossl') == null) {
-            $ua = Util::getUserAgentSafe();
+            $ua = $request->headers->get('user-agent');
             if (
                 $ua !== null &&
                 stripos($ua, 'Baiduspider') === false &&
