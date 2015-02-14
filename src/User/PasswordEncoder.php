@@ -65,8 +65,10 @@ class PasswordEncoder
      * @param string $password
      * @param string $salt
      * @param string $type
-     * @param null $username
+     * @param string|null $username
      * @return string
+     * @throws InvalidArgumentException
+     * @throws MissingArgumentException
      */
     public static function encode($password, $salt, $type, $username = null)
     {

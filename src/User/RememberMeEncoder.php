@@ -21,6 +21,7 @@ class RememberMeEncoder
      *
      * @param string $clientToken
      * @return array
+     * @throws InvalidArgumentException
      */
     public static function parseClientToken($clientToken)
     {
@@ -59,6 +60,7 @@ class RememberMeEncoder
      * @param int $uid
      * @param int $expire
      * @return string
+     * @throws InvalidArgumentException
      */
     public static function generateClientToken($uid, $expire)
     {

@@ -109,6 +109,7 @@ class UserCredential
      * @param string $userAgent
      * @param int $expire
      * @return string
+     * @throws InvalidArgumentException
      */
     public static function createRememberMeClientToken($uid, $ip, $userAgent, $expire)
     {
@@ -166,6 +167,7 @@ class UserCredential
      * @param int $uid
      * @param string $password
      * @return bool
+     * @throws InvalidArgumentException
      */
     public static function setCredential($uid, $password)
     {
