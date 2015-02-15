@@ -90,6 +90,7 @@ class Application
 
     /**
      * 载入配置文件
+     *
      * @param string $filename
      * @return array
      */
@@ -97,6 +98,25 @@ class Application
     {
         $file = self::$CONFIG_DIRECTORY . '/' . $filename;
         return Yaml::parse(file_get_contents($file));
+    }
+
+    /**
+     * 以 dot notation 路径访问配置
+     *
+     * @param $path
+     * @return mixed|null
+     */
+    public static function getConfig($path)
+    {
+        $p = explode('.', $path);
+        $context = self::get('config');
+        foreach ($p as $piece) {
+            if (!is_array($context) || !isset($context[$piece])) {
+                return null;
+            }
+            $context = &$context[$piece];
+        }
+        return $context;
     }
 
     private static function initEvent()
@@ -285,6 +305,8 @@ class Application
                     foreach ($service_config['arguments'] as $a) {
                         if (is_string($a) && substr($a, 0, 1) === '@') {
                             $argv[] = self::get(substr($a, 1));
+                        } elseif (is_string($a) && substr($a, 0, 1) === '%') {
+                            $argv[] = self::getConfig(substr($a, 1));
                         } else {
                             $argv[] = $a;
                         }
