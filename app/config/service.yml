@@ -1,9 +1,11 @@
 services:
-    vj2_redirection_service:
+    vj_redirection_service:
+        arguments: [@request, @response, %security.enforce_https]
         events: ['route.dispatch.before']
         class: \VJ\EventListener\VJRedirectionService
 
     https_redirection_service:
+        arguments: [@request, @response, %security.enforce_https]
         events: ['route.dispatch.before']
         class: \VJ\EventListener\HttpsRedirectionService
 

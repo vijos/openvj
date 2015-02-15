@@ -33,8 +33,8 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService();
-        $service->redirect(true, $request, $response);
+        $service = new VJRedirectionService($request, $response, true);
+        $service->onEvent('route.dispatch.before');
         $this->assertEquals(
             'https://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));
@@ -53,8 +53,8 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService();
-        $service->redirect(true, $request, $response);
+        $service = new VJRedirectionService($request, $response, true);
+        $service->onEvent('route.dispatch.before');
         $this->assertEquals(
             'http://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));
@@ -73,8 +73,8 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService();
-        $service->redirect(false, $request, $response);
+        $service = new VJRedirectionService($request, $response, false);
+        $service->onEvent('route.dispatch.before');
         $this->assertEquals(
             'http://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));

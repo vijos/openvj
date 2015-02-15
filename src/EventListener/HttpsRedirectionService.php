@@ -17,41 +17,52 @@ use VJ\Core\Response;
 
 class HttpsRedirectionService
 {
-    // route.dispatch.before
-    public function onEvent($event, Request $request, Response $response)
+    private $request;
+    private $response;
+    private $enforceHttps;
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param bool $enforceHttps
+     */
+    public function __construct(Request $request, Response $response, $enforceHttps = false)
     {
-        $this->redirect(Application::get('config')['security']['enforce_https'], $request, $response);
+        $this->request = $request;
+        $this->response = $response;
+        $this->enforceHttps = $enforceHttps;
     }
 
-    public function redirect($enforceHttps, Request $request, Response $response)
+    // route.dispatch.before
+    public function onEvent($event)
     {
-        if (!$enforceHttps) {
+        if (!$this->enforceHttps) {
             return;
         }
 
-        $nossl = $request->get('nossl');
+        $nossl = $this->request->get('nossl');
         if ($nossl !== null) {
             $nossl = strtolower($nossl);
             if ($nossl === 'false' || $nossl === 'off') {
-                $response->headers->clearCookie('nossl');
-                $request->cookies->remove('nossl');
+                $this->response->headers->clearCookie('nossl');
+                $this->request->cookies->remove('nossl');
             } else {
-                $response->headers->setCookie(new Cookie('nossl', 'on'));
-                $request->cookies->set('nossl', 'on');
+                $this->response->headers->setCookie(new Cookie('nossl', 'on'));
+                $this->request->cookies->set('nossl', 'on');
             }
         }
 
-        if (!$request->isSecure() && $request->cookies->get('nossl') == null) {
-            $ua = $request->headers->get('user-agent');
+        if (!$this->request->isSecure() && $this->request->cookies->get('nossl') == null) {
+            $ua = $this->request->headers->get('user-agent');
             if (
                 $ua !== null &&
                 stripos($ua, 'Baiduspider') === false &&
                 stripos($ua, 'Sogou web spider') === false &&
                 stripos($ua, 'Sosospider') === false
             ) {
-                $response->redirect('https://' .
-                    $request->headers->get('host', Application::get('config')['canonical']) .
-                    $request->getRequestUri());
+                $this->response->redirect('https://' .
+                    $this->request->headers->get('host', Application::get('config')['canonical']) .
+                    $this->request->getRequestUri());
             }
         }
     }

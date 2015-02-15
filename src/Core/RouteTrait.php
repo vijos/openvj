@@ -25,7 +25,7 @@ trait RouteTrait
         $request = Application::get('request');
         $response = Application::get('response');
 
-        Application::emit('route.dispatch.before', [$request, $response]);
+        Application::emit('route.dispatch.before');
         if (headers_sent()) {
             return;
         }
