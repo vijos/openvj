@@ -11,6 +11,7 @@
 namespace VJ\EventListener;
 
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\User\PasswordEncoder;
 use VJ\User\UserCredential;
 use VJ\User\UserManager;
@@ -18,7 +19,7 @@ use VJ\VJ;
 
 class VJCredentialUpgradeService
 {
-    public function onEvent($event, $type, $user, $field = null, $password = null)
+    public function onEvent(GenericEvent $event, $type, $user, $field = null, $password = null)
     {
         if ($type !== VJ::LOGIN_TYPE_INTERACTIVE) {
             return;

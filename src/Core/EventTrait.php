@@ -10,15 +10,17 @@
 
 namespace VJ\Core;
 
+use VJ\Core\Event\GenericEvent;
+
 trait EventTrait
 {
     /**
      * @param string $event
      * @param callable $callback
      */
-    public static function on($event, $callback)
+    public static function on($event, callable $callback)
     {
-        Application::get('event')->on($event, $callback);
+        Application::get('event')->addListener($event, $callback);
     }
 
     /**
@@ -27,6 +29,6 @@ trait EventTrait
      */
     public static function emit($event, $argv = array())
     {
-        Application::get('event')->emit($event, $argv);
+        Application::get('event')->dispatch($event, new GenericEvent($argv));
     }
 } 

@@ -11,6 +11,7 @@
 namespace VJ\EventListener;
 
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
 
@@ -33,12 +34,10 @@ class VJRedirectionService
     }
 
     // route.dispatch.before
-    public function onEvent($event)
+    public function onEvent(GenericEvent $event)
     {
         if (stripos($this->request->getRequestUri(), '.asp') !== false) {
-
             $ua = $this->request->headers->get('user-agent');
-
             if (
                 $this->enforceHttps &&
                 $ua !== null &&
@@ -56,30 +55,23 @@ class VJRedirectionService
 
             if (stripos($uri, '/problem_show.asp') !== false) {
                 $location = $prefix . $host . '/problem/' . $this->request->query->get('id');
+            } elseif (stripos($uri, '/user_show.asp') !== false) {
+                $location = $prefix . $host . '/user/' . $this->request->query->get('id');
+            } elseif (stripos($uri, '/problem_discuss.asp') !== false) {
+                $location = $prefix . $host . '/problem/' . $this->request->query->get('id');
+            } elseif (stripos($uri, '/problem_discuss_show.asp') !== false) {
+                $location = $prefix . $host . '/problem/' . $this->request->query->get('id');
+            } elseif (stripos($uri, '/problem2.asp') !== false) {
+                $location = $prefix . $host . '/problem';
             } else {
-                if (stripos($uri, '/user_show.asp') !== false) {
-                    $location = $prefix . $host . '/user/' . $this->request->query->get('id');
-                } else {
-                    if (stripos($uri, '/problem_discuss.asp') !== false) {
-                        $location = $prefix . $host . '/problem/' . $this->request->query->get('id');
-                    } else {
-                        if (stripos($uri, '/problem_discuss_show.asp') !== false) {
-                            $location = $prefix . $host . '/problem/' . $this->request->query->get('id');
-                        } else {
-                            if (stripos($uri, '/problem2.asp') !== false) {
-                                $location = $prefix . $host . '/problem';
-                            } else {
-                                $location = $prefix . $host;
-                            }
-                        }
-                    }
-                }
+                $location = $prefix . $host;
             }
 
             $this->response->redirect($location, true);
-        }
+            $event->stopPropagation();
 
-        //TODO: redirect VJ2 style URIs
+            //TODO: redirect VJ2 style URIs
+        }
     }
 
 } 

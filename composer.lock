@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e57c898a6a2be7f8da2fa663e9de87a2",
+    "hash": "b4f1846c36ecfa8294d54792aebbdb68",
     "packages": [
         {
             "name": "breeswish/php-marked",
@@ -53,12 +53,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/elasticsearch/elasticsearch-php.git",
-                "reference": "16af13e421a468ff26d18f8f833eccd3ca77279c"
+                "reference": "bf4a1e9dcbfee9239a79aa96776dc0543d3e59f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/16af13e421a468ff26d18f8f833eccd3ca77279c",
-                "reference": "16af13e421a468ff26d18f8f833eccd3ca77279c",
+                "url": "https://api.github.com/repos/elasticsearch/elasticsearch-php/zipball/bf4a1e9dcbfee9239a79aa96776dc0543d3e59f2",
+                "reference": "bf4a1e9dcbfee9239a79aa96776dc0543d3e59f2",
                 "shasum": ""
             },
             "require": {
@@ -102,53 +102,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2015-01-15 18:46:19"
-        },
-        {
-            "name": "evenement/evenement",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/igorw/evenement.git",
-                "reference": "f6e843799fd4f4184d54d8fc7b5b3551c9fa803e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/igorw/evenement/zipball/f6e843799fd4f4184d54d8fc7b5b3551c9fa803e",
-                "reference": "f6e843799fd4f4184d54d8fc7b5b3551c9fa803e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Evenement": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch",
-                    "homepage": "http://wiedler.ch/igor/"
-                }
-            ],
-            "description": "Événement is a very simple event dispatching library for PHP",
-            "keywords": [
-                "event-dispatcher",
-                "event-emitter"
-            ],
-            "time": "2012-11-02 14:49:47"
+            "time": "2015-02-10 18:52:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -156,12 +110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "0c3e68dd0357321b5a5818c3aa832b1cc24a4b1f"
+                "reference": "c67e4c2f7e06f89ca0eb4ce72b191144e40dc3ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/0c3e68dd0357321b5a5818c3aa832b1cc24a4b1f",
-                "reference": "0c3e68dd0357321b5a5818c3aa832b1cc24a4b1f",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/c67e4c2f7e06f89ca0eb4ce72b191144e40dc3ef",
+                "reference": "c67e4c2f7e06f89ca0eb4ce72b191144e40dc3ef",
                 "shasum": ""
             },
             "require": {
@@ -192,7 +146,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2014-12-09 02:30:54"
+            "time": "2015-02-12 00:36:44"
         },
         {
             "name": "filp/whoops",
@@ -501,12 +455,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ircmaxell/RandomLib.git",
-                "reference": "b1d10a9480f93442ac2af544a7e179c693d024af"
+                "reference": "96ce310e23adae4be9a6b2fbb2cd1391d16908eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/b1d10a9480f93442ac2af544a7e179c693d024af",
-                "reference": "b1d10a9480f93442ac2af544a7e179c693d024af",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/96ce310e23adae4be9a6b2fbb2cd1391d16908eb",
+                "reference": "96ce310e23adae4be9a6b2fbb2cd1391d16908eb",
                 "shasum": ""
             },
             "require": {
@@ -547,7 +501,7 @@
                 "random-numbers",
                 "random-strings"
             ],
-            "time": "2015-02-04 19:31:31"
+            "time": "2015-02-13 18:59:22"
         },
         {
             "name": "ircmaxell/security-lib",
@@ -718,12 +672,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "3763c6b17f04172f031e0e828df84843226f36a8"
+                "reference": "d651b3523946560528b8ee8cf744c16e2c49f5dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/3763c6b17f04172f031e0e828df84843226f36a8",
-                "reference": "3763c6b17f04172f031e0e828df84843226f36a8",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/d651b3523946560528b8ee8cf744c16e2c49f5dc",
+                "reference": "d651b3523946560528b8ee8cf744c16e2c49f5dc",
                 "shasum": ""
             },
             "require": {
@@ -753,7 +707,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-01-27 11:25:22"
+            "time": "2015-02-11 15:02:39"
         },
         {
             "name": "pimple/pimple",
@@ -841,34 +795,38 @@
         },
         {
             "name": "respect/validation",
-            "version": "0.7.4",
+            "version": "0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "d1af494a48be904e8cba003e603b1ae740b18743"
+                "reference": "378e114c33547c91c6745891b389b476e2373db7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/d1af494a48be904e8cba003e603b1ae740b18743",
-                "reference": "d1af494a48be904e8cba003e603b1ae740b18743",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/378e114c33547c91c6745891b389b476e2373db7",
+                "reference": "378e114c33547c91c6745891b389b476e2373db7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
+                "malkusch/bav": "~1.0",
                 "phpunit/phpunit": "~4.0",
                 "symfony/validator": "~2.6",
                 "zendframework/zend-validator": "~2.3"
             },
             "suggest": {
                 "ext-bcmath": "Arbitrary Precision Mathematics",
-                "ext-mbstring": "Multibyte String Functions"
+                "ext-mbstring": "Multibyte String Functions",
+                "malkusch/bav": "German bank account validation",
+                "symfony/validator": "Use Symfony validator through Respect\\Validation",
+                "zendframework/zend-validator": "Use Zend Framework validator through Respect\\Validation"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.7-dev"
+                    "dev-master": "0.8-dev"
                 }
             },
             "autoload": {
@@ -893,7 +851,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2015-02-05 16:38:11"
+            "time": "2015-02-13 11:33:57"
         },
         {
             "name": "symfony/config",
@@ -1383,7 +1341,7 @@
     },
     "prefer-stable": false,
     "platform": {
-        "php": ">=5.5"
+        "php": ">=5.6"
     },
     "platform-dev": []
 }

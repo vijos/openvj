@@ -14,7 +14,7 @@ namespace PHPSTORM_META {                                                 // we 
             'mongo_client' instanceof \MongoClient,
             'mongodb' instanceof \MongoDB,
             'log' instanceof \Monolog\Logger,
-            'event' instanceof \Evenement\EventEmitter,
+            'event' instanceof \Symfony\Component\EventDispatcher\EventDispatcher,
             'random_factory' instanceof \RandomLib\Factory,
             'random' instanceof \RandomLib\Generator,
             'random_secure' instanceof \RandomLib\Generator,

@@ -11,6 +11,7 @@
 namespace VJ\Test\EventListener;
 
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
 use VJ\EventListener\VJRedirectionService;
@@ -34,7 +35,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, true);
-        $service->onEvent('route.dispatch.before');
+        $service->onEvent(new GenericEvent());
         $this->assertEquals(
             'https://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));
@@ -54,7 +55,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, true);
-        $service->onEvent('route.dispatch.before');
+        $service->onEvent(new GenericEvent());
         $this->assertEquals(
             'http://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));
@@ -74,7 +75,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, false);
-        $service->onEvent('route.dispatch.before');
+        $service->onEvent(new GenericEvent());
         $this->assertEquals(
             'http://' . Application::get('config')['canonical'] . '/problem/100',
             $response->headers->get('location'));

@@ -12,6 +12,7 @@ namespace VJ\Test\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
 use VJ\EventListener\HttpsRedirectionService;
@@ -43,7 +44,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, false);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -63,7 +64,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, false);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -82,7 +83,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, false);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -103,7 +104,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, false);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -122,7 +123,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEquals(
                 'https://' . Application::get('config')['canonical'] . $this->request_url,
                 $response->headers->get('location'));
@@ -144,7 +145,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -163,7 +164,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -185,7 +186,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -204,7 +205,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -233,7 +234,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -261,7 +262,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -284,7 +285,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -306,7 +307,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEquals(
                 'https://' . Application::get('config')['canonical'] . $this->request_url,
                 $response->headers->get('location'));
@@ -335,7 +336,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, true);
-            $service->onEvent('route.dispatch.before');
+            $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();

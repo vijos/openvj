@@ -22,7 +22,7 @@
         "nikic/fast-route": "dev-master",
         "filp/whoops": "~1.1",
         "symfony/config": "~2.6",
-        "evenement/evenement": "~2.0",
+        "symfony/event-dispatcher": "~2.6",
         "respect/validation": "~0.7",
         "zumba/mongounit": "~1.2",
         "symfony/console": "~2.6"

@@ -17,12 +17,14 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use RandomLib\Factory;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
+use VJ\Core\Event\GenericEvent;
 use VJ\Core\Exception\UserException;
 use VJ\Core\Session\MongoDBSessionHandler;
 use Whoops\Handler\JsonResponseHandler;
@@ -122,7 +124,7 @@ class Application
     private static function initEvent()
     {
         self::set('event', function () {
-            return new EventEmitter();
+            return new EventDispatcher();
         });
     }
 
@@ -318,8 +320,8 @@ class Application
             // register event listeners
             if (isset($service_config['events'])) {
                 foreach ($service_config['events'] as $event) {
-                    self::on($event, function (...$argv) use ($service_name, $event) {
-                        self::get($service_name)->onEvent($event, ...$argv);
+                    self::on($event, function (GenericEvent $event) use ($service_name) {
+                        self::get($service_name)->onEvent($event, ...$event->getArgv());
                     });
                 }
             }

@@ -12,6 +12,7 @@ namespace VJ\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
 
@@ -34,7 +35,7 @@ class HttpsRedirectionService
     }
 
     // route.dispatch.before
-    public function onEvent($event)
+    public function onEvent(GenericEvent $event)
     {
         if (!$this->enforceHttps) {
             return;
@@ -63,6 +64,7 @@ class HttpsRedirectionService
                 $this->response->redirect('https://' .
                     $this->request->headers->get('host', Application::get('config')['canonical']) .
                     $this->request->getRequestUri());
+                $event->stopPropagation();
             }
         }
     }

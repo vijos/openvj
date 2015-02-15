@@ -11,12 +11,13 @@
 namespace VJ\EventListener;
 
 use VJ\Core\Application;
+use VJ\Core\Event\GenericEvent;
 use VJ\Util;
 use VJ\VJ;
 
 class LoginLogService
 {
-    public function onEvent($event, $type, $user)
+    public function onEvent(GenericEvent $event, $type, $user)
     {
         $ip = Util::getClientIp();
         $userAgent = Util::getUserAgentSafe();
