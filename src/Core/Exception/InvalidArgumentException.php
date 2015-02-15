@@ -20,7 +20,7 @@ class InvalidArgumentException extends UserException
      * @param string $msg
      * @param array $msgPlaceholder
      */
-    public function __construct($name, $msg, $msgPlaceholder = array())
+    public function __construct($name, $msg, $msgPlaceholder = [])
     {
         parent::__construct('invalid_argument', Response::HTTP_BAD_REQUEST, [
             '%name%' => $name,

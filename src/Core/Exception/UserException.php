@@ -22,7 +22,7 @@ class UserException extends \Exception
      * @param int $httpCode
      * @param array $placeholder
      */
-    public function __construct($exceptionCode, $httpCode = Response::HTTP_BAD_REQUEST, $placeholder = array())
+    public function __construct($exceptionCode, $httpCode = Response::HTTP_BAD_REQUEST, $placeholder = [])
     {
         $this->rawErrorCode = $exceptionCode;
 

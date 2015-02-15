@@ -17,7 +17,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function debug($message, $context = array())
+    public static function debug($message, $context = [])
     {
         return Application::get('log')->addDebug($message, ['trace' => debug_backtrace()] + $context);
     }
@@ -27,7 +27,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function info($message, $context = array())
+    public static function info($message, $context = [])
     {
         return Application::get('log')->addInfo($message, self::getClientInfo() + $context);
     }
@@ -37,7 +37,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function notice($message, $context = array())
+    public static function notice($message, $context = [])
     {
         return Application::get('log')->addNotice($message, self::getClientInfo() + $context);
     }
@@ -47,7 +47,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function warn($message, $context = array())
+    public static function warn($message, $context = [])
     {
         return Application::get('log')->addWarning($message, self::getClientInfo() + $context);
     }
@@ -57,7 +57,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function error($message, $context = array())
+    public static function error($message, $context = [])
     {
         return Application::get('log')->addError($message, self::getClientInfo() + $context);
     }
@@ -67,7 +67,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function critical($message, $context = array())
+    public static function critical($message, $context = [])
     {
         return Application::get('log')->addCritical($message, self::getClientInfo() + $context);
     }
@@ -78,7 +78,7 @@ trait LoggerTrait
      * @param array $context
      * @return bool
      */
-    public static function log($level, $message, $context = array())
+    public static function log($level, $message, $context = [])
     {
         return Application::get('log')->addRecord($level, $message, $context);
     }

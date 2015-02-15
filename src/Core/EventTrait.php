@@ -27,7 +27,7 @@ trait EventTrait
      * @param string $event
      * @param array $argv
      */
-    public static function emit($event, $argv = array())
+    public static function emit($event, $argv = [])
     {
         Application::get('event')->dispatch($event, new GenericEvent($argv));
     }

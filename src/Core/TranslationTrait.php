@@ -17,7 +17,7 @@ trait TranslationTrait
      * @param array $parameters
      * @return string
      */
-    public static function trans($id, $parameters = array())
+    public static function trans($id, $parameters = [])
     {
         return Application::get('i18n')->trans($id, $parameters);
     }
@@ -27,7 +27,7 @@ trait TranslationTrait
      * @param array $parameters
      * @return string
      */
-    public static function transExceptionCode($code, $parameters = array())
+    public static function transExceptionCode($code, $parameters = [])
     {
         return self::trans('error.code.' . $code, $parameters);
     }
@@ -37,7 +37,7 @@ trait TranslationTrait
      * @param array $parameters
      * @return string
      */
-    public static function transExceptionMessage($msg, $parameters = array())
+    public static function transExceptionMessage($msg, $parameters = [])
     {
         return self::trans('error.msg.' . $msg, $parameters);
     }

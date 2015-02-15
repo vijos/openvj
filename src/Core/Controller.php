@@ -49,7 +49,7 @@ class Controller
      * @param array $param
      * @return string
      */
-    public function render($template, $param = array())
+    public function render($template, $param = [])
     {
         return Application::get('templating')->render($template, $param);
     }
