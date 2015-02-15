@@ -24,7 +24,9 @@ class Response extends \Symfony\Component\HttpFoundation\Response
     public function redirect($url, $permanent = false)
     {
         $this->setStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND);
+        $this->headers->set('content-type', 'text/plain');
         $this->headers->set('Location', $url);
+        $this->setContent('Redirected to: ' . $url);
         $this->send();
     }
 
