@@ -6,7 +6,7 @@
         "psr-4": {"VJ\\": "src/"}
     },
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.6",
         "twig/twig": "~1.0",
         "monolog/monolog": "~1.12",
         "elasticsearch/elasticsearch": "dev-master",
