@@ -31,6 +31,6 @@ class VJ
 
     public static function bootstrap()
     {
-        new Application();
+        Application::Instance();
     }
 }

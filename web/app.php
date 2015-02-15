@@ -19,4 +19,4 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // profiler
 $T_END = microtime(true);
-$app::debug($_SERVER['REQUEST_METHOD'] . ' ' . $_SERVER['REQUEST_URI'] . ' ' . round(($T_END - $T_START) * 1000) . 'ms');
+\VJ\Core\Application::debug($_SERVER['REQUEST_METHOD'] . ' ' . $_SERVER['REQUEST_URI'] . ' ' . round(($T_END - $T_START) * 1000) . 'ms');

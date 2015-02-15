@@ -44,7 +44,19 @@ class Application
     public static $TEMPLATES_DIRECTORY;
     public static $TRANSLATION_DIRECTORY;
 
-    public function __construct()
+    /**
+     * @return Application
+     */
+    public static function Instance()
+    {
+        static $inst = null;
+        if ($inst === null) {
+            $inst = new Application();
+        }
+        return $inst;
+    }
+
+    private function __construct()
     {
         if (self::$instance === null) {
             self::$instance = $this;
