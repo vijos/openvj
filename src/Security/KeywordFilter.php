@@ -8,12 +8,25 @@
  * file that was distributed with this source code.
  */
 
-namespace VJ\User;
+namespace VJ\Security;
 
 use VJ\Core\Application;
 
 class KeywordFilter
 {
+    private $redis;
+    private $prefix;
+
+    /**
+     * @param \Redis $redis
+     * @param string $prefix
+     */
+    public function __construct(\Redis $redis, $prefix = 'naive-filter-')
+    {
+        $this->redis = $redis;
+        $this->prefix = $prefix;
+    }
+
     /**
      * Naive keyword filter
      *
@@ -22,12 +35,12 @@ class KeywordFilter
      * @param callable $miss
      * @return bool|string
      */
-    public static function isContain($text, $cacheKey, callable $miss)
+    public function contains($text, $cacheKey, callable $miss)
     {
-        $value = Application::get('redis')->get('naive-filter-' . $cacheKey);
+        $value = $this->redis->get($this->prefix . $cacheKey);
         if ($value === false) {
             $keywords = $miss();
-            Application::get('redis')->set('naive-filter-' . $cacheKey, serialize($keywords));
+            $this->redis->set($this->prefix . $cacheKey, serialize($keywords));
         } else {
             $keywords = unserialize($value);
         }
@@ -43,6 +56,16 @@ class KeywordFilter
         return false;
     }
 
+    /** @var KeywordFilter $instance */
+    private static $instance = null;
+
+    private static function createInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new KeywordFilter(Application::get('redis'));
+        }
+    }
+
     /**
      * 测试是否包含通用关键字
      *
@@ -51,7 +74,9 @@ class KeywordFilter
      */
     public static function isContainGeneral($text)
     {
-        return self::isContain($text, 'general', function () {
+        self::createInstance();
+
+        return self::$instance->contains($text, 'general', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);
@@ -71,7 +96,9 @@ class KeywordFilter
      */
     public static function isContainName($text)
     {
-        return self::isContain($text, 'name', function () {
+        self::createInstance();
+
+        return self::$instance->contains($text, 'name', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);

@@ -16,6 +16,7 @@ use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
 use VJ\Core\Response;
+use VJ\Security\KeywordFilter;
 use VJ\Util;
 use VJ\VJ;
 
