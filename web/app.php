@@ -14,8 +14,8 @@ $T_START = microtime(true);
 const MODE_TEST = false;
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = new \VJ\Core\Application();
-$app->route();
+\VJ\VJ::bootstrap();
+\VJ\Core\Application::route();
 
 // profiler
 $T_END = microtime(true);

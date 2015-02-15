@@ -13,7 +13,7 @@ const MODE_TEST = false;
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->setPsr4('VJ\\Console\\', [__DIR__ . '/']);
 
-$app = new \VJ\Core\Application();
+\VJ\VJ::bootstrap();
 
 $console = new \Symfony\Component\Console\Application();
 $console->add(new \VJ\Console\KeywordImportCommand());

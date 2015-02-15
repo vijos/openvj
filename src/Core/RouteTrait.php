@@ -16,7 +16,10 @@ use VJ\Core\Exception\NotFoundException;
 
 trait RouteTrait
 {
-    public function route()
+    /**
+     * @throws NotFoundException
+     */
+    public static function route()
     {
         $dispatcher = Application::get('dispatcher');
         $request = Application::get('request');

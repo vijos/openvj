@@ -10,6 +10,8 @@
 
 namespace VJ;
 
+use VJ\Core\Application;
+
 class VJ
 {
     const LOGIN_TYPE_INTERACTIVE = 0;
@@ -26,4 +28,9 @@ class VJ
     const USER_ID_SYSTEM = 1;
 
     const DOMAIN_GLOBAL = '000000000000000000000000';
+
+    public static function bootstrap()
+    {
+        new Application();
+    }
 }

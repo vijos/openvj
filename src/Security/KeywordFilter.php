@@ -56,16 +56,6 @@ class KeywordFilter
         return false;
     }
 
-    /** @var KeywordFilter $instance */
-    private static $instance = null;
-
-    private static function createInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new KeywordFilter(Application::get('redis'));
-        }
-    }
-
     /**
      * 测试是否包含通用关键字
      *
@@ -74,9 +64,7 @@ class KeywordFilter
      */
     public static function isContainGeneral($text)
     {
-        self::createInstance();
-
-        return self::$instance->contains($text, 'general', function () {
+        return Application::get(self::class)->contains($text, 'general', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);
@@ -96,9 +84,7 @@ class KeywordFilter
      */
     public static function isContainName($text)
     {
-        self::createInstance();
-
-        return self::$instance->contains($text, 'name', function () {
+        return Application::get(self::class)->contains($text, 'name', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);

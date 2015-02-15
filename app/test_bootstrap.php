@@ -11,4 +11,4 @@
 const MODE_TEST = true;
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = new \VJ\Core\Application();
+\VJ\VJ::bootstrap();

@@ -34,6 +34,7 @@ class Application
 {
     use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, SessionTrait, TranslationTrait;
 
+    public static $instance = null;
     public static $container;
 
     public static $APP_DIRECTORY;
@@ -45,6 +46,12 @@ class Application
 
     public function __construct()
     {
+        if (self::$instance === null) {
+            self::$instance = $this;
+        } else {
+            return;
+        }
+
         self::$container = new Container();
 
         self::$APP_DIRECTORY = dirname(dirname(__DIR__)) . '/app';
@@ -54,29 +61,40 @@ class Application
         self::$TEMPLATES_DIRECTORY = self::$APP_DIRECTORY . '/templates';
         self::$TRANSLATION_DIRECTORY = self::$APP_DIRECTORY . '/translation';
 
-        $this->initEvent();
-        $this->initConfig();
-        $this->initLogger();
-        $this->initErrHandlers();
-        $this->initMongoDB();
-        $this->initRedis();
-        $this->initSession();
-        $this->initRandomGenerator();
-        $this->initTranslation();
-        $this->initHttp();
-        $this->initRouter();
-        $this->initTemplating();
-        $this->initService();
+        self::initEvent();
+        self::initConfig();
+        self::initLogger();
+        self::initErrHandlers();
+        self::initMongoDB();
+        self::initRedis();
+        self::initSession();
+        self::initRandomGenerator();
+        self::initTranslation();
+        self::initHttp();
+        self::initRouter();
+        self::initTemplating();
+        self::initService();
     }
 
-    private function initEvent()
+    /**
+     * 载入配置文件
+     * @param string $filename
+     * @return array
+     */
+    public static function loadConfig($filename)
+    {
+        $file = self::$CONFIG_DIRECTORY . '/' . $filename;
+        return Yaml::parse(file_get_contents($file));
+    }
+
+    private static function initEvent()
     {
         self::set('event', function () {
             return new EventEmitter();
         });
     }
 
-    private function initConfig()
+    private static function initConfig()
     {
         $config = array_merge_recursive(
             self::loadConfig('config.yml'),
@@ -85,13 +103,7 @@ class Application
         self::set('config', $config);
     }
 
-    public static function loadConfig($filename)
-    {
-        $file = self::$CONFIG_DIRECTORY . '/' . $filename;
-        return Yaml::parse(file_get_contents($file));
-    }
-
-    private function initLogger()
+    private static function initLogger()
     {
         self::set('log', function () {
             $logger = new Logger('VJ');
@@ -113,7 +125,7 @@ class Application
         });
     }
 
-    private function initErrHandlers()
+    private static function initErrHandlers()
     {
         $whoops = new Run();
         $whoops->pushHandler(new PlainTextHandler());
@@ -131,7 +143,7 @@ class Application
         $whoops->register();
     }
 
-    private function initMongoDB()
+    private static function initMongoDB()
     {
         self::set('mongo_client', function () {
             $options = [
@@ -156,7 +168,7 @@ class Application
         });
     }
 
-    private function initRedis()
+    private static function initRedis()
     {
         self::set('redis', function () {
             $redis = new \Redis();
@@ -166,7 +178,7 @@ class Application
         });
     }
 
-    private function initSession()
+    private static function initSession()
     {
         self::set('session_storage', function () {
             return new NativeSessionStorage([
@@ -180,7 +192,7 @@ class Application
         });
     }
 
-    private function initRandomGenerator()
+    private static function initRandomGenerator()
     {
         self::set('random_factory', function () {
             return new Factory();
@@ -193,7 +205,7 @@ class Application
         });
     }
 
-    private function initTranslation()
+    private static function initTranslation()
     {
         self::set('i18n', function () {
             $translator = new Translator(self::get('config')['translation']['default'], new MessageSelector());
@@ -205,7 +217,7 @@ class Application
         });
     }
 
-    private function initHttp()
+    private static function initHttp()
     {
         self::set('request', function () {
             return Request::createFromGlobals();
@@ -216,7 +228,7 @@ class Application
         });
     }
 
-    private function initRouter()
+    private static function initRouter()
     {
         self::set('dispatcher', function () {
             return \FastRoute\cachedDispatcher(function (RouteCollector $r) {
@@ -239,7 +251,7 @@ class Application
         });
     }
 
-    private function initTemplating()
+    private static function initTemplating()
     {
         self::set('templating', function () {
             $loader = new \Twig_Loader_Filesystem(self::$TEMPLATES_DIRECTORY);
@@ -251,20 +263,33 @@ class Application
         });
     }
 
-    private function initService()
+    private static function initService()
     {
         $services = Yaml::parse(file_get_contents(self::$CONFIG_DIRECTORY . '/service.yml'));
         foreach ($services['services'] as $service_name => $service_config) {
             self::set($service_name, function () use ($service_config) {
-                return new $service_config['class']();
+                $argv = [];
+                if (isset($service_config['arguments'])) {
+                    foreach ($service_config['arguments'] as $a) {
+                        if (is_string($a) && substr($a, 0, 1) === '@') {
+                            $argv[] = self::get(substr($a, 1));
+                        } else {
+                            $argv[] = $a;
+                        }
+                    }
+                }
+                return new $service_config['class'](...$argv);
             });
 
             // register event listeners
-            foreach ($service_config['event'] as $event) {
-                self::on($event, function (...$argv) use ($service_name, $event) {
-                    self::get($service_name)->onEvent($event, ...$argv);
-                });
+            if (isset($service_config['events'])) {
+                foreach ($service_config['events'] as $event) {
+                    self::on($event, function (...$argv) use ($service_name, $event) {
+                        self::get($service_name)->onEvent($event, ...$argv);
+                    });
+                }
             }
         }
     }
+
 }
