@@ -16,6 +16,8 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use RandomLib\Factory;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
@@ -43,6 +45,8 @@ class Application
     public static $LOGS_DIRECTORY;
     public static $TEMPLATES_DIRECTORY;
     public static $TRANSLATION_DIRECTORY;
+
+    public static $resources = [];
 
     /**
      * @return Application
@@ -89,18 +93,6 @@ class Application
     }
 
     /**
-     * 载入配置文件
-     *
-     * @param string $filename
-     * @return array
-     */
-    public static function loadConfig($filename)
-    {
-        $file = self::$CONFIG_DIRECTORY . '/' . $filename;
-        return Yaml::parse(file_get_contents($file));
-    }
-
-    /**
      * 以 dot notation 路径访问配置
      *
      * @param $path
@@ -126,13 +118,32 @@ class Application
         });
     }
 
+    private static function loadConfigFile($filename, array &$resources)
+    {
+        $file = self::$CONFIG_DIRECTORY . '/' . $filename;
+        $resources[] = new FileResource($file);
+        return Yaml::parse(file_get_contents($file));
+    }
+
     private static function initConfig()
     {
-        $config = array_merge_recursive(
-            self::loadConfig('config.yml'),
-            self::loadConfig('db.yml')
-        );
-        self::set('config', $config);
+        $cachePath = self::$CACHE_DIRECTORY . '/config.php';
+        $cache = new ConfigCache($cachePath, true);
+
+        if (!$cache->isFresh()) {
+            $resources = [];
+            $data = array_merge_recursive(
+                self::loadConfigFile('config.yml', $resources),
+                self::loadConfigFile('db.yml', $resources),
+                self::loadConfigFile('routing.yml', $resources),
+                self::loadConfigFile('service.yml', $resources)
+            );
+
+            $cache->write('<?php return ' . var_export($data, true) . ';', $resources);
+        }
+
+        self::$resources = require($cachePath);
+        self::set('config', self::$resources);
     }
 
     private static function initLogger()
@@ -260,7 +271,7 @@ class Application
     {
         self::set('dispatcher', function () {
             return \FastRoute\cachedDispatcher(function (RouteCollector $r) {
-                $router = self::loadConfig('routing.yml')['routing'];
+                $router = self::$resources['routing'];
                 foreach ($router as $rule) {
                     list($controller, $action) = explode(':', $rule['controller']);
                     foreach ($rule['methods'] as $method) {
@@ -293,8 +304,8 @@ class Application
 
     private static function initService()
     {
-        $services = Yaml::parse(file_get_contents(self::$CONFIG_DIRECTORY . '/service.yml'));
-        foreach ($services['services'] as $service_name => $service_config) {
+        $services = self::$resources['service'];
+        foreach ($services as $service_name => $service_config) {
             self::set($service_name, function () use ($service_config) {
                 $argv = [];
                 if (isset($service_config['arguments'])) {

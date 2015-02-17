@@ -1,4 +1,4 @@
-services:
+service:
     vj_redirection_service:
         arguments: [@request, @response, %security.enforce_https]
         events: ['route.dispatch.before']
