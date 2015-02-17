@@ -12,8 +12,6 @@ namespace VJ\Test\User;
 
 use VJ\Core\Application;
 use VJ\Core\Exception\UserException;
-use VJ\User\RememberMeEncoder;
-use VJ\User\UserCredential;
 use Zumba\PHPUnit\Extensions\Mongo\Client\Connector;
 use Zumba\PHPUnit\Extensions\Mongo\DataSet\DataSet;
 use Zumba\PHPUnit\Extensions\Mongo\TestTrait;
@@ -53,8 +51,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // generate client token
         // valid
         $expire = time() + 24 * 60 * 60;
-        $clientToken = RememberMeEncoder::generateClientToken(0, (int)$expire);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = Application::get('rememberme_encoder')->generateClientToken(0, (int)$expire);
+        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
         $token['expireat'] = new \MongoDate($token['expire']);
         unset($token['expire']);
         $this->rememberMeClientTokens[] = $clientToken;
@@ -62,8 +60,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         // expired
         $expire = time() - 24 * 60 * 60;
-        $clientToken = RememberMeEncoder::generateClientToken(0, (int)$expire);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = Application::get('rememberme_encoder')->generateClientToken(0, (int)$expire);
+        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
         $token['expireat'] = new \MongoDate($token['expire']);
         unset($token['expire']);
         $this->rememberMeClientTokens[] = $clientToken;
@@ -71,8 +69,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         // user not valid
         $expire = time() + 24 * 60 * 60;
-        $clientToken = RememberMeEncoder::generateClientToken(1, (int)$expire);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = Application::get('rememberme_encoder')->generateClientToken(1, (int)$expire);
+        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
         $token['expireat'] = new \MongoDate($token['expire']);
         unset($token['expire']);
         $this->rememberMeClientTokens[] = $clientToken;
@@ -97,7 +95,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     {
         $throw = false;
         try {
-            UserCredential::checkPasswordCredential('test', '', true);
+            Application::get('user_credential')->checkPasswordCredential('test', '', true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkPasswordCredential.user_not_valid', $e->getUserErrorCode());
@@ -106,7 +104,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         $throw = false;
         try {
-            UserCredential::checkPasswordCredential('test_nonexist@example.com', '', true);
+            Application::get('user_credential')->checkPasswordCredential('test_nonexist@example.com', '', true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkPasswordCredential.user_not_valid', $e->getUserErrorCode());
@@ -118,7 +116,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     {
         $throw = false;
         try {
-            UserCredential::checkPasswordCredential('Test_user', 'test_wrong_password', true);
+            Application::get('user_credential')->checkPasswordCredential('Test_user', 'test_wrong_password', true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkPasswordCredential.wrong_password', $e->getUserErrorCode());
@@ -127,7 +125,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         $throw = false;
         try {
-            UserCredential::checkPasswordCredential('TEST@example.com', 'test_wrong_password', true);
+            Application::get('user_credential')->checkPasswordCredential('TEST@example.com', 'test_wrong_password',
+                true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkPasswordCredential.wrong_password', $e->getUserErrorCode());
@@ -139,7 +138,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     {
         $throw = false;
         try {
-            UserCredential::checkPasswordCredential('Test_user2', 'test_password', true);
+            Application::get('user_credential')->checkPasswordCredential('Test_user2', 'test_password', true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkPasswordCredential.user_not_valid', $e->getUserErrorCode());
@@ -149,7 +148,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckPasswordCredentialPassed()
     {
-        $user = UserCredential::checkPasswordCredential('Test_User', 'test_password', true);
+        $user = Application::get('user_credential')->checkPasswordCredential('Test_User', 'test_password', true);
         $this->assertEquals($this->fixture['User'][0], $user);
     }
 
@@ -158,7 +157,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // invalid format
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential('1|2|a', true);
+            Application::get('user_credential')->checkCookieTokenCredential('1|2|a', true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.invalid_rememberme_token',
@@ -169,7 +168,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // null
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential(null, true);
+            Application::get('user_credential')->checkCookieTokenCredential(null, true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.invalid_rememberme_token',
@@ -180,7 +179,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // not exist
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential('1|100|12345678123456781234567812345678', true);
+            Application::get('user_credential')->checkCookieTokenCredential('1|100|12345678123456781234567812345678',
+                true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.invalid_rememberme_token',
@@ -191,7 +191,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // expired
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential($this->rememberMeClientTokens[1], true);
+            Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[1], true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.invalid_rememberme_token',
@@ -202,7 +202,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // user banned
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential($this->rememberMeClientTokens[2], true);
+            Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[2], true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.user_not_valid', $e->getUserErrorCode());
@@ -212,17 +212,18 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckCookieTokenCredentialPassed()
     {
-        $user = UserCredential::checkCookieTokenCredential($this->rememberMeClientTokens[0], true);
+        $user = Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[0], true);
         $this->assertEquals($this->fixture['User'][0], $user);
     }
 
     public function testCreateRememberMeClientToken()
     {
-        $clientToken = UserCredential::createRememberMeClientToken(0, '1.2.3.4', null, time() + 60);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = Application::get('user_credential')->createRememberMeClientToken(0, '1.2.3.4', null,
+            time() + 60);
+        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
 
         // assert valid
-        $user = UserCredential::checkCookieTokenCredential($clientToken, true);
+        $user = Application::get('user_credential')->checkCookieTokenCredential($clientToken, true);
         $this->assertEquals($this->fixture['User'][0], $user);
 
         // assert record
@@ -237,14 +238,15 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidateRememberMeClientToken()
     {
-        $clientToken = UserCredential::createRememberMeClientToken(0, '1.2.3.4', null, time() + 60);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = Application::get('user_credential')->createRememberMeClientToken(0, '1.2.3.4', null,
+            time() + 60);
+        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
 
-        UserCredential::invalidateRememberMeClientToken($clientToken);
+        Application::get('user_credential')->invalidateRememberMeClientToken($clientToken);
 
         $throw = false;
         try {
-            UserCredential::checkCookieTokenCredential($clientToken, true);
+            Application::get('user_credential')->checkCookieTokenCredential($clientToken, true);
         } catch (UserException $e) {
             $throw = true;
             $this->assertEquals('UserCredential::checkCookieTokenCredential.invalid_rememberme_token',
@@ -261,12 +263,11 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
     public function testSetCredential()
     {
-        $ret = UserCredential::setCredential(0, 'new_password');
+        $ret = Application::get('user_credential')->setCredential(0, 'new_password');
         $this->assertEquals(1, $ret);
 
-        $user = UserCredential::checkPasswordCredential('test_user', 'new_password', true);
+        $user = Application::get('user_credential')->checkPasswordCredential('test_user', 'new_password', true);
         $this->assertNotNull($user);
         $this->assertEquals('test_user', $user['luser']);
     }
-
 }

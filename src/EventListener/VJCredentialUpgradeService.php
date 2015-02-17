@@ -12,13 +12,19 @@ namespace VJ\EventListener;
 
 use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
-use VJ\User\PasswordEncoder;
 use VJ\User\UserCredential;
-use VJ\User\UserManager;
+use VJ\User\UserUtil;
 use VJ\VJ;
 
 class VJCredentialUpgradeService
 {
+    public $user_credential;
+
+    public function __construct(UserCredential $user_credential)
+    {
+        $this->user_credential = $user_credential;
+    }
+
     public function onEvent(GenericEvent $event, $type, $user, $field = null, $password = null)
     {
         if ($type !== VJ::LOGIN_TYPE_INTERACTIVE) {
@@ -38,16 +44,16 @@ class VJCredentialUpgradeService
      */
     public function upgradeUserCredential($uid, $password)
     {
-        $user = UserManager::getUserObjectByUid($uid);
+        $user = UserUtil::getUserObjectByUid($uid);
         if ($user === null) {
             return false;
         }
 
-        if (!PasswordEncoder::isOutdated($user['hash'])) {
+        if (!$this->user_credential->password_encoder->isOutdated($user['hash'])) {
             return false;
         }
 
         Application::info('credential.upgrade', ['uid' => $user['uid']]);
-        return UserCredential::setCredential($uid, $password);
+        return $this->user_credential->setCredential($uid, $password);
     }
 }

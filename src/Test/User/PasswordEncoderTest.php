@@ -10,6 +10,7 @@
 
 namespace VJ\Test\User;
 
+use VJ\Core\Application;
 use VJ\User\PasswordEncoder;
 
 class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +22,7 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $username = '世界你好';
         $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67';
         $this->assertEquals($hash,
-            PasswordEncoder::encode($password, $salt, PasswordEncoder::HASH_TYPE_VJ2, $username));
+            Application::get('password_encoder')->encode($password, $salt, PasswordEncoder::HASH_TYPE_VJ2, $username));
     }
 
     public function testEncodeOpenVJ()
@@ -29,7 +30,8 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'openvj|$2y$10$a4c4faf1b8cb70c640c1eeWT./4q1ijyFoaSAi2lYr2zXW/MKJify';
-        $this->assertEquals($hash, PasswordEncoder::encode($password, $salt, PasswordEncoder::HASH_TYPE_OPENVJ));
+        $this->assertEquals($hash,
+            Application::get('password_encoder')->encode($password, $salt, PasswordEncoder::HASH_TYPE_OPENVJ));
     }
 
     /**
@@ -37,7 +39,8 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeInvalid1()
     {
-        $this->assertFalse(PasswordEncoder::encode('123', 'shortsalt', PasswordEncoder::HASH_TYPE_OPENVJ));
+        $this->assertFalse(Application::get('password_encoder')->encode('123', 'shortsalt',
+            PasswordEncoder::HASH_TYPE_OPENVJ));
     }
 
     /**
@@ -45,7 +48,8 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeInvalid2()
     {
-        $this->assertFalse(PasswordEncoder::encode('123', '1234567890123456789012', 'invalid type'));
+        $this->assertFalse(Application::get('password_encoder')->encode('123', '1234567890123456789012',
+            'invalid type'));
     }
 
     /**
@@ -53,15 +57,16 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncodeInvalid3()
     {
-        $this->assertFalse(PasswordEncoder::encode('123', '1234567890123456789012', PasswordEncoder::HASH_TYPE_VJ2));
+        $this->assertFalse(Application::get('password_encoder')->encode('123', '1234567890123456789012',
+            PasswordEncoder::HASH_TYPE_VJ2));
     }
 
     public function testVerifyInvalid()
     {
-        $this->assertFalse(PasswordEncoder::verify('a', '1234567890123456789012', 'x'));
-        $this->assertFalse(PasswordEncoder::verify('a', '1234567890123456789012', 'vj2|x'));
-        $this->assertFalse(PasswordEncoder::verify('a', '1234567890123456789012', 'vj2|哟|10000'));
-        $this->assertFalse(PasswordEncoder::verify('a', '1234567890123456789012', 'openvj|'));
+        $this->assertFalse(Application::get('password_encoder')->verify('a', '1234567890123456789012', 'x'));
+        $this->assertFalse(Application::get('password_encoder')->verify('a', '1234567890123456789012', 'vj2|x'));
+        $this->assertFalse(Application::get('password_encoder')->verify('a', '1234567890123456789012', 'vj2|哟|10000'));
+        $this->assertFalse(Application::get('password_encoder')->verify('a', '1234567890123456789012', 'openvj|'));
     }
 
     public function testVerifyVJ2()
@@ -69,17 +74,17 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67'; // username="世界你好"
-        $this->assertTrue(PasswordEncoder::verify($password, $salt, $hash));
+        $this->assertTrue(Application::get('password_encoder')->verify($password, $salt, $hash));
 
         $password = 'this_is_wrong_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67'; // username="世界你好"
-        $this->assertFalse(PasswordEncoder::verify($password, $salt, $hash));
+        $this->assertFalse(Application::get('password_encoder')->verify($password, $salt, $hash));
 
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'vj2|IOS4lueVjOS9oOWlvQ==|488fdef0417301a0541aefd562806ac24a4d8a67'; // username=" 世界你好"
-        $this->assertFalse(PasswordEncoder::verify($password, $salt, $hash));
+        $this->assertFalse(Application::get('password_encoder')->verify($password, $salt, $hash));
     }
 
     public function testVerifyOpenVJ()
@@ -87,13 +92,13 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $hash = 'openvj|$2y$10$a4c4faf1b8cb70c640c1eeWT./4q1ijyFoaSAi2lYr2zXW/MKJify';
-        $this->assertTrue(PasswordEncoder::verify($password, $salt, $hash));
+        $this->assertTrue(Application::get('password_encoder')->verify($password, $salt, $hash));
     }
 
     public function testGenerateSalt()
     {
-        $salt1 = PasswordEncoder::generateSalt();
-        $salt2 = PasswordEncoder::generateSalt();
+        $salt1 = Application::get('password_encoder')->generateSalt();
+        $salt2 = Application::get('password_encoder')->generateSalt();
         $this->assertEquals(60, strlen($salt1));
         $this->assertEquals(60, strlen($salt2));
         $this->assertNotEquals($salt1, $salt2);
@@ -101,11 +106,11 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateHash()
     {
-        $hash = PasswordEncoder::generateHash('hello_world');
+        $hash = Application::get('password_encoder')->generateHash('hello_world');
         $this->assertNotNull($hash['salt']);
         $this->assertNotNull($hash['hash']);
-        $this->assertFalse(PasswordEncoder::verify('hello', $hash['salt'], $hash['hash']));
-        $this->assertTrue(PasswordEncoder::verify('hello_world', $hash['salt'], $hash['hash']));
+        $this->assertFalse(Application::get('password_encoder')->verify('hello', $hash['salt'], $hash['hash']));
+        $this->assertTrue(Application::get('password_encoder')->verify('hello_world', $hash['salt'], $hash['hash']));
     }
 
 } 

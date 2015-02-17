@@ -18,6 +18,21 @@ use VJ\VJ;
 
 class UserCredential
 {
+    public $password_encoder;
+    public $rememberme_encoder;
+
+    /**
+     * @param PasswordEncoder $password_encoder
+     * @param RememberMeEncoder $rememberme_encoder
+     */
+    public function __construct(
+        PasswordEncoder $password_encoder,
+        RememberMeEncoder $rememberme_encoder
+    ) {
+        $this->password_encoder = $password_encoder;
+        $this->rememberme_encoder = $rememberme_encoder;
+    }
+
     /**
      * 检查密码是否正确
      *
@@ -27,15 +42,15 @@ class UserCredential
      * @return array
      * @throws UserException
      */
-    public static function checkPasswordCredential($field, $password, $secretly = false)
+    public function checkPasswordCredential($field, $password, $secretly = false)
     {
         if (Validator::email()->validate($field)) {
-            $user = UserManager::getUserObjectByEmail($field);
+            $user = UserUtil::getUserObjectByEmail($field);
         } else {
-            $user = UserManager::getUserByUsername($field);
+            $user = UserUtil::getUserByUsername($field);
         }
 
-        if (!UserManager::isUserObjectValid($user)) {
+        if (!UserUtil::isUserObjectValid($user)) {
             if (!$secretly) {
                 Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
                 Application::info('credential.login.not_found', ['login' => $field]);
@@ -43,7 +58,7 @@ class UserCredential
             throw new UserException('UserCredential::checkPasswordCredential.user_not_valid');
         }
 
-        $verified = PasswordEncoder::verify($password, $user['salt'], $user['hash']);
+        $verified = $this->password_encoder->verify($password, $user['salt'], $user['hash']);
         if (!$verified) {
             if (!$secretly) {
                 Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
@@ -67,10 +82,10 @@ class UserCredential
      * @return array
      * @throws UserException
      */
-    public static function checkCookieTokenCredential($clientToken, $secretly = false)
+    public function checkCookieTokenCredential($clientToken, $secretly = false)
     {
         try {
-            $token = RememberMeEncoder::parseClientToken($clientToken);
+            $token = $this->rememberme_encoder->parseClientToken($clientToken);
         } catch (InvalidArgumentException $e) {
             throw new UserException('UserCredential::checkCookieTokenCredential.invalid_rememberme_token');
         }
@@ -88,9 +103,9 @@ class UserCredential
             throw new UserException('UserCredential::checkCookieTokenCredential.invalid_rememberme_token');
         }
 
-        $user = UserManager::getUserObjectByUid($record['uid']);
+        $user = UserUtil::getUserObjectByUid($record['uid']);
 
-        if (!UserManager::isUserObjectValid($user)) {
+        if (!UserUtil::isUserObjectValid($user)) {
             throw new UserException('UserCredential::checkCookieTokenCredential.user_not_valid');
         }
 
@@ -111,7 +126,7 @@ class UserCredential
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function createRememberMeClientToken($uid, $ip, $userAgent, $expire)
+    public function createRememberMeClientToken($uid, $ip, $userAgent, $expire)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
@@ -120,8 +135,8 @@ class UserCredential
             throw new InvalidArgumentException('expire', 'type_invalid');
         }
 
-        $clientToken = RememberMeEncoder::generateClientToken((int)$uid, (int)$expire);
-        $token = RememberMeEncoder::parseClientToken($clientToken);
+        $clientToken = $this->rememberme_encoder->generateClientToken((int)$uid, (int)$expire);
+        $token = $this->rememberme_encoder->parseClientToken($clientToken);
 
         if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
             $userAgent = null;
@@ -144,10 +159,10 @@ class UserCredential
      * @param string $clientToken
      * @return bool
      */
-    public static function invalidateRememberMeClientToken($clientToken)
+    public function invalidateRememberMeClientToken($clientToken)
     {
         try {
-            $token = RememberMeEncoder::parseClientToken($clientToken);
+            $token = $this->rememberme_encoder->parseClientToken($clientToken);
 
             Application::coll('RememberMeToken')->remove([
                 'uid' => $token['uid'],
@@ -169,13 +184,13 @@ class UserCredential
      * @return bool
      * @throws InvalidArgumentException
      */
-    public static function setCredential($uid, $password)
+    public function setCredential($uid, $password)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
 
-        $newHashSaltPair = PasswordEncoder::generateHash($password);
+        $newHashSaltPair = $this->password_encoder->generateHash($password);
         $status = Application::coll('User')->update([
             'uid' => (int)$uid
         ], [

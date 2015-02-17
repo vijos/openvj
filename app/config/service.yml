@@ -10,13 +10,37 @@ services:
         class: \VJ\EventListener\HttpsRedirectionService
 
     login_log_service:
-        events: ['user.login.succeeded', 'user.login.failed.wrong_password', 'user.login.failed.user_invalid']
+        arguments: [@request]
+        events: ['user.login.succeeded', 'user.login.failed.wrong_password']
         class: \VJ\EventListener\LoginLogService
 
     vj2_credential_upgrade_service:
+        arguments: [@user_credential]
         events: ['user.login.succeeded']
         class: \VJ\EventListener\VJCredentialUpgradeService
 
     keyword_filter:
         arguments: [@redis]
         class: \VJ\Security\KeywordFilter
+
+    user_session:
+        arguments: [@session_storage]
+        class: \VJ\User\UserSession
+
+    domain_manager:
+        arguments: [@user_session, @request]
+        class: \VJ\User\DomainManager
+
+    password_encoder:
+        class: \VJ\User\PasswordEncoder
+
+    rememberme_encoder:
+        class: \VJ\User\RememberMeEncoder
+
+    user_credential:
+        arguments: [@password_encoder, @rememberme_encoder]
+        class: \VJ\User\UserCredential
+
+    user_manager:
+        arguments: [@user_session, @request, @response, @domain_manager, @user_credential]
+        class: \VJ\User\UserManager

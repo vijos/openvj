@@ -10,7 +10,6 @@
 
 namespace VJ\Core;
 
-use Evenement\EventEmitter;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Monolog\Handler\RotatingFileHandler;
@@ -18,7 +17,6 @@ use Monolog\Logger;
 use Pimple\Container;
 use RandomLib\Factory;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\MessageSelector;
@@ -34,7 +32,7 @@ use Whoops\Run;
 
 class Application
 {
-    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, SessionTrait, TranslationTrait;
+    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, TranslationTrait;
 
     public static $instance = null;
     public static $container;
@@ -219,10 +217,6 @@ class Application
                 'name' => self::get('config')['session']['name'],
                 'cookie_httponly' => true,
             ], new MongoDBSessionHandler(Application::coll('Session'), (int)self::get('config')['session']['ttl']));
-        });
-
-        self::set('session', function () {
-            return new Session(self::get('session_storage'));
         });
     }
 

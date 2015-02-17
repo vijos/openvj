@@ -37,7 +37,7 @@ class VJRedirectionService
     public function onEvent(GenericEvent $event)
     {
         if (stripos($this->request->getRequestUri(), '.asp') !== false) {
-            $ua = $this->request->headers->get('user-agent');
+            $ua = $this->request->getUserAgent();
             if (
                 $this->enforceHttps &&
                 $ua !== null &&

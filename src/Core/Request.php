@@ -12,5 +12,27 @@ namespace VJ\Core;
 
 class Request extends \Symfony\Component\HttpFoundation\Request
 {
+    /**
+     * 获取原始 UserAgent
+     *
+     * @return array|string
+     */
+    public function getUserAgentRaw()
+    {
+        return $this->headers->get('user-agent');
+    }
 
+    /**
+     * 获取经过截断后的 UserAgent
+     *
+     * @return null|string
+     */
+    public function getUserAgent()
+    {
+        $ua = $this->getUserAgentRaw();
+        if ($ua === null) {
+            return null;
+        }
+        return mb_substr($ua, 0, 256);
+    }
 } 

@@ -23,7 +23,7 @@ class RememberMeEncoder
      * @return array
      * @throws InvalidArgumentException
      */
-    public static function parseClientToken($clientToken)
+    public function parseClientToken($clientToken)
     {
         if (!is_string($clientToken)) {
             throw new InvalidArgumentException('clientToken', 'type_invalid');
@@ -62,7 +62,7 @@ class RememberMeEncoder
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function generateClientToken($uid, $expire)
+    public function generateClientToken($uid, $expire)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');

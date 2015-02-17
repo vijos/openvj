@@ -14,6 +14,7 @@ use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\MissingArgumentException;
 use VJ\Util;
+use VJ\VJ;
 
 class PasswordEncoder
 {
@@ -28,7 +29,7 @@ class PasswordEncoder
      * @param string $hash
      * @return bool
      */
-    public static function verify($password, $salt, $hash)
+    public function verify($password, $salt, $hash)
     {
         $component = explode('|', $hash);
         if (count($component) < 2) {
@@ -44,12 +45,12 @@ class PasswordEncoder
             } catch (\InvalidArgumentException $e) {
                 return false;
             }
-            return Util::slowEquals($hash, $targetHash);
+            return VJ::slowEquals($hash, $targetHash);
         } else {
             if ($component[0] == 'openvj') {
                 $targetHash = self::encode($password, $salt, self::HASH_TYPE_OPENVJ);
                 try {
-                    return Util::slowEquals($hash, $targetHash);
+                    return VJ::slowEquals($hash, $targetHash);
                 } catch (\InvalidArgumentException $e) {
                     return false;
                 }
@@ -70,13 +71,13 @@ class PasswordEncoder
      * @throws InvalidArgumentException
      * @throws MissingArgumentException
      */
-    public static function encode($password, $salt, $type, $username = null)
+    public function encode($password, $salt, $type, $username = null)
     {
         if (strlen($salt) < 22) {
             throw new InvalidArgumentException('salt', 'too_short');
         }
 
-        if ($type == self::HASH_TYPE_VJ2) {
+        if ($type === self::HASH_TYPE_VJ2) {
             if ($username === null) {
                 throw new MissingArgumentException('username');
             }
@@ -84,7 +85,7 @@ class PasswordEncoder
             base64_encode($username) . '|' .
             self::encodeVJ2($password, $salt, $username);
         } else {
-            if ($type == self::HASH_TYPE_OPENVJ) {
+            if ($type === self::HASH_TYPE_OPENVJ) {
                 return self::HASH_TYPE_OPENVJ . '|' . self::encodeOpenVJ($password, $salt);
             } else {
                 throw new InvalidArgumentException('type', 'value_invalid');
@@ -100,7 +101,7 @@ class PasswordEncoder
      * @param string $username
      * @return string
      */
-    private static function encodeVJ2($password, $salt, $username)
+    private function encodeVJ2($password, $salt, $username)
     {
         return sha1(md5($username . $password) . $salt . sha1($password . $salt));
     }
@@ -112,7 +113,7 @@ class PasswordEncoder
      * @param string $salt
      * @return string
      */
-    private static function encodeOpenVJ($password, $salt)
+    private function encodeOpenVJ($password, $salt)
     {
         return password_hash($password, PASSWORD_BCRYPT, [
             'salt' => $salt,
@@ -126,7 +127,7 @@ class PasswordEncoder
      * @param string $password
      * @return array
      */
-    public static function generateHash($password)
+    public function generateHash($password)
     {
         $salt = self::generateSalt();
         return [
@@ -140,7 +141,7 @@ class PasswordEncoder
      *
      * @return string
      */
-    public static function generateSalt()
+    public function generateSalt()
     {
         return Application::get('random_secure')->generateString(60);
     }
@@ -151,7 +152,7 @@ class PasswordEncoder
      * @param string $hash
      * @return bool
      */
-    public static function isOutdated($hash)
+    public function isOutdated($hash)
     {
         $component = explode('|', $hash);
         if ($component[0] == self::HASH_TYPE_OPENVJ) {

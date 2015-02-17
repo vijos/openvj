@@ -12,48 +12,35 @@ namespace VJ\EventListener;
 
 use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
-use VJ\Util;
-use VJ\VJ;
+use VJ\Core\Request;
 
 class LoginLogService
 {
-    public function onEvent(GenericEvent $event, $type, $user)
-    {
-        $ip = Util::getClientIp();
-        $userAgent = Util::getUserAgentSafe();
-
-        if (
-            $type == VJ::LOGIN_TYPE_INTERACTIVE
-            || $type == VJ::LOGIN_TYPE_COOKIE
-            || $type == VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD
-        ) {
-            $this->appendLog($user['uid'], $type, $userAgent, $ip);
-        }
-    }
+    /** @var Request $request */
+    private $request;
 
     /**
-     * 插入一条登录记录
-     *
-     * @param int $uid
-     * @param int $type
-     * @param string $ua
-     * @param string $ip
-     * @return bool
+     * @param Request $request
      */
-    public function appendLog($uid, $type, $ua, $ip)
+    public function __construct(Request $request)
     {
-        if (!is_string($ua) || !mb_check_encoding($ua, 'UTF-8')) {
-            $ua = null;
-        }
+        $this->request = $request;
+    }
 
+    public function onEvent(GenericEvent $event, $type, $user)
+    {
+        $ip = $this->request->getClientIp();
+        $userAgent = $this->request->getUserAgent();
+
+        if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
+            $userAgent = null;
+        }
         Application::coll('LoginLog')->insert([
-            'uid' => (int)$uid,
+            'uid' => (int)$user['uid'],
             'at' => new \MongoDate(),
             'type' => (int)$type,
-            'ua' => $ua,
+            'ua' => $userAgent,
             'ip' => $ip
         ]);
-
-        return true;
     }
 }

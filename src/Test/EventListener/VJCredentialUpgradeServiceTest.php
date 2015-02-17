@@ -11,9 +11,6 @@
 namespace VJ\Test\EventListener;
 
 use VJ\Core\Application;
-use VJ\EventListener\VJCredentialUpgradeService;
-use VJ\User\PasswordEncoder;
-use VJ\User\UserCredential;
 use Zumba\PHPUnit\Extensions\Mongo\Client\Connector;
 use Zumba\PHPUnit\Extensions\Mongo\DataSet\DataSet;
 use Zumba\PHPUnit\Extensions\Mongo\TestTrait;
@@ -61,7 +58,7 @@ class VJCredentialUpgradeServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testUpgradeUserCredentialInvalid()
     {
-        $service = new VJCredentialUpgradeService();
+        $service = Application::get('vj2_credential_upgrade_service');
         // not exist
         $this->assertFalse($service->upgradeUserCredential(100, 'test_password'));
         // needn't upgrade
@@ -70,11 +67,11 @@ class VJCredentialUpgradeServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testUpgradeUserCredentialPassed()
     {
-        $service = new VJCredentialUpgradeService();
+        $service = Application::get('vj2_credential_upgrade_service');
         $this->assertTrue($service->upgradeUserCredential(1, 'this_is_test_password'));
 
-        $user = UserCredential::checkPasswordCredential('世界你好', 'this_is_test_password', true);
-        $this->assertFalse(PasswordEncoder::isOutdated($user['hash']));
+        $user = $service->user_credential->checkPasswordCredential('世界你好', 'this_is_test_password', true);
+        $this->assertFalse($service->user_credential->password_encoder->isOutdated($user['hash']));
     }
 
 }

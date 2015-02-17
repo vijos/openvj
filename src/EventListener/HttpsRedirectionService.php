@@ -53,8 +53,8 @@ class HttpsRedirectionService
             }
         }
 
-        if (!$this->request->isSecure() && $this->request->cookies->get('nossl') == null) {
-            $ua = $this->request->headers->get('user-agent');
+        if (!$this->request->isSecure() && $this->request->cookies->get('nossl') === null) {
+            $ua = $this->request->getUserAgent();
             if (
                 $ua !== null &&
                 stripos($ua, 'Baiduspider') === false &&

@@ -19,8 +19,19 @@ namespace PHPSTORM_META {                                                 // we 
             'random' instanceof \RandomLib\Generator,
             'random_secure' instanceof \RandomLib\Generator,
             'session_storage' instanceof \Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface,
-            'session' instanceof \Symfony\Component\HttpFoundation\Session\Session,
+
+            'vj_redirection_service' instanceof \VJ\EventListener\VJRedirectionService,
+            'https_redirection_service' instanceof \VJ\EventListener\HttpsRedirectionService,
+            'login_log_service' instanceof \VJ\EventListener\LoginLogService,
+            'vj2_credential_upgrade_service' instanceof \VJ\EventListener\VJCredentialUpgradeService,
+
             'keyword_filter' instanceof \VJ\Security\KeywordFilter,
+            'user_session' instanceof \VJ\User\UserSession,
+            'domain_manager' instanceof \VJ\User\DomainManager,
+            'password_encoder' instanceof \VJ\User\PasswordEncoder,
+            'rememberme_encoder' instanceof \VJ\User\RememberMeEncoder,
+            'user_credential' instanceof \VJ\User\UserCredential,
+            'user_manager' instanceof \VJ\User\UserManager,
         ]
     ];
 

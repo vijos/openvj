@@ -14,45 +14,24 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
-use VJ\Util;
+use VJ\Core\Request;
 use VJ\VJ;
 
 class DomainManager
 {
-    /**
-     * 获得全局域的 ID
-     *
-     * @return \MongoId
-     */
-    public static function getGlobalDomainId()
-    {
-        return new \MongoId(VJ::DOMAIN_GLOBAL);
-    }
+    /** @var UserSession $session */
+    private $session;
+    /** @var Request $request */
+    private $request;
 
     /**
-     * 根据域对象判断域是否有效
-     *
-     * @param array $domain
-     * @return bool
+     * @param UserSession $session
+     * @param Request $request
      */
-    public static function isDomainObjectValid(array $domain = null)
+    public function __construct(UserSession $session, Request $request)
     {
-        if ($domain === null || (isset($domain['invalid']) && $domain['invalid'])) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * 判断是否是全局域 ID
-     *
-     * @param \MongoId $domain
-     * @return bool
-     */
-    public static function isGlobalDomainId(\MongoId $domainId)
-    {
-        return $domainId->id === VJ::DOMAIN_GLOBAL;
+        $this->session = $session;
+        $this->request = $request;
     }
 
     /**
@@ -64,24 +43,24 @@ class DomainManager
      * @throws InvalidArgumentException
      * @throws UserException
      */
-    public static function joinDomainById($uid, \MongoId $domainId)
+    public function joinDomainById($uid, \MongoId $domainId)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
         $uid = (int)$uid;
 
-        if (!self::isGlobalDomainId($domainId)) {
+        if (!DomainUtil::isGlobalDomainId($domainId)) {
             // 检查域是否存在
             $d = Application::coll('Domain')->findOne(['_id' => $domainId]);
-            if (!self::isDomainObjectValid($d)) {
+            if (!DomainUtil::isDomainObjectValid($d)) {
                 throw new UserException('DomainManager::joinDomain.invalid_domain');
             }
         }
 
         // 检查用户是否存在
-        $user = UserManager::getUserObjectByUid($uid);
-        if (!UserManager::isUserObjectValid($user)) {
+        $user = UserUtil::getUserObjectByUid($uid);
+        if (!UserUtil::isUserObjectValid($user)) {
             throw new UserException('DomainManager::joinDomain.invalid_user');
         }
 
@@ -104,7 +83,7 @@ class DomainManager
             'rank' => -1,
             'level' => 0,
         ];
-        if (self::isGlobalDomainId($domainId)) {
+        if (DomainUtil::isGlobalDomainId($domainId)) {
             $document += [
                 'sig' => '',
                 'sigraw' => '',
@@ -121,13 +100,13 @@ class DomainManager
         ]);
 
         // 操作非全局域则插入操作记录
-        if (!self::isGlobalDomainId($domainId)) {
+        if (!DomainUtil::isGlobalDomainId($domainId)) {
             Application::coll('DomainLog')->insert([
-                'uid' => RoleManager::getCurrentToken(),
+                'uid' => $this->session->getCurrentToken(),
                 'at' => new \MongoDate(),
                 'type' => 'join',
-                'ua' => Util::getUserAgentSafe(),
-                'ip' => Util::getClientIp(),
+                'ua' => $this->request->getUserAgent(),
+                'ip' => $this->request->getClientIp(),
                 'target_uid' => $uid,
                 'target_domain' => $domainId,
             ]);

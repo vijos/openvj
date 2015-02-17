@@ -33,4 +33,36 @@ class VJ
     {
         Application::Instance();
     }
+
+    /**
+     * 移除字符串中的 emoji
+     *
+     * @param string $str
+     * @return string
+     */
+    public static function removeEmoji($str)
+    {
+        $str = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $str);
+        $str = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $str);
+        $str = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $str);
+        $str = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $str);
+        $str = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $str);
+        return $str;
+    }
+
+    /**
+     * timing attack 安全的字符串比较
+     *
+     * @param string $a
+     * @param string $b
+     * @return bool
+     */
+    public static function slowEquals($a, $b)
+    {
+        $diff = strlen($a) ^ strlen($b);
+        for ($i = 0; $i < strlen($a) && $i < strlen($b); $i++) {
+            $diff |= ord($a[$i]) ^ ord($b[$i]);
+        }
+        return $diff === 0;
+    }
 }

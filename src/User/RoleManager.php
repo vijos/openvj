@@ -14,47 +14,9 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\MissingArgumentException;
-use VJ\VJ;
 
 class RoleManager
 {
-    private static $overWriteUid = null;
-
-    /**
-     * 在函数调用期间使用指定的 uid 作为权限控制主体的标识符
-     *
-     * @param int $uid
-     * @param callable $callback
-     * @throws InvalidArgumentException
-     */
-    public static function overWriteToken($uid, callable $callback)
-    {
-        if (!Validator::int()->validate($uid)) {
-            throw new InvalidArgumentException('uid', 'type_invalid');
-        }
-        $lastOverWrite = self::$overWriteUid;
-        self::$overWriteUid = $uid;
-        $callback();
-        self::$overWriteUid = $lastOverWrite;
-    }
-
-    /**
-     * 获取当前权限控制主体标示符
-     *
-     * @return int
-     */
-    public static function getCurrentToken()
-    {
-        if (self::$overWriteUid !== null) {
-            return self::$overWriteUid;
-        }
-        $user = Application::getSession()->get('user');
-        if ($user == null) {
-            return VJ::USER_ID_GUEST;
-        }
-        return (int)$user['uid'];
-    }
-
     /**
      * 创建一个角色
      *

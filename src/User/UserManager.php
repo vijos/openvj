@@ -15,65 +15,38 @@ use Symfony\Component\HttpFoundation\Cookie;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
+use VJ\Core\Request;
 use VJ\Core\Response;
 use VJ\Security\KeywordFilter;
-use VJ\Util;
 use VJ\VJ;
 
 class UserManager
 {
-    /**
-     * @param int $uid
-     * @return array|null
-     */
-    public static function getUserObjectByUid($uid)
-    {
-        if (!Validator::int()->validate($uid)) {
-            return null;
-        }
-        $user = Application::coll('User')->findOne(['uid' => (int)$uid]);
-        return $user;
-    }
+    private $session;
+    private $request;
+    private $response;
+    private $domain_manager;
+    public $user_credential;
 
     /**
-     * @param string $email
-     * @return array|null
+     * @param UserSession $session
+     * @param Request $request
+     * @param Response $response
+     * @param DomainManager $domain_manager
+     * @param UserCredential $user_credential
      */
-    public static function getUserObjectByEmail($email)
-    {
-        if (!is_string($email) || !mb_check_encoding($email, 'UTF-8')) {
-            return null;
-        }
-        $user = Application::coll('User')->findOne(['lmail' => EmailCanonicalizer::canonicalize($email)]);
-        return $user;
-    }
-
-    /**
-     * @param string $username
-     * @return array|null
-     */
-    public static function getUserByUsername($username)
-    {
-        if (!is_string($username) || !mb_check_encoding($username, 'UTF-8')) {
-            return null;
-        }
-        $user = Application::coll('User')->findOne(['luser' => UsernameCanonicalizer::canonicalize($username)]);
-        return $user;
-    }
-
-    /**
-     * 判断用户是否有效（未被封禁）
-     *
-     * @param array $user
-     * @return bool
-     */
-    public static function isUserObjectValid(array $user = null)
-    {
-        if ($user === null || (isset($user['banned']) && $user['banned'])) {
-            return false;
-        } else {
-            return true;
-        }
+    public function __construct(
+        UserSession $session,
+        Request $request,
+        Response $response,
+        DomainManager $domain_manager,
+        UserCredential $user_credential
+    ) {
+        $this->session = $session;
+        $this->request = $request;
+        $this->response = $response;
+        $this->domain_manager = $domain_manager;
+        $this->user_credential = $user_credential;
     }
 
     /**
@@ -82,10 +55,10 @@ class UserManager
      * @param array $user
      * @param int $from
      */
-    private static function prepareLoginSessionByObject(array $user, $from)
+    private function prepareLoginSessionByObject(array $user, $from)
     {
-        Application::getSession()->set('user', $user);
-        Application::getSession()->set('loginType', $from);
+        $this->session->set('user', $user);
+        $this->session->set('loginType', $from);
     }
 
     /**
@@ -97,7 +70,7 @@ class UserManager
      * @return array
      * @throws UserException
      */
-    public static function interactiveLogin($usernameEmail, $password, $remember = false)
+    public function interactiveLogin($usernameEmail, $password, $remember = false)
     {
         if (!is_string($usernameEmail)) {
             throw new InvalidArgumentException('usernameEmail', 'type_invalid');
@@ -105,12 +78,12 @@ class UserManager
         if (!is_string($password)) {
             throw new InvalidArgumentException('password', 'type_invalid');
         }
-        $user = UserCredential::checkPasswordCredential($usernameEmail, $password);
+        $user = $this->user_credential->checkPasswordCredential($usernameEmail, $password);
         if ($remember) {
-            self::generateRememberMeTokenForObject($user);
+            $this->generateRememberMeTokenForObject($user);
         }
 
-        self::prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_INTERACTIVE);
+        $this->prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_INTERACTIVE);
 
         return $user;
     }
@@ -121,24 +94,24 @@ class UserManager
      * @return array
      * @throws UserException
      */
-    public static function rememberMeTokenLogin()
+    public function rememberMeTokenLogin()
     {
         $token_field = Application::get('config')['session']['remember_token'];
-        $clientToken = Application::get('request')->cookies->get($token_field);
+        $clientToken = $this->request->cookies->get($token_field);
         try {
-            $user = UserCredential::checkCookieTokenCredential($clientToken);
+            $user = $this->user_credential->checkCookieTokenCredential($clientToken);
         } catch (UserException $e) {
             // 对于无效 token 需要删除 cookie
-            self::invalidateRememberMeToken();
+            $this->invalidateRememberMeToken();
             throw $e;
         }
 
         // 对于有效 token，需要重新生成一份新 token，并继承其过期时间
-        $token = RememberMeEncoder::parseClientToken($clientToken);
-        self::invalidateRememberMeToken();
-        self::generateRememberMeTokenForObject($user, $token['expire']);
+        $token = $this->user_credential->rememberme_encoder->parseClientToken($clientToken);
+        $this->invalidateRememberMeToken();
+        $this->generateRememberMeTokenForObject($user, $token['expire']);
 
-        self::prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_COOKIE);
+        $this->prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_COOKIE);
 
         return $user;
     }
@@ -146,15 +119,15 @@ class UserManager
     /**
      * 无效化已记忆会话
      */
-    public static function invalidateRememberMeToken()
+    public function invalidateRememberMeToken()
     {
         $token_field = Application::get('config')['session']['remember_token'];
-        $clientToken = Application::get('request')->cookies->get($token_field);
+        $clientToken = $this->request->cookies->get($token_field);
         if ($clientToken !== null) {
-            UserCredential::invalidateRememberMeClientToken($clientToken);
+            $this->user_credential->invalidateRememberMeClientToken($clientToken);
         }
-        Application::get('request')->cookies->remove($token_field);
-        Application::get('response')->headers->clearCookie($token_field);
+        $this->request->cookies->remove($token_field);
+        $this->response->headers->clearCookie($token_field);
     }
 
     /**
@@ -163,19 +136,19 @@ class UserManager
      * @param array $user
      * @param int|null $expire
      */
-    public static function generateRememberMeTokenForObject(array $user, $expire = null)
+    public function generateRememberMeTokenForObject(array $user, $expire = null)
     {
         $token_field = Application::get('config')['session']['remember_token'];
         if ($expire === null) {
             $expire = time() + (int)Application::get('config')['session']['remember_ttl'];
         }
-        $clientToken = UserCredential::createRememberMeClientToken($user['uid'],
-            Util::getClientIp(),
-            Util::getUserAgentSafe(),
+        $clientToken = $this->user_credential->createRememberMeClientToken($user['uid'],
+            $this->request->getClientIp(),
+            $this->request->getUserAgent(),
             $expire
         );
-        Application::get('request')->cookies->set($token_field, $clientToken);
-        Application::get('response')->headers->setCookie(new Cookie($token_field, $clientToken));
+        $this->request->cookies->set($token_field, $clientToken);
+        $this->response->headers->setCookie(new Cookie($token_field, $clientToken));
     }
 
     /**
@@ -188,7 +161,7 @@ class UserManager
      * @throws InvalidArgumentException
      * @throws UserException
      */
-    public static function createUser($username, $password, $email)
+    public function createUser($username, $password, $email)
     {
         if (!is_string($username)) {
             throw new InvalidArgumentException('username', 'type_invalid');
@@ -210,7 +183,7 @@ class UserManager
         }
 
         // 检查关键字
-        $keyword = KeywordFilter::isContainGeneral($username);
+        $keyword = KeywordFilter::isContainGeneric($username);
         if ($keyword === false) {
             $keyword = KeywordFilter::isContainName($username);
         }
@@ -231,18 +204,18 @@ class UserManager
         }
 
         // 处理用户名
-        $username = Util::removeEmoji($username);
+        $username = VJ::removeEmoji($username);
 
         // 检查用户名和 Email 是否唯一
-        if (self::getUserByUsername($username) !== null) {
+        if (UserUtil::getUserByUsername($username) !== null) {
             throw new UserException('UserManager::createUser.user_exists');
         }
-        if (self::getUserObjectByEmail($email) !== null) {
+        if (UserUtil::getUserObjectByEmail($email) !== null) {
             throw new UserException('UserManager::createUser.email_exists');
         }
 
         // 生成 hash & salt
-        $hashSaltPair = PasswordEncoder::generateHash($password);
+        $hashSaltPair = $this->user_credential->password_encoder->generateHash($password);
 
         // 插入记录
         try {
@@ -251,15 +224,15 @@ class UserManager
                 '_id' => $_id,
                 'uid' => $_id, // 将在成功插入后更新
                 'user' => $username,
-                'luser' => UsernameCanonicalizer::canonicalize($username),
+                'luser' => UserUtil::canonicalizeUsername($username),
                 'mail' => $email,
-                'lmail' => EmailCanonicalizer::canonicalize($email),
+                'lmail' => UserUtil::canonicalizeEmail($email),
                 'salt' => $hashSaltPair['salt'],
                 'hash' => $hashSaltPair['hash'],
                 'g' => $email,
                 'gender' => VJ::USER_GENDER_UNKNOWN,
                 'regat' => new \MongoDate(),
-                'regip' => Util::getClientIp(),
+                'regip' => $this->request->getClientIp(),
             ]);
         } catch (\MongoCursorException $e) {
             // 插入失败
@@ -293,7 +266,7 @@ class UserManager
         }
 
         // 加入全局域 此处不应有异常
-        DomainManager::joinDomainById($uid, DomainManager::getGlobalDomainId());
+        $this->domain_manager->joinDomainById($uid, DomainUtil::getGlobalDomainId());
 
         return $uid;
     }

@@ -62,7 +62,7 @@ class KeywordFilter
      * @param $text
      * @return bool|string
      */
-    public static function isContainGeneral($text)
+    public static function isContainGeneric($text)
     {
         return Application::get(self::class)->contains($text, 'general', function () {
             $rec = Application::coll('System')->findOne([
