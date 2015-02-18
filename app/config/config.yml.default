@@ -22,3 +22,19 @@ session:
 
 background:
     url: https://127.0.0.1:13516
+    listen_addr: 127.0.0.1
+    listen_port: 13516
+
+mail:
+    verification:
+        nick: OpenVJ Verification
+        service: Gmail
+        auth:
+            user: verification@xxx.org
+            pass: xxxxx
+    report:
+        nick: OpenVJ Report
+        service: Gmail
+        auth:
+            user: report@xxx.org
+            pass: xxxxx

@@ -44,3 +44,10 @@ service:
     user_manager:
         arguments: [@user_session, @request, @response, @domain_manager, @user_credential]
         class: \VJ\User\UserManager
+
+    bgservice_mailing_provider:
+        class: \VJ\Mail\BgServiceMailingProvider
+
+    mail_sender:
+        arguments: [@bgservice_mailing_provider]
+        class: \VJ\Mail\Sender

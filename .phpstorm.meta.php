@@ -32,6 +32,8 @@ namespace PHPSTORM_META {                                                 // we 
             'rememberme_encoder' instanceof \VJ\User\RememberMeEncoder,
             'user_credential' instanceof \VJ\User\UserCredential,
             'user_manager' instanceof \VJ\User\UserManager,
+            'bgservice_mailing_provider' instanceof \VJ\Mail\BgServiceMailingProvider,
+            'mail_sender' instanceof \VJ\Mail\Sender,
         ]
     ];
 
