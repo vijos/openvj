@@ -127,22 +127,32 @@ class Application
 
     private static function initConfig()
     {
-        $cachePath = self::$CACHE_DIRECTORY . '/config.php';
-        $cache = new ConfigCache($cachePath, true);
+        if (file_exists(self::$CONFIG_DIRECTORY . '/config.yml')) {
+            // config file exists
+            $cachePath = self::$CACHE_DIRECTORY . '/config.php';
+            $cache = new ConfigCache($cachePath, true);
+            if (!$cache->isFresh()) {
+                $resources = [];
+                $data = array_merge_recursive(
+                    self::loadConfigFile('config.yml', $resources),
+                    self::loadConfigFile('db.yml', $resources),
+                    self::loadConfigFile('routing.yml', $resources),
+                    self::loadConfigFile('service.yml', $resources)
+                );
 
-        if (!$cache->isFresh()) {
+                $cache->write('<?php return ' . var_export($data, true) . ';', $resources);
+            }
+            self::$resources = require($cachePath);
+        } else {
+            // initialize other things
             $resources = [];
-            $data = array_merge_recursive(
-                self::loadConfigFile('config.yml', $resources),
-                self::loadConfigFile('db.yml', $resources),
+            self::$resources = array_merge_recursive(
+                ['debug' => false],
                 self::loadConfigFile('routing.yml', $resources),
                 self::loadConfigFile('service.yml', $resources)
             );
-
-            $cache->write('<?php return ' . var_export($data, true) . ';', $resources);
         }
 
-        self::$resources = require($cachePath);
         self::set('config', self::$resources);
     }
 
