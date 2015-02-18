@@ -32,9 +32,6 @@ class LoginLogService
         $ip = $this->request->getClientIp();
         $userAgent = $this->request->getUserAgent();
 
-        if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
-            $userAgent = null;
-        }
         Application::coll('LoginLog')->insert([
             'uid' => (int)$user['uid'],
             'at' => new \MongoDate(),

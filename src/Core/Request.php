@@ -30,9 +30,10 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     public function getUserAgent()
     {
         $ua = $this->getUserAgentRaw();
-        if ($ua === null) {
+        if (!is_string($ua) || !mb_check_encoding($ua, 'UTF-8')) {
             return null;
+        } else {
+            return mb_substr($ua, 0, 256);
         }
-        return mb_substr($ua, 0, 256);
     }
 } 
