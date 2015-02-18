@@ -43,7 +43,7 @@ class BackgroundUtil
     }
 
     /**
-     * 向背景服务发送请求
+     * GET
      *
      * @param $url
      * @return Request
@@ -51,5 +51,16 @@ class BackgroundUtil
     public static function get($url)
     {
         return self::authenticate(Request::get(Application::getConfig('background.url') . $url));
+    }
+
+    /**
+     * POST
+     *
+     * @param $url
+     * @return Request
+     */
+    public static function post($url)
+    {
+        return self::authenticate(Request::post(Application::getConfig('background.url') . $url));
     }
 }
