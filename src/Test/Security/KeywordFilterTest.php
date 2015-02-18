@@ -23,17 +23,17 @@ class KeywordFilterTest extends \PHPUnit_Framework_TestCase
         $miss = function () {
             return ['foo', 'bar', 'baz', 'quux', 'thud', 'grunt'];
         };
-        $this->assertTrue($filter->contains(
-            'The quick brown foo jumps over the lazy dog', $key, $miss));
-        $this->assertFalse($filter->contains(
-            'The quick brown fox jumps over the lazy dog', $key, $miss));
-        $this->assertTrue($filter->contains(
-            'The quick brown bar jumps over the lazy baz', $key, $miss));
-        $this->assertTrue($filter->contains(
-            'The quick brown BAR jumps over the lazy dog', $key, $miss));
-        $this->assertFalse($filter->contains(
-            'The quick brown FOX jumps over the lazy dog', $key, $miss));
-        $this->assertTrue($filter->contains(
-            'The quick brown quux grunts over the lazy thud', $key, $miss));
+        $this->assertEquals($filter->contains(
+            'The quick brown foo jumps over the lazy dog', $key, $miss), 'foo');
+        $this->assertEquals($filter->contains(
+            'The quick brown fox jumps over the lazy dog', $key, $miss), false);
+        $this->assertEquals($filter->contains(
+            'The quick brown bar jumps over the lazy baz', $key, $miss), 'bar');
+        $this->assertEquals($filter->contains(
+            'The quick brown BAR jumps over the lazy dog', $key, $miss), 'bar');
+        $this->assertEquals($filter->contains(
+            'The quick brown FOX jumps over the lazy dog', $key, $miss), false);
+        $this->assertEquals($filter->contains(
+            'The quick brown quux grunts over the lazy thud', $key, $miss), 'quux');
     }
 }
