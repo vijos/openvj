@@ -39,17 +39,44 @@ class KeywordFilter
     {
         $value = $this->redis->get($this->prefix . $cacheKey);
         if ($value === false) {
+            // Haven't found data in the cache, we need to build the tree
+            $tree = array();
             $keywords = $miss();
-            $this->redis->set($this->prefix . $cacheKey, serialize($keywords));
+            foreach ($keywords as $keyword) {
+                $ptr = 0;
+                $len = strlen($keyword);
+                assert("$len != 0");
+                for ($idx = 0; $idx < $len; ++$idx) {
+                    $ptr += ord($keyword[$idx]);
+                    if (!isset($tree[$ptr])) {
+                        if (!isset($tree[-1]))
+                            $tree[-1] = 1;
+                        $tree[$ptr] = $tree[-1]++;
+                    }
+                    $ptr = $tree[$ptr] * 256;
+                }
+                $tree[$ptr] = -1;
+            }
+            $this->redis->set($this->prefix . $cacheKey, serialize($tree));
         } else {
-            $keywords = unserialize($value);
+            $tree = unserialize($value);
         }
 
         $text = strtolower($text);
-
-        foreach ($keywords as $keyword) {
-            if (strpos($text, $keyword)) {
-                return $keyword;
+        $active = array();
+        $len = strlen($text);
+        for ($cur = 0; $cur < $len; ++$cur) {
+            $ord = ord($text[$cur]);
+            $active[$cur] = 0;
+            foreach ($active as $start => $ptr) {
+                if (isset($tree[$ptr + $ord])) {
+                    $ptr = $tree[$ptr + $ord] * 256;
+                    if (isset($tree[$ptr]))
+                        return substr($text, $start, $cur - $start + 1);
+                    $active[$start] = $ptr;
+                } else {
+                    unset($active[$start]);
+                }
             }
         }
 
