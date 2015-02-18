@@ -5,6 +5,7 @@
 /app/config/db.yml
 /app/config/*.crt
 /app/config/*.key
+/app/config/*.p12
 /.idea/
 !.gitkeep
 .DS_Store

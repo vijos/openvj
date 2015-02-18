@@ -135,5 +135,12 @@ class CertificateGenerateCommand extends Command
 
         $result = $x509->sign($issuer, $x509, 'sha256WithRSAEncryption');
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.crt', $x509->saveX509($result));
+
+        if (PHP_OS === 'Darwin') {
+            $output->writeln('<info>Exporting background service client certificate...</info>');
+            // for darwin, generate P12 format
+            openssl_pkcs12_export($x509->saveX509($result), $p12, $key['privatekey'], 'openvj-bg');
+            file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.p12', $p12);
+        }
     }
 }
