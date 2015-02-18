@@ -41,12 +41,12 @@ class CertificateGenerateCommand extends Command
             $options[$ask] = $helper->ask($input, $output, $q);
         }
 
-        $output->writeln('<info>Generating CA private key...</info>');
+        $output->writeln('Generating CA private key...');
         $CAPrivKey = new \Crypt_RSA();
         $key = $CAPrivKey->createKey(2048);
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-ca.key', $key['privatekey']);
 
-        $output->writeln('<info>Generating self-signed CA certificate...</info>');
+        $output->writeln('Generating self-signed CA certificate...');
         $CAPrivKey->loadKey($key['privatekey']);
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
@@ -72,13 +72,13 @@ class CertificateGenerateCommand extends Command
         $result = $x509->sign($issuer, $subject, 'sha256WithRSAEncryption');
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-ca.crt', $x509->saveX509($result));
 
-        $output->writeln('<info>Generating background service SSL private key...</info>');
+        $output->writeln('Generating background service SSL private key...');
         $privKey = new \Crypt_RSA();
         $key = $privKey->createKey(2048);
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-server.key', $key['privatekey']);
         $privKey->loadKey($key['privatekey']);
 
-        $output->writeln('<info>Generating background service SSL certificate...</info>');
+        $output->writeln('Generating background service SSL certificate...');
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
         $pubKey->setPublicKey();
@@ -103,13 +103,13 @@ class CertificateGenerateCommand extends Command
         $result = $x509->sign($issuer, $subject, 'sha256WithRSAEncryption');
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-server.crt', $x509->saveX509($result));
 
-        $output->writeln('<info>Generating background service client private key...</info>');
+        $output->writeln('Generating background service client private key...');
         $privKey = new \Crypt_RSA();
         $key = $privKey->createKey(2048);
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.key', $key['privatekey']);
         $privKey->loadKey($key['privatekey']);
 
-        $output->writeln('<info>Generating background service client certificate...</info>');
+        $output->writeln('Generating background service client certificate...');
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
         $pubKey->setPublicKey();
@@ -137,7 +137,7 @@ class CertificateGenerateCommand extends Command
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.crt', $x509->saveX509($result));
 
         if (PHP_OS === 'Darwin') {
-            $output->writeln('<info>Exporting background service client certificate...</info>');
+            $output->writeln('Exporting background service client certificate...');
             // for darwin, generate P12 format
             openssl_pkcs12_export($x509->saveX509($result), $p12, $key['privatekey'], 'openvj-bg');
             file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.p12', $p12);
