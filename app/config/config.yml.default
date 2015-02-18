@@ -18,5 +18,7 @@ security:
 session:
     name: VJSESS
     ttl: 21600 # 6 hours
-    remember_token: VJTOKEN
     remember_ttl: 2592000 # 30 days
+
+background:
+    url: https://127.0.0.1:13516
