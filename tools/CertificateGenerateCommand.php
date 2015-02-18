@@ -46,7 +46,7 @@ class CertificateGenerateCommand extends Command
         $key = $CAPrivKey->createKey(2048);
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-ca.key', $key['privatekey']);
 
-        $output->writeln('<info>Creating self-signed CA certificate...</info>');
+        $output->writeln('<info>Generating self-signed CA certificate...</info>');
         $CAPrivKey->loadKey($key['privatekey']);
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
@@ -72,20 +72,20 @@ class CertificateGenerateCommand extends Command
         $result = $x509->sign($issuer, $subject, 'sha256WithRSAEncryption');
         file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-ca.crt', $x509->saveX509($result));
 
-        $output->writeln('<info>Generating API server cert private key...</info>');
+        $output->writeln('<info>Generating background service SSL private key...</info>');
         $privKey = new \Crypt_RSA();
         $key = $privKey->createKey(2048);
-        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-api-server.key', $key['privatekey']);
+        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-server.key', $key['privatekey']);
         $privKey->loadKey($key['privatekey']);
 
-        $output->writeln('<info>Creating API server certificate...</info>');
+        $output->writeln('<info>Generating background service SSL certificate...</info>');
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
         $pubKey->setPublicKey();
 
         $subject = new \File_X509();
         $subject->setPublicKey($pubKey);
-        $subject->setDNProp('id-at-organizationName', 'OpenVJ API Server Certificate');
+        $subject->setDNProp('id-at-organizationName', 'OpenVJ Background Service Certificate');
         foreach ($options as $prop => $val) {
             $subject->setDNProp('id-at-' . $prop, $val);
         }
@@ -101,22 +101,22 @@ class CertificateGenerateCommand extends Command
         $x509->setSerialNumber(chr(1));
 
         $result = $x509->sign($issuer, $subject, 'sha256WithRSAEncryption');
-        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-api-server.crt', $x509->saveX509($result));
+        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-server.crt', $x509->saveX509($result));
 
-        $output->writeln('<info>Generating API client cert private key...</info>');
+        $output->writeln('<info>Generating background service client private key...</info>');
         $privKey = new \Crypt_RSA();
         $key = $privKey->createKey(2048);
-        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-api-client.key', $key['privatekey']);
+        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.key', $key['privatekey']);
         $privKey->loadKey($key['privatekey']);
 
-        $output->writeln('<info>Creating API client certificate...</info>');
+        $output->writeln('<info>Generating background service client certificate...</info>');
         $pubKey = new \Crypt_RSA();
         $pubKey->loadKey($key['publickey']);
         $pubKey->setPublicKey();
 
         $subject = new \File_X509();
         $subject->setPublicKey($pubKey);
-        $subject->setDNProp('id-at-organizationName', 'OpenVJ API Client Certificate');
+        $subject->setDNProp('id-at-organizationName', 'OpenVJ Background Service Client Certificate');
         foreach ($options as $prop => $val) {
             $subject->setDNProp('id-at-' . $prop, $val);
         }
@@ -134,6 +134,6 @@ class CertificateGenerateCommand extends Command
         $x509->setExtension('id-ce-extKeyUsage', array('id-kp-serverAuth', 'id-kp-clientAuth'));
 
         $result = $x509->sign($issuer, $x509, 'sha256WithRSAEncryption');
-        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-api-client.crt', $x509->saveX509($result));
+        file_put_contents(Application::$CONFIG_DIRECTORY . '/cert-bg-client.crt', $x509->saveX509($result));
     }
 }
