@@ -11,6 +11,9 @@ The project is still under developing. DO NOT TRY TO DEPLOY IT.
 
 - Linux / Mac OS X
 - PHP >= 5.6
+- php-mongo
+- php-redis
+- php-mcrypt
 - MongoDB >= 2.6
 - Redis
 - [Composer](https://github.com/composer/composer)

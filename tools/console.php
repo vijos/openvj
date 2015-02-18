@@ -17,4 +17,5 @@ $loader->setPsr4('VJ\\Console\\', [__DIR__ . '/']);
 
 $console = new \Symfony\Component\Console\Application();
 $console->add(new \VJ\Console\KeywordImportCommand());
+$console->add(new \VJ\Console\CertificateGenerateCommand());
 $console->run();

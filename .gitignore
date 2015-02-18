@@ -3,6 +3,8 @@
 /app/logs/*
 /app/config/config.yml
 /app/config/db.yml
+/app/config/*.crt
+/app/config/*.key
 /.idea/
 !.gitkeep
 .DS_Store

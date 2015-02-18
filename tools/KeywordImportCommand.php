@@ -21,7 +21,7 @@ class KeywordImportCommand extends Command
     {
         $this
             ->setName('init:keywords')
-            ->setDescription('Import keywords to database');;
+            ->setDescription('Import keywords to database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
