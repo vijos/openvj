@@ -51,3 +51,6 @@ service:
     mail_sender:
         arguments: [@bgservice_mailing_provider]
         class: \VJ\Mail\Sender
+
+    token_generator:
+        class: \VJ\Security\TokenGenerator

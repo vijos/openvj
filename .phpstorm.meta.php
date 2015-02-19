@@ -34,6 +34,7 @@ namespace PHPSTORM_META {                                                 // we 
             'user_manager' instanceof \VJ\User\UserManager,
             'bgservice_mailing_provider' instanceof \VJ\Mail\BgServiceMailingProvider,
             'mail_sender' instanceof \VJ\Mail\Sender,
+            'token_generator' instanceof \VJ\Security\TokenGenerator,
         ]
     ];
 
