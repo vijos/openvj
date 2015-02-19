@@ -44,7 +44,6 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $request = new Request([], [], [], [], [], [
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
-            'HTTP_HOST' => Application::get('config')['canonical'],
             'HTTP_USER_AGENT' => 'chrome1',
             'REMOTE_ADDR' => '1.2.3.4',
             'SERVER_PORT' => 80,
@@ -69,7 +68,6 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $request = new Request([], [], [], [], [], [
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
-            'HTTP_HOST' => Application::get('config')['canonical'],
             'HTTP_USER_AGENT' => 'chrome2',
             'REMOTE_ADDR' => '2.3.4.1',
             'SERVER_PORT' => 80,
@@ -94,7 +92,6 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $request = new Request([], [], [], [], [], [
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
-            'HTTP_HOST' => Application::get('config')['canonical'],
             'HTTP_USER_AGENT' => 'chrome3',
             'REMOTE_ADDR' => '4.3.2.1',
             'SERVER_PORT' => 80,

@@ -11,7 +11,6 @@
 namespace VJ\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
-use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
@@ -20,17 +19,20 @@ class HttpsRedirectionService
 {
     private $request;
     private $response;
+    private $canonical;
     private $enforceHttps;
 
     /**
      * @param Request $request
      * @param Response $response
+     * @param string $canonical
      * @param bool $enforceHttps
      */
-    public function __construct(Request $request, Response $response, $enforceHttps = false)
+    public function __construct(Request $request, Response $response, $canonical, $enforceHttps = false)
     {
         $this->request = $request;
         $this->response = $response;
+        $this->canonical = $canonical;
         $this->enforceHttps = $enforceHttps;
     }
 
@@ -62,7 +64,7 @@ class HttpsRedirectionService
                 stripos($ua, 'Sosospider') === false
             ) {
                 $this->response->redirect('https://' .
-                    $this->request->headers->get('host', Application::get('config')['canonical']) .
+                    $this->request->headers->get('host', $this->canonical) .
                     $this->request->getRequestUri());
                 $event->stopPropagation();
             }

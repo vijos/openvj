@@ -10,7 +10,6 @@
 
 namespace VJ\EventListener;
 
-use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
@@ -19,17 +18,20 @@ class VJRedirectionService
 {
     private $request;
     private $response;
+    private $canonical;
     private $enforceHttps;
 
     /**
      * @param Request $request
      * @param Response $response
+     * @param string $canonical
      * @param bool $enforceHttps
      */
-    public function __construct(Request $request, Response $response, $enforceHttps = false)
+    public function __construct(Request $request, Response $response, $canonical, $enforceHttps = false)
     {
         $this->request = $request;
         $this->response = $response;
+        $this->canonical = $canonical;
         $this->enforceHttps = $enforceHttps;
     }
 
@@ -51,7 +53,7 @@ class VJRedirectionService
             }
 
             $uri = $this->request->getRequestUri();
-            $host = Application::get('config')['canonical'];
+            $host = $this->canonical;
 
             if (stripos($uri, '/problem_show.asp') !== false) {
                 $location = $prefix . $host . '/problem/' . $this->request->query->get('id');

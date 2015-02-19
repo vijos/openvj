@@ -11,7 +11,6 @@
 namespace VJ\Test\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
-use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
@@ -37,13 +36,13 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, false);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -56,14 +55,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, false);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -76,13 +75,13 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, false);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -96,14 +95,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, false);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -116,16 +115,16 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEquals(
-                'https://' . Application::get('config')['canonical'] . $this->request_url,
+                'https://openvj.org' . $this->request_url,
                 $response->headers->get('location'));
         }
     }
@@ -137,14 +136,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -157,13 +156,13 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -178,14 +177,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
         }
@@ -198,13 +197,13 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
@@ -226,14 +225,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
@@ -255,13 +254,13 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
@@ -277,14 +276,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 
@@ -300,16 +299,16 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 80,
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEquals(
-                'https://' . Application::get('config')['canonical'] . $this->request_url,
+                'https://openvj.org' . $this->request_url,
                 $response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -328,14 +327,14 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => Application::get('config')['canonical'],
+                'HTTP_HOST' => 'openvj.org',
                 'HTTP_USER_AGENT' => $ua,
                 'SERVER_PORT' => 443,
                 'HTTPS' => 'on',
             ]);
             $response = new Response();
 
-            $service = new HttpsRedirectionService($request, $response, true);
+            $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
             $service->onEvent(new GenericEvent());
             $this->assertEmpty($response->headers->get('location'));
 

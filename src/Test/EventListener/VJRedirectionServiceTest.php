@@ -10,7 +10,6 @@
 
 namespace VJ\Test\EventListener;
 
-use VJ\Core\Application;
 use VJ\Core\Event\GenericEvent;
 use VJ\Core\Request;
 use VJ\Core\Response;
@@ -28,17 +27,15 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/problem_show.asp?id=100',
-            'HTTP_HOST' => Application::get('config')['canonical'],
+            'HTTP_HOST' => 'openvj.org',
             'HTTP_USER_AGENT' => $this->ua_https,
             'SERVER_PORT' => 80,
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService($request, $response, true);
+        $service = new VJRedirectionService($request, $response, 'openvj.org', true);
         $service->onEvent(new GenericEvent());
-        $this->assertEquals(
-            'https://' . Application::get('config')['canonical'] . '/problem/100',
-            $response->headers->get('location'));
+        $this->assertEquals('https://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }
 
@@ -48,17 +45,15 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/problem_show.asp?id=100',
-            'HTTP_HOST' => Application::get('config')['canonical'],
+            'HTTP_HOST' => 'openvj.org',
             'HTTP_USER_AGENT' => $this->ua_http,
             'SERVER_PORT' => 80,
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService($request, $response, true);
+        $service = new VJRedirectionService($request, $response, 'openvj.org', true);
         $service->onEvent(new GenericEvent());
-        $this->assertEquals(
-            'http://' . Application::get('config')['canonical'] . '/problem/100',
-            $response->headers->get('location'));
+        $this->assertEquals('http://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }
 
@@ -68,17 +63,15 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             'PHP_SELF' => '/app.php',
             'REQUEST_METHOD' => 'GET',
             'REQUEST_URI' => '/problem_show.asp?id=100',
-            'HTTP_HOST' => Application::get('config')['canonical'],
+            'HTTP_HOST' => 'openvj.org',
             'HTTP_USER_AGENT' => $this->ua_https,
             'SERVER_PORT' => 80,
         ]);
         $response = new Response();
 
-        $service = new VJRedirectionService($request, $response, false);
+        $service = new VJRedirectionService($request, $response, 'openvj.org', false);
         $service->onEvent(new GenericEvent());
-        $this->assertEquals(
-            'http://' . Application::get('config')['canonical'] . '/problem/100',
-            $response->headers->get('location'));
+        $this->assertEquals('http://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }
 } 
