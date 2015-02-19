@@ -16,7 +16,6 @@
         "nategood/httpful": "dev-master",
         "pimple/pimple": "~3.0",
         "ezyang/htmlpurifier": "dev-master",
-        "breeswish/php-marked": "dev-master",
         "symfony/translation": "~2.6",
         "symfony/yaml": "~2.6",
         "nikic/fast-route": "dev-master",
@@ -26,6 +25,7 @@
         "respect/validation": "~0.7",
         "zumba/mongounit": "~1.2",
         "symfony/console": "~2.6",
-        "phpseclib/phpseclib": "~0.3"
+        "phpseclib/phpseclib": "~0.3",
+        "breeswish/php-marked": "~0.3"
     }
 }
