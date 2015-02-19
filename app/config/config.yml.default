@@ -7,6 +7,7 @@ translation:
         - zh_CN
 
 security:
+    secret: some_secret_here
     enforce_https: false
     host_only: false
     hosts:

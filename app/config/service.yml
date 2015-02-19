@@ -23,6 +23,13 @@ service:
         arguments: [@redis]
         class: \VJ\Security\KeywordFilter
 
+    token_generator:
+        class: \VJ\Security\TokenGenerator
+
+    message_signer:
+        arguments: ['sha256', %security.secret]
+        class: \VJ\Security\MessageSigner
+
     user_session:
         arguments: [@session_storage]
         class: \VJ\User\UserSession
@@ -51,6 +58,3 @@ service:
     mail_sender:
         arguments: [@bgservice_mailing_provider]
         class: \VJ\Mail\Sender
-
-    token_generator:
-        class: \VJ\Security\TokenGenerator
