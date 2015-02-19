@@ -24,13 +24,13 @@ class MessageSignerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($signer->verify($msg_1, $mac_1));
         $this->assertTrue($signer->verify($msg_2, $mac_2));
-        $this->assertNotEquals($msg_1, $msg_2);
         $this->assertNotEquals($mac_1, $mac_2);
 
         $this->assertFalse($signer->verify($msg_2, $mac_1));
         $this->assertFalse($signer->verify($msg_1, $mac_2));
 
-        $this->assertFalse($signer->verify('123', '123'));
+        $this->assertFalse($signer->verify($msg_1, $mac_1 . 'x'));
+        $this->assertFalse($signer->verify($msg_1 . 'x', $mac_1));
         $this->assertFalse($signer->verify($msg_1 . 'x', $mac_1 . 'x'));
     }
 }
