@@ -26,6 +26,9 @@ background:
     listen_addr: 127.0.0.1
     listen_port: 13516
 
+filter:
+    comment: "h3,h4,p,a[href|title],ul,ol,li,img[src|alt],blockquote,pre,code[class],span,strong,em,br,del,table,thead,tbody,tr,th,td"
+
 mail:
     verification:
         nick: OpenVJ Verification

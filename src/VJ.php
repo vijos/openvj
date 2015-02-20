@@ -27,6 +27,10 @@ class VJ
     const USER_ID_GUEST = 0;
     const USER_ID_SYSTEM = 1;
 
+    const COMMENT_PAGE_SIZE = 100;
+    const COMMENT_MIN = 3;
+    const COMMENT_MAX = 300 * 1000; // 300 KB~900 KB
+
     const DOMAIN_GLOBAL = '000000000000000000000000';
 
     public static function bootstrap()
