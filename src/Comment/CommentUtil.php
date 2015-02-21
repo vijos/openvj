@@ -14,7 +14,9 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
+use VJ\Core\Response;
 use VJ\MarkdownParser;
+use VJ\Security\KeywordFilter;
 use VJ\VJ;
 use VJ\Vote\VoteUtil;
 
@@ -160,12 +162,19 @@ class CommentUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
         if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            throw new UserException('CommentUtil.createComment.invalid_length');
+            throw new UserException('CommentUtil.content_invalid_length');
         }
 
         self::initParser();
         $commentId = new \MongoId();
         $html = self::$parser->parse($markdown);
+
+        $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
+        if ($keyword !== false) {
+            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+                'keyword' => $keyword
+            ]);
+        }
 
         $doc = VoteUtil::attachDocument([
             '_id' => $commentId,
@@ -242,11 +251,18 @@ class CommentUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
         if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            throw new UserException('CommentUtil.modifyComment.invalid_length');
+            throw new UserException('CommentUtil.content_invalid_length');
         }
 
         self::initParser();
         $html = self::$parser->parse($markdown);
+
+        $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
+        if ($keyword !== false) {
+            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+                'keyword' => $keyword
+            ]);
+        }
 
         $result = Application::coll('Comment')->update([
             '_id' => $commentId,
@@ -335,12 +351,19 @@ class CommentUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
         if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            throw new UserException('CommentUtil.createReply.invalid_length');
+            throw new UserException('CommentUtil.content_invalid_length');
         }
 
         self::initParser();
         $replyId = new \MongoId();
         $html = self::$parser->parse($markdown);
+
+        $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
+        if ($keyword !== false) {
+            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+                'keyword' => $keyword
+            ]);
+        }
 
         $doc = [
             '_id' => $replyId,
@@ -437,11 +460,18 @@ class CommentUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
         if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            throw new UserException('CommentUtil.modifyReply.invalid_length');
+            throw new UserException('CommentUtil.content_invalid_length');
         }
 
         self::initParser();
         $html = self::$parser->parse($markdown);
+
+        $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
+        if ($keyword !== false) {
+            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+                'keyword' => $keyword
+            ]);
+        }
 
         $result = Application::coll('Comment')->update([
             '_id' => $commentId,
