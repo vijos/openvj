@@ -188,7 +188,7 @@ class UserManager
             $keyword = KeywordFilter::isContainName($username);
         }
         if ($keyword !== false) {
-            throw new UserException('UserManager::createUser.name_invalid', Response::HTTP_BAD_REQUEST, [
+            throw new UserException('UserManager.name_forbid', [
                 'keyword' => $keyword
             ]);
         }
