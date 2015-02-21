@@ -10,12 +10,10 @@
 
 namespace VJ\Core\Exception;
 
-use VJ\Core\Response;
-
 class AccessDeniedException extends UserException
 {
     public function __construct()
     {
-        parent::__construct('access_denied', Response::HTTP_FORBIDDEN);
+        parent::__construct('access_denied');
     }
 } 

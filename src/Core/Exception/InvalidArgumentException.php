@@ -11,7 +11,6 @@
 namespace VJ\Core\Exception;
 
 use VJ\Core\Application;
-use VJ\Core\Response;
 
 class InvalidArgumentException extends UserException
 {
@@ -22,7 +21,7 @@ class InvalidArgumentException extends UserException
      */
     public function __construct($name, $msg, $msgPlaceholder = [])
     {
-        parent::__construct('invalid_argument', Response::HTTP_BAD_REQUEST, [
+        parent::__construct('invalid_argument', [
             '%name%' => $name,
             '%msg%' => Application::transExceptionMessage($msg, $msgPlaceholder),
         ]);

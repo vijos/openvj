@@ -19,10 +19,10 @@ class UserException extends \Exception
 
     /**
      * @param string $exceptionCode
-     * @param int $httpCode
      * @param array $placeholder
+     * @param int $httpCode
      */
-    public function __construct($exceptionCode, $httpCode = Response::HTTP_BAD_REQUEST, $placeholder = [])
+    public function __construct($exceptionCode, $placeholder = [], $httpCode = Response::HTTP_BAD_REQUEST)
     {
         $this->rawErrorCode = $exceptionCode;
 

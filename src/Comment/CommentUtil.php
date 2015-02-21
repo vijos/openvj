@@ -14,7 +14,6 @@ use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
-use VJ\Core\Response;
 use VJ\MarkdownParser;
 use VJ\Security\KeywordFilter;
 use VJ\VJ;
@@ -171,7 +170,7 @@ class CommentUtil
 
         $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
         if ($keyword !== false) {
-            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+            throw new UserException('CommentUtil.content_forbid', [
                 'keyword' => $keyword
             ]);
         }
@@ -259,7 +258,7 @@ class CommentUtil
 
         $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
         if ($keyword !== false) {
-            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+            throw new UserException('CommentUtil.content_forbid', [
                 'keyword' => $keyword
             ]);
         }
@@ -360,7 +359,7 @@ class CommentUtil
 
         $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
         if ($keyword !== false) {
-            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+            throw new UserException('CommentUtil.content_forbid', [
                 'keyword' => $keyword
             ]);
         }
@@ -468,7 +467,7 @@ class CommentUtil
 
         $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
         if ($keyword !== false) {
-            throw new UserException('CommentUtil.content_forbid', Response::HTTP_BAD_REQUEST, [
+            throw new UserException('CommentUtil.content_forbid', [
                 'keyword' => $keyword
             ]);
         }

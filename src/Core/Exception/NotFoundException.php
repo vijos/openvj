@@ -16,6 +16,6 @@ class NotFoundException extends UserException
 {
     public function __construct()
     {
-        parent::__construct('not_found', Response::HTTP_NOT_FOUND);
+        parent::__construct('not_found', [], Response::HTTP_NOT_FOUND);
     }
 }
