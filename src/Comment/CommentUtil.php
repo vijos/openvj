@@ -63,6 +63,7 @@ class CommentUtil
         }
 
         $cursor = Application::coll('Comment')->find($query, [
+            'votes' => 0,
             'raw' => 0,
             'replies.raw' => 0,
         ])->sort(['_id' => 1])->limit(VJ::COMMENT_PAGE_SIZE);
@@ -77,6 +78,58 @@ class CommentUtil
         });
 
         return $result;
+    }
+
+    /**
+     * vote up comment
+     *
+     * @param \MongoId $commentId
+     * @param string $ref
+     * @param int $uid
+     * @return int|null
+     * @throws InvalidArgumentException
+     */
+    public static function voteUp(\MongoId $commentId, $ref, $uid)
+    {
+        if (!is_string($ref)) {
+            throw new InvalidArgumentException('ref', 'type_invalid');
+        }
+        if (!mb_check_encoding($ref, 'UTF-8')) {
+            throw new InvalidArgumentException('ref', 'encoding_invalid');
+        }
+        if (!Validator::int()->validate($uid)) {
+            throw new InvalidArgumentException('uid', 'type_invalid');
+        }
+        return VoteUtil::voteUp(Application::coll('Comment'), [
+            '_id' => $commentId,
+            'ref' => $ref
+        ], $uid);
+    }
+
+    /**
+     * vote down comment
+     *
+     * @param \MongoId $commentId
+     * @param string $ref
+     * @param int $uid
+     * @return int|null
+     * @throws InvalidArgumentException
+     */
+    public static function voteDown(\MongoId $commentId, $ref, $uid)
+    {
+        if (!is_string($ref)) {
+            throw new InvalidArgumentException('ref', 'type_invalid');
+        }
+        if (!mb_check_encoding($ref, 'UTF-8')) {
+            throw new InvalidArgumentException('ref', 'encoding_invalid');
+        }
+        if (!Validator::int()->validate($uid)) {
+            throw new InvalidArgumentException('uid', 'type_invalid');
+        }
+        return VoteUtil::voteDown(Application::coll('Comment'), [
+            '_id' => $commentId,
+            'ref' => $ref
+        ], $uid);
     }
 
     /**
