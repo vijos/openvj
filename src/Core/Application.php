@@ -10,6 +10,7 @@
 
 namespace VJ\Core;
 
+use Elastica\Client;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Monolog\Handler\RotatingFileHandler;
@@ -83,6 +84,7 @@ class Application
         self::initErrHandlers();
         self::initMongoDB();
         self::initRedis();
+        self::initES();
         self::initSession();
         self::initRandomGenerator();
         self::initTranslation();
@@ -228,6 +230,16 @@ class Application
             $redis->connect(self::get('config')['redis']['host'], self::get('config')['redis']['port']);
             $redis->select(self::get('config')['redis']['db']);
             return $redis;
+        });
+    }
+
+    private static function initES()
+    {
+        self::set('es_client', function () {
+            return new Client(self::get('config')['elasticsearch']['hosts']);
+        });
+        self::set('es', function () {
+            return self::get('es_client')->getIndex(self::get('config')['elasticsearch']['index']);
         });
     }
 

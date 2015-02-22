@@ -9,7 +9,6 @@
         "php": ">=5.6",
         "twig/twig": "~1.0",
         "monolog/monolog": "~1.12",
-        "elasticsearch/elasticsearch": "dev-master",
         "symfony/http-foundation": "~2.6",
         "ircmaxell/filterus": "dev-master",
         "ircmaxell/random-lib": "dev-master",
@@ -26,6 +25,7 @@
         "zumba/mongounit": "~1.2",
         "symfony/console": "~2.6",
         "phpseclib/phpseclib": "~0.3",
-        "breeswish/php-marked": "~0.3"
+        "breeswish/php-marked": "~0.3",
+        "ruflin/elastica": "~1.4"
     }
 }

@@ -13,6 +13,8 @@ namespace PHPSTORM_META {                                                 // we 
             'redis' instanceof \Redis,
             'mongo_client' instanceof \MongoClient,
             'mongodb' instanceof \MongoDB,
+            'es_client' instanceof \Elastica\Client,
+            'es' instanceof \Elastica\Index,
             'log' instanceof \Monolog\Logger,
             'event' instanceof \Symfony\Component\EventDispatcher\EventDispatcher,
             'random_factory' instanceof \RandomLib\Factory,
@@ -26,6 +28,8 @@ namespace PHPSTORM_META {                                                 // we 
             'vj2_credential_upgrade_service' instanceof \VJ\EventListener\VJCredentialUpgradeService,
 
             'keyword_filter' instanceof \VJ\Security\KeywordFilter,
+            'token_generator' instanceof \VJ\Security\TokenGenerator,
+            'message_signer' instanceof \VJ\Security\MessageSigner,
             'user_session' instanceof \VJ\User\UserSession,
             'domain_manager' instanceof \VJ\User\DomainManager,
             'password_encoder' instanceof \VJ\User\PasswordEncoder,
@@ -34,7 +38,6 @@ namespace PHPSTORM_META {                                                 // we 
             'user_manager' instanceof \VJ\User\UserManager,
             'bgservice_mailing_provider' instanceof \VJ\Mail\BgServiceMailingProvider,
             'mail_sender' instanceof \VJ\Mail\Sender,
-            'token_generator' instanceof \VJ\Security\TokenGenerator,
         ]
     ];
 
