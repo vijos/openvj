@@ -154,6 +154,21 @@ class Application
                 self::loadConfigFile('service.yml', $resources)
             );
         }
+        if (MODE_TEST) {
+            $resources = [];
+            if (file_exists(self::$CONFIG_DIRECTORY . '/config-test.yml')) {
+                self::$resources = array_merge_recursive(
+                    self::$resources,
+                    self::loadConfigFile('config-test.yml', $resources)
+                );
+            }
+            if (file_exists(self::$CONFIG_DIRECTORY . '/db-test.yml')) {
+                self::$resources = array_merge_recursive(
+                    self::$resources,
+                    self::loadConfigFile('db-test.yml', $resources)
+                );
+            }
+        }
 
         self::set('config', self::$resources);
     }
@@ -206,7 +221,7 @@ class Application
                 'connectTimeoutMS' => self::get('config')['mongodb']['connectTimeoutMS'],
             ];
             if (isset(self::get('config')['mongodb']['username'])) {
-                $options['db'] = self::get('config')['mongodb']['db'] . (MODE_TEST ? '-test' : '');
+                $options['db'] = self::get('config')['mongodb']['db'];
                 $options['username'] = self::get('config')['mongodb']['username'];
                 $options['password'] = self::get('config')['mongodb']['password'];
             }
@@ -219,7 +234,7 @@ class Application
 
         self::set('mongodb', function () {
             $mongoClient = self::get('mongo_client');
-            return $mongoClient->selectDB(self::get('config')['mongodb']['db'] . (MODE_TEST ? '-test' : ''));
+            return $mongoClient->selectDB(self::get('config')['mongodb']['db']);
         });
     }
 

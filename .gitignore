@@ -2,7 +2,9 @@
 /app/cache/*
 /app/logs/*
 /app/config/config.yml
+/app/config/config-test.yml
 /app/config/db.yml
+/app/config/db-test.yml
 /app/config/*.crt
 /app/config/*.key
 /app/config/*.p12
