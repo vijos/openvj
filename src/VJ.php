@@ -31,11 +31,62 @@ class VJ
     const COMMENT_MIN = 3;
     const COMMENT_MAX = 300 * 1000; // 300 KB~900 KB
 
+    const PROBLEM_TITLE_MIN = 1;
+    const PROBLEM_TITLE_MAX = 30;
+
+    const PROBLEM_CONTENT_MIN = 10;
+    const PROBLEM_CONTENT_MAX = 300 * 1000; // 300*1000 characters, 300 KB~900 KB
+
+    const TAG_MIN = 1;
+    const TAG_MAX = 15;
+
     const DOMAIN_GLOBAL = '000000000000000000000000';
 
     public static function bootstrap()
     {
         Application::Instance();
+    }
+
+    /**
+     * 移除字符串中不适合出现在 URL 中的符号
+     *
+     * @param string $str
+     * @return string
+     */
+    public static function removeUrlUnsafeChar($str)
+    {
+        $str = preg_replace('/\s/g', '', $str);
+        $str = str_replace([
+            '&',
+            '$',
+            '+',
+            ',',
+            '/',
+            '\\',
+            ':',
+            ';',
+            '=',
+            '?',
+            '@',
+            '#',
+            '<',
+            '>',
+            '[',
+            ']',
+            '{',
+            '}',
+            '|',
+            '*',
+            '!',
+            '"',
+            "'",
+            '^',
+            '~',
+            '%',
+            '(',
+            ')'
+        ], '', $str);
+        return $str;
     }
 
     /**
