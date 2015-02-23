@@ -27,19 +27,10 @@ class BackgroundUtil
         $request->additional_curl_opts[CURLOPT_SSL_VERIFYHOST] = 0;
         $request->additional_curl_opts[CURLOPT_CAINFO] = Application::$CONFIG_DIRECTORY . '/cert-ca.crt';
 
-        // In OS X, curl only accepts P12 format certificate.
-        if (PHP_OS === 'Darwin') {
-            return $request->authenticateWithCert(
-                Application::$CONFIG_DIRECTORY . '/cert-bg-client.p12',
-                Application::$CONFIG_DIRECTORY . '/cert-bg-client.key',
-                'openvj-bg', 'P12'
-            );
-        } else {
-            return $request->authenticateWithCert(
-                Application::$CONFIG_DIRECTORY . '/cert-bg-client.crt',
-                Application::$CONFIG_DIRECTORY . '/cert-bg-client.key'
-            );
-        }
+        return $request->authenticateWithCert(
+            Application::$CONFIG_DIRECTORY . '/cert-bg-client.crt',
+            Application::$CONFIG_DIRECTORY . '/cert-bg-client.key'
+        );
     }
 
     /**
