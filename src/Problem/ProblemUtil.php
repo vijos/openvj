@@ -102,7 +102,7 @@ class ProblemUtil
         try {
             Application::coll('Problem')->insert($doc);
         } catch (\MongoCursorException $e) {
-            throw new UserException('ProblemUtil::createProblem.title_exists');
+            throw new UserException('ProblemUtil.createProblem.title_exists');
         }
 
         return $doc['_id'];
@@ -179,7 +179,7 @@ class ProblemUtil
             '_id' => $pid
         ]);
         if ($rec === null) {
-            throw new UserException('ProblemUtil::modifyContent.invalid_problem');
+            throw new UserException('ProblemUtil.modifyContent.invalid_problem');
         }
         // push history
         $history = self::decodeHistory($rec['history']);
@@ -255,7 +255,7 @@ class ProblemUtil
                 ]
             ]);
         } catch (\MongoCursorException $e) {
-            throw new UserException('ProblemUtil::modifyMeta.title_exists');
+            throw new UserException('ProblemUtil.modifyMeta.title_exists');
         }
 
         return ($result['n'] === 1);

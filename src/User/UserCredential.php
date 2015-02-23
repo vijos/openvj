@@ -55,7 +55,7 @@ class UserCredential
                 Application::emit('user.login.failed.user_invalid', [VJ::LOGIN_TYPE_FAILED_USER_INVALID, $field]);
                 Application::info('credential.login.not_found', ['login' => $field]);
             }
-            throw new UserException('UserCredential::checkPasswordCredential.user_not_valid');
+            throw new UserException('UserCredential.checkPasswordCredential.user_not_valid');
         }
 
         $verified = $this->password_encoder->verify($password, $user['salt'], $user['hash']);
@@ -64,7 +64,7 @@ class UserCredential
                 Application::emit('user.login.failed.wrong_password', [VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $user]);
                 Application::info('credential.login.wrong_password', ['uid' => $user['uid']]);
             }
-            throw new UserException('UserCredential::checkPasswordCredential.wrong_password');
+            throw new UserException('UserCredential.checkPasswordCredential.wrong_password');
         }
 
         if (!$secretly) {
@@ -87,7 +87,7 @@ class UserCredential
         try {
             $token = $this->rememberme_encoder->parseClientToken($clientToken);
         } catch (InvalidArgumentException $e) {
-            throw new UserException('UserCredential::checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
         }
 
         $record = Application::coll('RememberMeToken')->findOne([
@@ -96,17 +96,17 @@ class UserCredential
         ]);
 
         if ($record === null) {
-            throw new UserException('UserCredential::checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
         }
 
         if ($record['expireat']->sec <= time()) {
-            throw new UserException('UserCredential::checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
         }
 
         $user = UserUtil::getUserObjectByUid($record['uid']);
 
         if (!UserUtil::isUserObjectValid($user)) {
-            throw new UserException('UserCredential::checkCookieTokenCredential.user_not_valid');
+            throw new UserException('UserCredential.checkCookieTokenCredential.user_not_valid');
         }
 
         if (!$secretly) {

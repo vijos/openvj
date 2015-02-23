@@ -54,14 +54,14 @@ class DomainManager
             // 检查域是否存在
             $d = Application::coll('Domain')->findOne(['_id' => $domainId]);
             if (!DomainUtil::isDomainObjectValid($d)) {
-                throw new UserException('DomainManager::joinDomain.invalid_domain');
+                throw new UserException('DomainManager.joinDomain.invalid_domain');
             }
         }
 
         // 检查用户是否存在
         $user = UserUtil::getUserObjectByUid($uid);
         if (!UserUtil::isUserObjectValid($user)) {
-            throw new UserException('DomainManager::joinDomain.invalid_user');
+            throw new UserException('DomainManager.joinDomain.invalid_user');
         }
 
         // 添加 MEMBER 角色
