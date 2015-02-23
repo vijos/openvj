@@ -27,8 +27,8 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
 use VJ\Core\Event\GenericEvent;
 use VJ\Core\Exception\UserException;
+use VJ\Core\ExceptionHandler\JsonResponseHandler;
 use VJ\Core\Session\MongoDBSessionHandler;
-use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -141,7 +141,6 @@ class Application
                     self::loadConfigFile('routing.yml', $resources),
                     self::loadConfigFile('service.yml', $resources)
                 );
-
                 $cache->write('<?php return ' . var_export($data, true) . ';', $resources);
             }
             self::$resources = require($cachePath);
@@ -169,7 +168,6 @@ class Application
                 );
             }
         }
-
         self::set('config', self::$resources);
     }
 
@@ -198,9 +196,9 @@ class Application
     private static function initErrHandlers()
     {
         $whoops = new Run();
-        $whoops->pushHandler(new PlainTextHandler());
-        $whoops->pushHandler(new JsonResponseHandler());
         $whoops->pushHandler(new PrettyPageHandler());
+        $whoops->pushHandler(new JsonResponseHandler(self::get('config')['debug']));
+        $whoops->pushHandler(new PlainTextHandler());
         $whoops->pushHandler(function (\Exception $exception) {
             if (!$exception instanceof UserException) {
                 $level = Logger::ERROR;
