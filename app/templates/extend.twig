@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ TITLE }}</title>
+    <link rel="stylesheet" href="/css/dest/normalize.css">
+    <link rel="stylesheet" href="/css/dest/foundation.css">
+    <link rel="stylesheet" href="/css/dest/openvj.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+<script src="/bower_components/requirejs/require.js"></script>
+<script src="/js/require-config.js"></script>
+{% block footer %}{% endblock %}
+</body>
+</html>

@@ -10,6 +10,7 @@
     "requirejs": "~2.1.16",
     "underscore": "~1.8.2",
     "twig.js": "~0.8.1",
-    "foundation": "~5.5.1"
+    "foundation": "~5.5.1",
+    "modernizr": "~2.8.3"
   }
 }

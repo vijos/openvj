@@ -5,6 +5,8 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON 'package.json'
     bowerRequirejs:
       target:
+        options:
+          baseUrl: './'
         rjsConfig: 'js/require-config.js'
     clean:
       release: ['js/dest/', 'css/dest/']

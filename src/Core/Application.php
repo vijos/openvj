@@ -334,6 +334,9 @@ class Application
                 'debug' => self::get('config')['debug'],
             ]);
 
+            $twig->addGlobal('GET', $_GET);
+            $twig->addGlobal('POST', $_POST);
+
             $twig->addFunction(new \Twig_SimpleFunction('trans', function ($id, ...$argv) {
                 return Application::get('i18n')->trans($id, $argv);
             }));

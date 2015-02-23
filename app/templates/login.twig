@@ -1,0 +1,33 @@
+{% extends "extend.twig" %}
+{% block body %}
+<div class="row">
+    <div class="large-3 large-centered medium-4 medium-centered columns">
+        <div class="login-form"><form action="/login" method="POST" accept-charset="utf-8" class="role-login-form">
+{% if ERROR is defined %}
+            <div data-alert class="alert-box alert">{{ ERROR }} <a href="#" class="close">&times;</a></div>
+{% endif %}
+            <div class="row"><div class="large-12 columns">
+                <input type="text" name="username" class="role-username" value="{{ POST.username|default('') }}" placeholder="{{ trans('page.login.form_username') }}">
+            </div></div>
+            <div class="row"><div class="large-12 columns">
+                <input type="password" name="password" class="role-password" placeholder="{{ trans('page.login.form_password') }}">
+            </div></div>
+            <div class="row"><div class="large-12 columns">
+                <input id="remember_me" name="remember_me" type="checkbox" value="enable"><label for="remember_me">{{ trans('page.login.form_rememberme') }}</label>
+            </div></div>
+            <div class="row"><div class="large-12 columns">
+                <input type="submit" class="button expand" value="{{ trans('page.login.form_login') }}">
+            </div></div>
+        </form></div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+require(['jquery', 'openvj/page/login', 'modernizr', 'foundation', 'foundation/foundation.alert'], function($) {
+    $(document).ready(function() {
+        $(document).foundation();
+    });
+});
+</script>
+{% endblock %}

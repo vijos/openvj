@@ -1,8 +1,19 @@
+page:
+    login:
+        title: 登录
+        form_username: 用户名或邮箱
+        form_password: 密码
+        form_rememberme: 1 个月内保持登录状态
+        form_login: 登录
+
 error:
     code:
         not_found: 该页面未找到
         missing_argument: 缺少参数 %name%
         invalid_argument: 无效参数 %name%：%msg%
+        UserCredential:
+            checkPasswordCredential:
+                user_not_valid: 该用户不存在
     msg:
         too_short:          参数长度过短
         type_invalid:       参数类型无效
