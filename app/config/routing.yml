@@ -7,7 +7,7 @@ routing:
         path: /login
         methods: [GET, POST]
         controller: index:login
-    register:
-        path: /register
+    reg:
+        path: /reg
         methods: [GET, POST]
-        controller: index:register
+        controller: index:registration

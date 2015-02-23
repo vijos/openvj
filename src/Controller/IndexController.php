@@ -10,10 +10,12 @@
 
 namespace VJ\Controller;
 
+use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Controller;
 use VJ\Core\Exception\MissingArgumentException;
 use VJ\Core\Exception\UserException;
+use VJ\User\UserUtil;
 
 class IndexController extends Controller
 {
@@ -48,6 +50,49 @@ class IndexController extends Controller
                     'ERROR' => $ex->getMessage()
                 ]);
             }
+        }
+    }
+
+    public function registrationAction()
+    {
+        if ($this->request->getMethod() === 'GET') {
+            return $this->render('registration.twig', [
+                'TITLE' => Application::trans('page.reg.title')
+            ]);
+        } else {
+            $email = $this->request->request->get('email');
+            if ($email === null) {
+                throw new MissingArgumentException('email');
+            }
+            if (!Validator::email()->validate($email)) {
+                throw new UserException('controller.reg.invalid_email');
+            }
+            if (UserUtil::getUserObjectByEmail($email) !== null) {
+                throw new UserException('controller.reg.duplicate_email');
+            }
+
+            // generate one-time token
+            $token = Application::get('token_generator')->generate(
+                'reg',
+                UserUtil::canonicalizeEmail($email),
+                time() + 4 * 60 * 60,
+                [
+                    'mail' => $email
+                ]
+            )['token'];
+
+            // send token
+            Application::get('mail_sender')->sendVerification(
+                [$email],
+                Application::trans('email.reg_validation.subject'),
+                'email/reg_validation.twig',
+                [
+                    'TOKEN' => $token,
+                    'EMAIL' => $email,
+                ]
+            );
+
+            $this->response->json([]);
         }
     }
 }

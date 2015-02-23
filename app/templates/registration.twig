@@ -1,0 +1,32 @@
+{% extends "extend.twig" %}
+{% block body %}
+<div class="row">
+    <div class="large-6 large-centered medium-6 medium-centered columns">
+        <div class="reg-form"><form action="/reg" method="POST" accept-charset="utf-8" class="role-reg-form">
+{% if ERROR is defined %}
+            <div data-alert class="alert-box alert">{{ ERROR }} <a href="#" class="close">&times;</a></div>
+{% endif %}
+            <div class="row collapse">
+                <div class="medium-8 columns">
+                    <input type="text" placeholder="Email" name="email" class="role-email">
+                </div>
+                <div class="medium-4 columns">
+                    <input type="submit" class="button postfix role-reg-sendmail" value="发送验证邮件">
+                </div>
+            </div>
+            <div class="row role-email-error" style="display:none">
+                <div class="medium-12 columns"><small class="error">Email 地址无效</small></div>
+            </div>
+        </form></div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+require(['jquery', 'openvj/page/reg', 'modernizr', 'foundation'], function($) {
+    $(document).ready(function() {
+        $(document).foundation();
+    });
+});
+</script>
+{% endblock %}
