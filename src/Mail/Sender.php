@@ -11,6 +11,7 @@
 namespace VJ\Mail;
 
 use Respect\Validation\Validator;
+use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 
 class Sender
@@ -22,21 +23,25 @@ class Sender
         $this->provider = $provider;
     }
 
-    private function send($type, array $to, $subject, $html)
+    private function send($type, array $to, $subject, $template, $params)
     {
         if (!Validator::arr()->each(Validator::email())->validate($to)) {
             throw new InvalidArgumentException('to', 'format_invalid');
         }
+
+        $html = Application::get('templating')->render($template, array_merge([
+            'SUBJECT' => $subject
+        ], $params));
         $this->provider->send($type, $to, $subject, $html);
     }
 
-    public function sendVerification(array $to, $subject, $html)
+    public function sendVerification(array $to, $subject, $template, $params)
     {
-        $this->send('verification', $to, $subject, $html);
+        $this->send('verification', $to, $subject, $template, $params);
     }
 
-    public function sendReport(array $to, $subject, $html)
+    public function sendReport(array $to, $subject, $template, $params)
     {
-        $this->send('report', $to, $subject, $html);
+        $this->send('report', $to, $subject, $template, $params);
     }
 }

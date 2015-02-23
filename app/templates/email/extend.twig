@@ -1,0 +1,24 @@
+<style>
+body, .openvj { margin:0;color:#333;font-size:14px;font-family:"Segoe UI",Tahoma,arial,"Hiragino Sans GB","Hiragino Sans GB W3",STHeiti,"Microsoft YaHei",sans-serif;background:#F2F2F2; }
+.openvj { padding:30px; }
+.openvj-box { background:#fff;box-shadow:0px 16px 28px 0 rgba(0, 0, 0, 0.22);border-radius:5px; }
+.openvj-header { background:#3AA9DE;color:#FFF;padding:10px;line-height:200%;font-size:15px;border-radius:5px 5px 0 0;border-bottom:3px solid #85CAEB; }
+.openvj-footer { font-size:12px;color:#444;padding:10px;border-top:1px solid #DDD;background:#F4F4F4;border-radius:0 0 5px 5px; }
+.openvj-content { padding:30px; }
+.openvj-content p { margin:5px 0; }
+.openvj a,
+.openvj a:visited,
+.openvj a:link,
+.openvj a:active { color:#1D76C7;text-decoration:none; }
+.openvj a:hover { color:#3A93E2;text-decoration:underline; }
+.openvj blockquote { padding:5px 10px;border-left:10px solid #E2EFFA;margin:20px;margin-left:0;_zoom:1; }
+</style>
+<div class="openvj">
+<div class="openvj-box">
+<div class="openvj-header">{{ SUBJECT }} - OpenVJ</div>
+<div class="openvj-content">{% block body %}{% endblock %}</div>
+<div class="openvj-footer">
+<p>这封邮件由 <a href="{{ url('/') }}" target="_blank">OpenVJ</a> 自动发送，请勿直接回复。</p>
+</div>
+</div>
+</div>
