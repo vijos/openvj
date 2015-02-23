@@ -143,7 +143,7 @@ class PasswordEncoder
      */
     public function generateSalt()
     {
-        return Application::get('random_secure')->generateString(60);
+        return Application::get('random_secure')->generateString(60, VJ::RANDOM_CHARS);
     }
 
     /**

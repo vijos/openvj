@@ -13,6 +13,7 @@ namespace VJ\User;
 use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
+use VJ\VJ;
 
 class RememberMeEncoder
 {
@@ -67,7 +68,7 @@ class RememberMeEncoder
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
-        $token = Application::get('random')->generateString(32);
+        $token = Application::get('random')->generateString(32, VJ::RANDOM_CHARS);
         return (int)$uid . '|' . (int)$expire . '|' . $token;
     }
 

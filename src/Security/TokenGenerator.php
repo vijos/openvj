@@ -13,6 +13,7 @@ namespace VJ\Security;
 use Respect\Validation\Validator;
 use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
+use VJ\VJ;
 
 class TokenGenerator
 {
@@ -44,7 +45,7 @@ class TokenGenerator
             throw new InvalidArgumentException('expireAt', 'type_invalid');
         }
 
-        $token = Application::get('random')->generateString($length);
+        $token = Application::get('random')->generateString($length, VJ::RANDOM_CHARS);
 
         try {
             $result = Application::coll('Token')->update([

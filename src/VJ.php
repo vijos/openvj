@@ -40,11 +40,32 @@ class VJ
     const TAG_MIN = 1;
     const TAG_MAX = 15;
 
+    const RANDOM_CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     const DOMAIN_GLOBAL = '000000000000000000000000';
 
     public static function bootstrap()
     {
         Application::Instance();
+        Application::get('templating')->addFunction(new \Twig_SimpleFunction('url', function ($relative) {
+            return VJ::makeUrl($relative);
+        }));
+    }
+
+    /**
+     * 生成完整 URL 地址
+     *
+     * @param string $relative
+     * @return string
+     */
+    public static function makeUrl($relative)
+    {
+        if (Application::getConfig('security.enforce_https')) {
+            $prefix = 'https://';
+        } else {
+            $prefix = 'http://';
+        }
+        return $prefix . Application::getConfig('canonical') . $relative;
     }
 
     /**
