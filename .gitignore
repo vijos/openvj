@@ -8,6 +8,10 @@
 /app/config/*.crt
 /app/config/*.key
 /app/config/*.p12
+/web/bower_components
+/web/node_modules
+/web/css/dest
+/web/js/dest
 /.idea/
 !.gitkeep
 .DS_Store
