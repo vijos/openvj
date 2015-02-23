@@ -333,6 +333,11 @@ class Application
                 'cache' => self::$CACHE_DIRECTORY,
                 'debug' => self::get('config')['debug'],
             ]);
+
+            $twig->addFunction(new \Twig_SimpleFunction('trans', function ($id, ...$argv) {
+                return Application::get('i18n')->trans($id, $argv);
+            }));
+
             return $twig;
         });
     }
