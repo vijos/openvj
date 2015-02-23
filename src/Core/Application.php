@@ -135,7 +135,7 @@ class Application
             $cache = new ConfigCache($cachePath, true);
             if (!$cache->isFresh()) {
                 $resources = [];
-                $data = array_merge_recursive(
+                $data = array_merge(
                     self::loadConfigFile('config.yml', $resources),
                     self::loadConfigFile('db.yml', $resources),
                     self::loadConfigFile('routing.yml', $resources),
@@ -147,7 +147,7 @@ class Application
         } else {
             // initialize other things
             $resources = [];
-            self::$resources = array_merge_recursive(
+            self::$resources = array_merge(
                 ['debug' => false],
                 self::loadConfigFile('routing.yml', $resources),
                 self::loadConfigFile('service.yml', $resources)
@@ -156,13 +156,13 @@ class Application
         if (MODE_TEST) {
             $resources = [];
             if (file_exists(self::$CONFIG_DIRECTORY . '/config-test.yml')) {
-                self::$resources = array_merge_recursive(
+                self::$resources = array_merge(
                     self::$resources,
                     self::loadConfigFile('config-test.yml', $resources)
                 );
             }
             if (file_exists(self::$CONFIG_DIRECTORY . '/db-test.yml')) {
-                self::$resources = array_merge_recursive(
+                self::$resources = array_merge(
                     self::$resources,
                     self::loadConfigFile('db-test.yml', $resources)
                 );

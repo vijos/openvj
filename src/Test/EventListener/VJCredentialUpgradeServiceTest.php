@@ -22,7 +22,7 @@ class VJCredentialUpgradeServiceTest extends \PHPUnit_Framework_TestCase
     public function getMongoConnection()
     {
         $connection = new Connector(Application::get('mongo_client'));
-        $connection->setDb(Application::get('config')['mongodb']['db'] . (MODE_TEST ? '-test' : ''));
+        $connection->setDb(Application::get('config')['mongodb']['db']);
         return $connection;
     }
 
