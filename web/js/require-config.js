@@ -1,7 +1,9 @@
 require.config({
   baseUrl: '/',
   shim: {
-
+    foundation: {
+      deps: ['jquery', 'modernizr']
+    }
   },
   paths: {
     openvj: 'js/dest',

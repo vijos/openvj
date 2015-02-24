@@ -1,4 +1,6 @@
-define ['jquery'], ($) ->
+define ['jquery', 'foundation'], ($) ->
+
+    $(document).ready -> $(document).foundation()
 
     $.fn.serializeObject = ->
         o = {}
@@ -11,6 +13,9 @@ define ['jquery'], ($) ->
                 o[@name] = @value || ''
         
         return o
+
+    $.fn.disableForm = -> @.find(':input:enabled').prop('disabled', true).addClass('form-disable')
+    $.fn.enableForm = -> @.find(':input.form-disable').prop('disabled', false).removeClass('form-disable')
     
     # append CSRF token on every ajax request
     if CSRFToken?

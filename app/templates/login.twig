@@ -23,11 +23,5 @@
 </div>
 {% endblock %}
 {% block footer %}
-<script>
-require(['jquery', 'openvj/page/login', 'modernizr', 'foundation', 'foundation/foundation.alert'], function($) {
-    $(document).ready(function() {
-        $(document).foundation();
-    });
-});
-</script>
+<script>require(['openvj/page/login']);</script>
 {% endblock %}

@@ -1,5 +1,5 @@
-define ['openvj/core', 'jquery'], (VJ, $) ->
-
+define ['openvj/core', 'jquery', 'openvj/twig'], (VJ, $, twig) ->
+    
     isFormValid = ->
         email = $('.role-email').val()
         return false if email.length is 0
@@ -11,7 +11,15 @@ define ['openvj/core', 'jquery'], (VJ, $) ->
         $('.role-email-error').hide()
 
     $('.role-reg-form').on 'submit', (event) ->
+        event.preventDefault()
         if not isFormValid()
             $('.role-email-error').show()
             $('.role-email').focus()
-            event.preventDefault()
+            return
+        email = $('.role-email').val()
+        $(@).disableForm()
+        $
+        .post '/reg', email: email
+        .done -> $('.reg-form').html twig.renderTag('template-email-sent', {email: email})
+        .fail (xhr) -> alert xhr.responseJSON.message
+        .always => $(@).enableForm()
