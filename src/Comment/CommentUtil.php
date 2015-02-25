@@ -39,7 +39,7 @@ class CommentUtil
      * @return array
      * @throws InvalidArgumentException
      */
-    public static function getComment($ref, \MongoId $after = null)
+    public static function queryComment($ref, \MongoId $after = null)
     {
         if (!is_string($ref)) {
             throw new InvalidArgumentException('ref', 'type_invalid');

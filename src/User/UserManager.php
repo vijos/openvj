@@ -194,7 +194,7 @@ class UserManager
         }
 
         // 检查密码
-        if (!Validator::length(5, 30)->validate($password)) {
+        if (!Validator::length(0, 50)->validate($password)) {
             throw new InvalidArgumentException('password', 'format_invalid');
         }
 

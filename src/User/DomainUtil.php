@@ -47,6 +47,6 @@ class DomainUtil
      */
     public static function isGlobalDomainId(\MongoId $domainId)
     {
-        return $domainId->id === VJ::DOMAIN_GLOBAL;
+        return (string)$domainId === VJ::DOMAIN_GLOBAL;
     }
 }

@@ -45,7 +45,7 @@ trait RouteTrait
                 $controller = new $handler['className']($request, $response);
 
                 $ret = call_user_func([$controller, $handler['actionName']], $vars);
-                if (headers_sent()) {
+                if (headers_sent() || $ret === null) {
                     return;
                 }
 

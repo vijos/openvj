@@ -93,7 +93,7 @@ class KeywordFilter
      */
     public static function isContainGeneric($text)
     {
-        return Application::get(self::class)->contains($text, 'general', function () {
+        return Application::get('keyword_filter')->contains($text, 'general', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);
@@ -113,7 +113,7 @@ class KeywordFilter
      */
     public static function isContainName($text)
     {
-        return Application::get(self::class)->contains($text, 'name', function () {
+        return Application::get('keyword_filter')->contains($text, 'name', function () {
             $rec = Application::coll('System')->findOne([
                 '_id' => 'FilterKeyword'
             ]);
