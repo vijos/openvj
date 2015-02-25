@@ -1,0 +1,35 @@
+{% extends "extend.twig" %}
+{% block body %}
+<div class="row">
+    <div class="medium-4 medium-centered columns">
+        <div class="reg-verified-form">
+            <form action="/reg/complete" method="POST" accept-charset="utf-8" class="role-reg-form">
+                <input type="hidden" name="sign_email" value="{{ SIGN_EMAIL }}">
+                <input type="hidden" name="token" value="{{ TOKEN }}">
+                <input type="hidden" name="sign_token" value="{{ SIGN_TOKEN }}">
+                <div class="row"><div class="large-12 columns">
+                    <label>注册邮箱（不会显示给其他人）<input type="text" name="email" value="{{ EMAIL }}" readonly></label>
+                </div></div>
+                <div class="row"><div class="large-12 columns">
+                    <label>用户名，长度 3~16 位，不能包含空格<input type="text" name="username" value="" placeholder="用户名" class="role-username"></label>
+                </div></div>
+                <div class="row"><div class="large-12 columns">
+                    <label>密码，长度 0~50 位<input type="password" name="password" value=""></label>
+                </div></div>
+                <div class="row"><div class="large-12 columns">
+                    <label>请再输入一次密码<input type="password" name="passwordRepeat" value=""></label>
+                </div></div>
+                <div class="row"><div class="large-12 columns text-center">
+                    <input type="submit" class="button role-reg-complete" value="注册">
+                </div></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/x-twig-template" id="template-error">{% verbatim %}
+
+{% endverbatim %}</script>
+{% endblock %}
+{% block footer %}
+<script>require(['openvj/page/regVerified']);</script>
+{% endblock %}

@@ -7,6 +7,8 @@ page:
         form_login: 登录
     reg:
         title: 注册
+        verified:
+            title: 完成注册
 
 email:
     reg_validation:
@@ -20,13 +22,19 @@ error:
         UserCredential:
             checkPasswordCredential:
                 user_not_valid: 该用户不存在
+        UserManager:
+            createUser:
+                user_exists: 该用户名已存在
         controller:
-            registration:
+            reg:
                 invalid_email: Email 地址无效，请输入有效的 Email 地址
                 duplicate_email: 抱歉，该 Email 已被用于其他账号
+                invalid_token: 该验证链接已失效，请重新验证
+                password_mismatch: 两次密码输入不一致
     msg:
         too_short:          参数长度过短
         type_invalid:       参数类型无效
         value_invalid:      参数取值无效
         format_invalid:     参数格式无效
         encoding_invalid:   参数编码无效
+        sign_invalid:       参数校验失败
