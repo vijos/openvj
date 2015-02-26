@@ -69,7 +69,7 @@ class DomainManager
             'uid' => $uid
         ], [
             '$addToSet' => [
-                'd.' . $domainId->id => 'DOMAIN_MEMBER'
+                'd.' . (string)$domainId => 'DOMAIN_MEMBER'
             ]
         ], [
             'upsert' => true
