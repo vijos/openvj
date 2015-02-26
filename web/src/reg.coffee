@@ -18,15 +18,10 @@ define ['vj/core', 'vj/twig'], (VJ, twig) ->
         if not isFormValid()
             $('.role-email').focus()
             return
-        $(@).disableForm()
+
         email = $('.role-email').val()
-        $
-        .post '/reg', email: email
-        .always => $(@).enableForm()
+        $(@)
+        .post '/reg'
         .done -> $('.role-target').html twig.renderTag('template-email-sent', email: email)
-        .fail (xhr) ->
-            $('.role-email').showLabel(xhr.responseJSON.message, 'red').focus()
-            setTimeout ->
-                $('.role-email').focus()
-            , 0
+        .fail (xhr) -> $('.role-email').showLabel(xhr.responseJSON.message, 'red').focus()
     

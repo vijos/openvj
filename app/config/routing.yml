@@ -11,10 +11,6 @@ routing:
         path: /reg
         methods: [GET, POST]
         controller: index:registration
-    reg_check:
-        path: /reg/check
-        methods: [GET]
-        controller: index:registrationCheck
     reg_complete:
         path: /reg/complete
         methods: [POST]

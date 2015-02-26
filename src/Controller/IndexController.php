@@ -121,29 +121,11 @@ class IndexController extends Controller
             throw new InvalidArgumentException('token', 'sign_invalid');
         }
 
-        $uid = Application::get('user_manager')->createUser($username, $password, $email);
+        Application::get('user_manager')->createUser($username, $password, $email);
         Application::get('token_generator')->invalidate('reg', $token);
-        return $uid;
-    }
-
-    public function registrationCheckAction()
-    {
-        $username = $this->request->query->get('username');
-        if ($username !== null) {
-            $user = UserUtil::getUserByUsername($username);
-            if ($user === null) {
-                $this->json([]);
-                return null;
-            } else {
-                $this->json([
-                    'taken' => true
-                ]);
-                return null;
-            }
-        } else {
-            $this->json([]);
-            return null;
-        }
+        Application::get('user_manager')->interactiveLogin($username, $password);
+        $this->response->json([]);
+        return null;
     }
 
     public function registrationVerifiedAction(array $params)

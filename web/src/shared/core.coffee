@@ -12,14 +12,36 @@ define 'vj/core', [], ->
         
         return o
 
-    $.fn.disableForm = -> @.find(':input:enabled').prop('disabled', true).addClass('form-disable')
-    $.fn.enableForm = -> @.find(':input.form-disable').prop('disabled', false).removeClass('form-disable')
+    $.fn.disableForm = ->
+        @.find(':input:enabled').prop('disabled', true).addClass('form-disable')
+        
+    $.fn.enableForm = ->
+        @.find(':input.form-disable').prop('disabled', false).removeClass('form-disable')
+
+    $.fn.freezeForm = ->
+        document.activeElement.blur()
+        @.addClass('loading')
+
+    $.fn.unfreezeForm = ->
+        @.removeClass('loading')
+
+    $.fn.post = (url, data) ->
+        data = @.serializeObject() if not data?
+        @.disableForm()
+        $
+        .post(url, data)
+        .always => @.enableForm()
+
+    $.fn.focusAsync = ->
+        setTimeout =>
+            @.focus()
+        , 1000
 
     $.fn.showLabel = (text, type = '') ->
         $element = $(@)
-        return if not $element.hasClass('input') and not $element.hasClass('checkbox') and not $element.is('input')
+        return @ if not $element.hasClass('input') and not $element.hasClass('checkbox') and not $element.is('input')
         $field = $(@).closest('.field')
-        return if $field.length is 0
+        return @ if $field.length is 0
         position = $field.position()
         position.top += $field.height()
         $label = $field.children('.ui.label.absolute')
@@ -30,14 +52,15 @@ define 'vj/core', [], ->
             top: position.top
             opacity: 1
         , easing: 'easeOutCubic'
+        @
 
     $.fn.hideLabel = ->
         $element = $(@)
-        return if not $element.hasClass('input') and not $element.hasClass('checkbox') and not $element.is('input')
+        return @ if not $element.hasClass('input') and not $element.hasClass('checkbox') and not $element.is('input')
         $field = $(@).closest('.field')
-        return if $field.length is 0
+        return @ if $field.length is 0
         $label = $field.children('.ui.label.absolute:not(.hiding)')
-        return if $label.length is 0
+        return @ if $label.length is 0
         position = $field.position()
         position.top += $field.height()
         $label.velocity('stop').addClass('hiding').velocity
@@ -47,6 +70,7 @@ define 'vj/core', [], ->
             duration: 200
             easing: 'easeInCubic'
             complete: -> $label.remove()
+        @
     
     # append CSRF token on every ajax request
     if CSRFToken?

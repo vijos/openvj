@@ -41,9 +41,17 @@
                         <i class="right checkmark icon"></i>完成注册
                     </button>
                 </div>
-                
             </form>
         </div>
+        <script type="text/x-twig-template" id="template-complete">{% verbatim %}
+        <div class="ui ignored positive message">
+            <p>您的账户已创建，即将为您跳转到首页。您可以通过以下两种方式登录：</p>
+            <ul class="list">
+              <li>邮箱：{{ email }}</li>
+              <li>用户名：{{ username }}</li>
+            </ul>
+        </div>
+        {% endverbatim %}</script>
     </div>
 </div>
 {% endblock %}
