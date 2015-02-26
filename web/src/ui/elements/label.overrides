@@ -1,0 +1,7 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.label.absolute {
+    position: absolute;
+    z-index: 2;
+}

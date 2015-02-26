@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ TITLE }}</title>
-    <link rel="stylesheet" href="/css/dest/normalize.css">
-    <link rel="stylesheet" href="/css/dest/foundation.css">
-    <link rel="stylesheet" href="/css/dest/openvj.css">
-    {% block head %}{% endblock %}
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/page.css">
+{% block head %}{% endblock %}
 </head>
-<body>
+<body class="page-{{ PAGE_CLASS|default('generic') }}">
 {% block body %}{% endblock %}
-<script src="/bower_components/requirejs/require.js"></script>
-<script src="/js/require-config.js"></script>
+<script src="/static/lib/lib.js"></script>
+<script src="/static/lib/ui.js"></script>
+<script src="/static/lib/openvj.js"></script>
 {% block footer %}{% endblock %}
 </body>
 </html>

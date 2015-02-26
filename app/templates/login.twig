@@ -1,27 +1,40 @@
 {% extends "extend.twig" %}
+{% set PAGE_CLASS = 'login' %}
 {% block body %}
-<div class="row">
-    <div class="large-3 large-centered medium-4 medium-centered columns">
-        <div class="login-form"><form action="/login" method="POST" accept-charset="utf-8" class="role-login-form">
+<div class="login-form">
+    <form action="/login" method="POST" accept-charset="utf-8" class="role-login-form ui two column middle aligned relaxed stackable grid">
+    <div class="column"><div class="ui form">
 {% if ERROR is defined %}
-            <div data-alert class="alert-box alert">{{ ERROR }} <a href="#" class="close">&times;</a></div>
+        <div class="ui red message">{{ ERROR }}</div>
 {% endif %}
-            <div class="row"><div class="large-12 columns">
-                <input type="text" name="username" class="role-username" value="{{ POST.username|default('') }}" placeholder="{{ trans('page.login.form_username') }}">
-            </div></div>
-            <div class="row"><div class="large-12 columns">
-                <input type="password" name="password" class="role-password" placeholder="{{ trans('page.login.form_password') }}">
-            </div></div>
-            <div class="row"><div class="large-12 columns">
-                <input id="remember_me" name="remember_me" type="checkbox" value="enable"><label for="remember_me">{{ trans('page.login.form_rememberme') }}</label>
-            </div></div>
-            <div class="row"><div class="large-12 columns">
-                <input type="submit" class="button expand" value="{{ trans('page.login.form_login') }}">
-            </div></div>
-        </form></div>
+        <div class="field"><div class="ui icon input">
+            <input type="text" name="username" class="role-username" value="{{ POST.username|default('') }}" placeholder="{{ trans('page.login.form_username') }}">
+            <i class="user icon"></i>
+        </div></div>
+        <div class="field"><div class="ui icon input">
+            <input type="password" name="password" class="role-password" placeholder="{{ trans('page.login.form_password') }}">
+            <i class="lock icon"></i>
+        </div></div>
+        <div class="field"><div class="ui checkbox">
+            <input id="remember_me" name="remember_me" type="checkbox" value="enable"><label for="remember_me">{{ trans('page.login.form_rememberme') }}</label>
+        </div></div>
+        <div class="center aligned one column row">
+            <button type="submit" class="ui right labeled icon blue button">
+                <i class="right arrow icon"></i>{{ trans('page.login.form_login') }}
+            </button>
+        </div>
+    </div></div>
+    <div class="ui vertical divider">
+        Or
     </div>
+    <div class="center aligned column">
+        <a href="/reg" class="huge red ui labeled icon basic button">
+            <i class="signup icon"></i>注册
+        </a>
+    </div>
+    </form>
 </div>
 {% endblock %}
 {% block footer %}
-<script>require(['openvj/page/login']);</script>
+<script>require(['login']);</script>
 {% endblock %}

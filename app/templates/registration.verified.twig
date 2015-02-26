@@ -1,35 +1,52 @@
 {% extends "extend.twig" %}
+{% set PAGE_CLASS = 'reg' %}
 {% block body %}
-<div class="row">
-    <div class="medium-4 medium-centered columns">
-        <div class="reg-verified-form">
-            <form action="/reg/complete" method="POST" accept-charset="utf-8" class="role-reg-form">
+<div class="reg-verified-form">
+    <div class="ui one column grid">
+        <div class="column role-target">
+            <form action="/reg/complete" method="POST" accept-charset="utf-8" class="ui form role-reg-form">
+                <input type="hidden" name="email" value="{{ EMAIL }}">
                 <input type="hidden" name="sign_email" value="{{ SIGN_EMAIL }}">
                 <input type="hidden" name="token" value="{{ TOKEN }}">
                 <input type="hidden" name="sign_token" value="{{ SIGN_TOKEN }}">
-                <div class="row"><div class="large-12 columns">
-                    <label>注册邮箱（不会显示给其他人）<input type="text" name="email" value="{{ EMAIL }}" readonly></label>
-                </div></div>
-                <div class="row"><div class="large-12 columns">
-                    <label>用户名，长度 3~16 位，不能包含空格<input type="text" name="username" value="" placeholder="用户名" class="role-username"></label>
-                </div></div>
-                <div class="row"><div class="large-12 columns">
-                    <label>密码，长度 0~50 位<input type="password" name="password" value=""></label>
-                </div></div>
-                <div class="row"><div class="large-12 columns">
-                    <label>请再输入一次密码<input type="password" name="passwordRepeat" value=""></label>
-                </div></div>
-                <div class="row"><div class="large-12 columns text-center">
-                    <input type="submit" class="button role-reg-complete" value="注册">
-                </div></div>
+                <div class="field">
+                    <label>注册邮箱：{{ EMAIL }}</label>
+                </div>
+                <div class="field">
+                    <label>用户名，长度 3~16 位，不能包含空格</label>
+                    <div class="ui input">
+                        <input type="text" name="username" value="" placeholder="用户名" class="role-username">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>密码，长度 0~50 位</label>
+                    <div class="ui input">
+                        <input type="password" name="password" value="" class="role-password">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>再输入一遍密码</label>
+                    <div class="ui input">
+                        <input type="password" name="password-repeat" value="" class="role-password-repeat">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="accept" value="accept" class="role-accept">
+                        <label>接受 OpenVJ 用户许可</label>
+                    </div>
+                </div>
+                <div class="center aligned one column row">
+                    <button type="submit" class="ui right labeled icon green button role-reg-complete">
+                        <i class="right checkmark icon"></i>完成注册
+                    </button>
+                </div>
+                
             </form>
         </div>
     </div>
 </div>
-<script type="text/x-twig-template" id="template-error">{% verbatim %}
-
-{% endverbatim %}</script>
 {% endblock %}
 {% block footer %}
-<script>require(['openvj/page/regVerified']);</script>
+<script>require(['regVerified']);</script>
 {% endblock %}

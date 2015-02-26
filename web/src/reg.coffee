@@ -1,4 +1,4 @@
-define ['openvj/core', 'jquery', 'openvj/twig'], (VJ, $, twig) ->
+define ['vj/core', 'vj/twig'], (VJ, twig) ->
     
     isFormValid = ->
         email = $('.role-email').val()
@@ -6,20 +6,27 @@ define ['openvj/core', 'jquery', 'openvj/twig'], (VJ, $, twig) ->
         return false if not /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(email)
         return true
 
-    $('.role-email').on 'input', ->
+    $('.role-email')
+    .on 'input', ->
+        $(@).hideLabel()
+    .on 'input focus', ->
         $('.role-reg-sendmail').prop 'disabled', not isFormValid()
-        $('.role-email-error').hide()
+    .focus()
 
     $('.role-reg-form').on 'submit', (event) ->
         event.preventDefault()
         if not isFormValid()
-            $('.role-email-error').show()
             $('.role-email').focus()
             return
-        email = $('.role-email').val()
         $(@).disableForm()
+        email = $('.role-email').val()
         $
         .post '/reg', email: email
-        .done -> $('.reg-form').html twig.renderTag('template-email-sent', {email: email})
-        .fail (xhr) -> alert xhr.responseJSON.message
         .always => $(@).enableForm()
+        .done -> $('.role-target').html twig.renderTag('template-email-sent', email: email)
+        .fail (xhr) ->
+            $('.role-email').showLabel(xhr.responseJSON.message, 'red').focus()
+            setTimeout ->
+                $('.role-email').focus()
+            , 0
+    

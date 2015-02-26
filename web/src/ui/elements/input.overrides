@@ -1,0 +1,10 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.input.focus input:read-write,
+.ui.input input:read-write:focus  {
+  border-color: @focusBorderColor;
+  background: @focusBackground;
+  color: @focusColor;
+  box-shadow: @focusBoxShadow;
+}

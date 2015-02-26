@@ -106,7 +106,7 @@ class IndexController extends Controller
             throw new MissingArgumentException('username');
         }
         $password = $this->request->request->get('password');
-        $passwordRepeat = $this->request->request->get('passwordRepeat');
+        $passwordRepeat = $this->request->request->get('password-repeat');
         if ($password !== $passwordRepeat) {
             throw new UserException('controller.reg.password_mismatch');
         }

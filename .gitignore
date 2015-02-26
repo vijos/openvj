@@ -12,6 +12,7 @@
 /web/node_modules
 /web/css/dest
 /web/js/dest
+/web/static
 /.idea/
 !.gitkeep
 .DS_Store

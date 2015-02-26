@@ -1,4 +1,4 @@
-define ['twig'], (twig) ->
+define 'vj/twig', ['twig'], (twig) ->
     
     renderTag = (id, params) ->
         templateStr = document.getElementById(id).innerHTML
