@@ -146,4 +146,10 @@ class IndexController extends Controller
             'SIGN_TOKEN' => Application::get('message_signer')->sign($params['token']),
         ]);
     }
+
+    public function logoutAction()
+    {
+        Application::get('user_manager')->logout();
+        $this->response->redirect('/');
+    }
 }

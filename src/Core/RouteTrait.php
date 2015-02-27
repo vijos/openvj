@@ -30,7 +30,14 @@ trait RouteTrait
             return;
         }
 
-        $route = $dispatcher->dispatch($request->getMethod(), $request->getRequestUri());
+        $urlParts = parse_url($request->getRequestUri());
+        $route = $dispatcher->dispatch($request->getMethod(), $urlParts['path']);
+
+        // 0: Dispatch Status, 1: handler, 2: vars
+        Application::emit('route.dispatch', $route);
+        if (headers_sent()) {
+            return;
+        }
 
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:

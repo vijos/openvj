@@ -67,9 +67,19 @@ class UserSession extends Session
     /**
      * 为当前 SESSION 生成 CSRFToken
      */
-    public function generateCSRFToken()
+    public function generateCsrfToken()
     {
         $this->set('csrfToken', Application::get('random')->generateString(30, VJ::RANDOM_CHARS));
+    }
+
+    /**
+     * 获取当前 SESSION 的 CSRFToken
+     *
+     * @return string
+     */
+    public function getCsrfToken()
+    {
+        return $this->get('csrfToken', str_repeat('0', 30));
     }
 
     /**
@@ -86,7 +96,7 @@ class UserSession extends Session
                 'user' => 'Guest',
                 'mail' => 'guest@openvj.org',
                 'g' => 'guest@openvj.org',
-                'csrfToken' => str_repeat('0', 30)
+                'csrfToken' => $this->getCsrfToken()
             ];
         } else {
             return [
@@ -94,7 +104,7 @@ class UserSession extends Session
                 'user' => $user['user'],
                 'mail' => $user['mail'],
                 'g' => $user['g'],
-                'csrfToken' => $this->get('csrfToken', str_repeat('0', 30))
+                'csrfToken' => $this->getCsrfToken()
             ];
         }
     }

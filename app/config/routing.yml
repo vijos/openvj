@@ -19,3 +19,9 @@ routing:
         path: /reg/{token}
         methods: [GET]
         controller: index:registrationVerified
+    logout:
+        path: /logout
+        methods: [GET]
+        controller: index:logout
+        data:
+            csrf: true

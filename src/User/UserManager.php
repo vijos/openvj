@@ -59,7 +59,7 @@ class UserManager
     {
         $this->session->start();
         $this->session->invalidate();
-        $this->session->generateCSRFToken();
+        $this->session->generateCsrfToken();
         $this->session->set('user', $user);
         $this->session->set('loginType', $from);
     }

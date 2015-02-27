@@ -14,6 +14,11 @@ service:
         events: ['route.dispatch.before']
         class: \VJ\EventListener\RememberMeLoginService
 
+    csrf_checking_service:
+        arguments: [@request, @user_session]
+        events: ['route.dispatch']
+        class: \VJ\EventListener\CsrfTokenCheckingService
+
     login_log_service:
         arguments: [@request]
         events: ['user.login.succeeded', 'user.login.failed.wrong_password']

@@ -19,6 +19,7 @@ error:
         not_found: 该页面未找到
         missing_argument: 缺少参数 %name%
         invalid_argument: 无效参数 %name%：%msg%
+        invalid_csrf_token: CSRF token 无效
         UserCredential:
             checkPasswordCredential:
                 user_not_valid: 该用户不存在

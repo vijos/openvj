@@ -314,7 +314,8 @@ class Application
                             'controller' => strtolower($controller),
                             'action' => $action,
                             'className' => '\\VJ\\Controller\\' . ucfirst(strtolower($controller)) . 'Controller',
-                            'actionName' => $action . 'Action'
+                            'actionName' => $action . 'Action',
+                            'routeData' => isset($rule['data']) ? $rule['data'] : null
                         ]);
                     }
                 }
