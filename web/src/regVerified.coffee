@@ -54,7 +54,10 @@ define ['vj/core', 'vj/twig'], (VJ, twig) ->
                 email: form.email
                 username: form.username
             )
+            $('.reg-verified-form').addClass('completed')
+            
             setTimeout ->
                 window.location = '/'
-            , 2000
+            , 4000
+            
         .fail (xhr) -> $('.role-username').showLabel(xhr.responseJSON.message, 'red').focus()
