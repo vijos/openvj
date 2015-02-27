@@ -5,7 +5,3 @@ define ['vj/core'], (VJ) ->
             $('.role-username').focus()
             event.preventDefault()
             return
-        if form.password.length is 0
-            $('.role-password').focus()
-            event.preventDefault()
-            return
