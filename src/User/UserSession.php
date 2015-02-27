@@ -14,6 +14,7 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Respect\Validation\Validator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use VJ\Core\Application;
 use VJ\VJ;
 
 class UserSession extends Session
@@ -61,5 +62,40 @@ class UserSession extends Session
             return VJ::USER_ID_GUEST;
         }
         return (int)$user['uid'];
+    }
+
+    /**
+     * 为当前 SESSION 生成 CSRFToken
+     */
+    public function generateCSRFToken()
+    {
+        $this->set('csrfToken', Application::get('random')->generateString(30, VJ::RANDOM_CHARS));
+    }
+
+    /**
+     * 返回当前 SESSION 的用户信息对象（含 Guest）
+     *
+     * @return array
+     */
+    public function getUser()
+    {
+        $user = $this->get('user');
+        if ($user === null) {
+            return [
+                'uid' => VJ::USER_ID_GUEST,
+                'user' => 'Guest',
+                'mail' => 'guest@openvj.org',
+                'g' => 'guest@openvj.org',
+                'csrfToken' => str_repeat('0', 30)
+            ];
+        } else {
+            return [
+                'uid' => $user['uid'],
+                'user' => $user['user'],
+                'mail' => $user['mail'],
+                'g' => $user['g'],
+                'csrfToken' => $this->get('csrfToken', str_repeat('0', 30))
+            ];
+        }
     }
 }

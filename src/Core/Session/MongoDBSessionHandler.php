@@ -114,7 +114,7 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
             return '';
         }
 
-        if ($record['expireat']->sec > time()) {
+        if ($record['expireat']->sec < time()) {
             return '';
         }
 

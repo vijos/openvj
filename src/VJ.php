@@ -50,6 +50,9 @@ class VJ
         Application::get('templating')->addFunction(new \Twig_SimpleFunction('url', function ($relative) {
             return VJ::makeUrl($relative);
         }));
+        Application::get('templating')->addFunction(new \Twig_SimpleFunction('getUser', function () {
+            return Application::get('user_session')->getUser();
+        }));
     }
 
     /**

@@ -9,6 +9,11 @@ service:
         events: ['route.dispatch.before']
         class: \VJ\EventListener\HttpsRedirectionService
 
+    rememberme_login_service:
+        arguments: [@user_manager]
+        events: ['route.dispatch.before']
+        class: \VJ\EventListener\RememberMeLoginService
+
     login_log_service:
         arguments: [@request]
         events: ['user.login.succeeded', 'user.login.failed.wrong_password']

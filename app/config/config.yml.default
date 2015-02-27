@@ -19,6 +19,7 @@ security:
 session:
     name: VJSESS
     ttl: 21600 # 6 hours
+    remember_token: REMEMBER_TOKEN
     remember_ttl: 2592000 # 30 days
 
 background:

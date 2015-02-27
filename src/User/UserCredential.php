@@ -99,7 +99,7 @@ class UserCredential
             throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
         }
 
-        if ($record['expireat']->sec <= time()) {
+        if ($record['expireat']->sec < time()) {
             throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
         }
 

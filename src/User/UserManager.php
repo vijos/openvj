@@ -57,6 +57,9 @@ class UserManager
      */
     private function prepareLoginSessionByObject(array $user, $from)
     {
+        $this->session->start();
+        $this->session->invalidate();
+        $this->session->generateCSRFToken();
         $this->session->set('user', $user);
         $this->session->set('loginType', $from);
     }
@@ -78,6 +81,7 @@ class UserManager
         if (!is_string($password)) {
             throw new InvalidArgumentException('password', 'type_invalid');
         }
+
         $user = $this->user_credential->checkPasswordCredential($usernameEmail, $password);
         if ($remember) {
             $this->generateRememberMeTokenForObject($user);
@@ -86,6 +90,18 @@ class UserManager
         $this->prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_INTERACTIVE);
 
         return $user;
+    }
+
+    /**
+     * 用户是否提供了 REMEMBERME_TOKEN
+     *
+     * @return bool
+     */
+    public function isRememberMeTokenProvided()
+    {
+        $token_field = Application::get('config')['session']['remember_token'];
+        $clientToken = $this->request->cookies->get($token_field);
+        return ($clientToken !== null);
     }
 
     /**
@@ -148,7 +164,27 @@ class UserManager
             $expire
         );
         $this->request->cookies->set($token_field, $clientToken);
-        $this->response->headers->setCookie(new Cookie($token_field, $clientToken));
+        $this->response->headers->setCookie(new Cookie($token_field, $clientToken, $expire));
+    }
+
+    /**
+     * 用户是否已登录
+     *
+     * @return bool
+     */
+    public function isLoggedIn()
+    {
+        return $this->session->get('user') !== null;
+    }
+
+    /**
+     * 登出用户当前会话
+     */
+    public function logout()
+    {
+        // 如果有已记忆会话，需要清除
+        $this->invalidateRememberMeToken();
+        $this->session->invalidate();
     }
 
     /**
