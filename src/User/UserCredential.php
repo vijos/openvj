@@ -147,6 +147,7 @@ class UserCredential
             'token' => $token['token'],
             'ua' => $userAgent,
             'ip' => $ip,
+            'at' => new \MongoDate(),
             'expireat' => new \MongoDate((int)$expire),
         ]);
 

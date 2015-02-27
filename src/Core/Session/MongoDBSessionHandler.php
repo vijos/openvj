@@ -86,6 +86,11 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
         $new_data = $_SESSION;
         $_SESSION = $tmp;
 
+        // we don't save empty sessions
+        if (isset($new_data['_sf2_attributes']) && count($new_data['_sf2_attributes']) === 0) {
+            return true;
+        }
+
         $this->collection->update([
             '_id' => $this->encodeSessionId($sessionId)
         ], [
