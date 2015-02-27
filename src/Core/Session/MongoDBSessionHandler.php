@@ -81,11 +81,16 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
      */
     public function write($sessionId, $data)
     {
+        $tmp = $_SESSION;
+        session_decode($data);
+        $new_data = $_SESSION;
+        $_SESSION = $tmp;
+
         $this->collection->update([
             '_id' => $this->encodeSessionId($sessionId)
         ], [
             '$set' => [
-                'data' => unserialize($data),   // we use MongoDB native data storage
+                'data' => $new_data,   // we use MongoDB native data storage
                 'expireat' => new \MongoDate(time() + $this->ttl),
             ]
         ], [
@@ -113,6 +118,10 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
             return '';
         }
 
-        return serialize($record['data']);
+        $tmp = $_SESSION;
+        $_SESSION = $record['data'];
+        $new_data = session_encode();
+        $_SESSION = $tmp;
+        return $new_data;
     }
 }
