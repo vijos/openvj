@@ -1,7 +1,11 @@
 OpenVJ
 ======
 
-OpenVJ is a next-generation open-source online judge (OJ) system. It is developed and maintained by Vijos, supported by Beijing NO.80 High School and Shanghai Tongji University.
+OpenVJ is a next-generation open-source online judge (OJ) system. It is developed and maintained by Vijos, supported by:
+
+* High School Attached to Hunan Normal University
+* Beijing NO.80 High School
+* Shanghai Tongji University
 
 # Important Notice
 
