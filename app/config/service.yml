@@ -1,4 +1,9 @@
 service:
+    access_limiting_service:
+        arguments: [@request, @response, @individual_recognizer, @redis]
+        events: ['route.dispatch.before']
+        class: \VJ\EventListener\AccessLimitingService
+
     vj_redirection_service:
         arguments: [@request, @response, %canonical, %security.enforce_https]
         events: ['route.dispatch.before']
@@ -28,6 +33,10 @@ service:
         arguments: [@user_credential]
         events: ['user.login.succeeded']
         class: \VJ\EventListener\VJCredentialUpgradeService
+
+    individual_recognizer:
+        arguments: [@request, @user_session]
+        class: \VJ\Security\IndividualRecognizer
 
     keyword_filter:
         arguments: [@redis]

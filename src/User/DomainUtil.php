@@ -10,6 +10,9 @@
 
 namespace VJ\User;
 
+use Respect\Validation\Validator;
+use VJ\Core\Application;
+use VJ\Core\Exception\InvalidArgumentException;
 use VJ\VJ;
 
 class DomainUtil
@@ -48,5 +51,33 @@ class DomainUtil
     public static function isGlobalDomainId(\MongoId $domainId)
     {
         return (string)$domainId === VJ::DOMAIN_GLOBAL;
+    }
+
+    /**
+     * 获取用户所在域
+     *
+     * @param $uid
+     * @return \MongoId[]|null
+     * @throws InvalidArgumentException
+     */
+    public static function getUserDomains($uid)
+    {
+        if (!Validator::int()->validate($uid)) {
+            throw new InvalidArgumentException('uid', 'type_invalid');
+        }
+
+        $record = Application::coll('UserRole')->findOne([
+            'uid' => (int)$uid
+        ]);
+
+        // user not found
+        if ($record === null) {
+            return null;
+        }
+
+        $domainIds = array_keys($record['d']);
+        return array_map(function ($id) {
+            return new \MongoId($id);
+        }, $domainIds);
     }
 }
