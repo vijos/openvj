@@ -83,6 +83,16 @@ class UserSession extends Session
     }
 
     /**
+     * 当前 SESSION 是否是 guest session
+     *
+     * @return bool
+     */
+    public function isGuest()
+    {
+        return $this->get('user') === null;
+    }
+
+    /**
      * 返回当前 SESSION 的用户信息对象（含 Guest）
      *
      * @return array
