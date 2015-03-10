@@ -14,6 +14,14 @@ use VJ\Security\MessageSigner;
 
 class MessageSignerTest extends \PHPUnit_Framework_TestCase
 {
+    public function testVerifyInvalidSign()
+    {
+        $signer = new MessageSigner('sha256', 'a_secret');
+        $this->assertFalse($signer->verify(null, null));
+        $this->assertFalse($signer->verify(0, null));
+        $this->assertFalse($signer->verify(0, 0));
+    }
+
     public function testSignAndVerifyMessage()
     {
         $signer = new MessageSigner('sha256', 'a_secret');
