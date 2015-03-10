@@ -21,7 +21,7 @@ define ['vj/core', 'vj/twig'], (VJ, twig) ->
 
         email = $('.role-email').val()
         $(@)
-        .post '/reg'
+        .post '/reg/send'
         .done -> $('.role-target').html twig.renderTag('template-email-sent', email: email)
         .fail (xhr) -> $('.role-email').showLabel(xhr.responseJSON.message, 'red').focus()
     

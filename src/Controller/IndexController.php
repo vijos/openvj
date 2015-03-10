@@ -58,45 +58,46 @@ class IndexController extends Controller
 
     public function registrationAction()
     {
-        if ($this->request->getMethod() === 'GET') {
-            return $this->render('registration.twig', [
-                'TITLE' => Application::trans('page.reg.title')
-            ]);
-        } else {
-            $email = $this->request->request->get('email');
-            if ($email === null) {
-                throw new MissingArgumentException('email');
-            }
-            if (!Validator::email()->validate($email)) {
-                throw new UserException('controller.reg.invalid_email');
-            }
-            if (UserUtil::getUserObjectByEmail($email) !== null) {
-                throw new UserException('controller.reg.duplicate_email');
-            }
+        return $this->render('registration.twig', [
+            'TITLE' => Application::trans('page.reg.title')
+        ]);
+    }
 
-            // generate one-time token
-            $token = Application::get('token_generator')->generate(
-                'reg',
-                UserUtil::canonicalizeEmail($email),
-                time() + 4 * 60 * 60,
-                [
-                    'email' => $email
-                ]
-            )['token'];
-
-            // send token
-            Application::get('mail_sender')->sendVerification(
-                [$email],
-                Application::trans('email.reg_validation.subject'),
-                'email/reg_validation.twig',
-                [
-                    'TOKEN' => $token,
-                    'EMAIL' => $email,
-                ]
-            );
-            $this->response->json([]);
-            return null;
+    public function registrationSendMailAction()
+    {
+        $email = $this->request->request->get('email');
+        if ($email === null) {
+            throw new MissingArgumentException('email');
         }
+        if (!Validator::email()->validate($email)) {
+            throw new UserException('controller.reg.invalid_email');
+        }
+        if (UserUtil::getUserObjectByEmail($email) !== null) {
+            throw new UserException('controller.reg.duplicate_email');
+        }
+
+        // generate one-time token
+        $token = Application::get('token_generator')->generate(
+            'reg',
+            UserUtil::canonicalizeEmail($email),
+            time() + 4 * 60 * 60,
+            [
+                'email' => $email
+            ]
+        )['token'];
+
+        // send token
+        Application::get('mail_sender')->sendVerification(
+            [$email],
+            Application::trans('email.reg_validation.subject'),
+            'email/reg_validation.twig',
+            [
+                'TOKEN' => $token,
+                'EMAIL' => $email,
+            ]
+        );
+        $this->response->json([]);
+        return null;
     }
 
     public function registrationCompleteAction()

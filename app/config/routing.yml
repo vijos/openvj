@@ -9,8 +9,12 @@ routing:
         controller: index:login
     reg:
         path: /reg
-        methods: [GET, POST]
+        methods: [GET]
         controller: index:registration
+    reg_send:
+        path: /reg/send
+        methods: [POST]
+        controller: index:registrationSendMail
     reg_complete:
         path: /reg/complete
         methods: [POST]
