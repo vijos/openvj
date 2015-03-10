@@ -21,7 +21,7 @@ class KeywordFilter
      * @param \Redis $redis
      * @param string $prefix
      */
-    public function __construct(\Redis $redis, $prefix = 'naive-filter-')
+    public function __construct(\Redis $redis, $prefix = 'CACHE:FILTER')
     {
         $this->redis = $redis;
         $this->prefix = $prefix;
@@ -37,7 +37,7 @@ class KeywordFilter
      */
     public function contains($text, $cacheKey, callable $miss)
     {
-        $value = $this->redis->get($this->prefix . $cacheKey);
+        $value = $this->redis->hget($this->prefix, $cacheKey);
         if ($value === false) {
             // Haven't found data in the cache, we need to build the tree
             $tree = array();
@@ -58,7 +58,7 @@ class KeywordFilter
                 }
                 $tree[$ptr] = -1;
             }
-            $this->redis->set($this->prefix . $cacheKey, serialize($tree));
+            $this->redis->hset($this->prefix, $cacheKey, serialize($tree));
         } else {
             $tree = unserialize($value);
         }
