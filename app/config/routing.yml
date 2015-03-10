@@ -23,5 +23,4 @@ routing:
         path: /logout
         methods: [GET]
         controller: index:logout
-        data:
-            csrf: true
+        csrf: true

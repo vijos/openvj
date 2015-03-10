@@ -310,13 +310,12 @@ class Application
                 foreach ($router as $rule) {
                     list($controller, $action) = explode(':', $rule['controller']);
                     foreach ($rule['methods'] as $method) {
-                        $r->addRoute($method, $rule['path'], [
-                            'controller' => strtolower($controller),
-                            'action' => $action,
-                            'className' => '\\VJ\\Controller\\' . ucfirst(strtolower($controller)) . 'Controller',
-                            'actionName' => $action . 'Action',
-                            'routeData' => isset($rule['data']) ? $rule['data'] : null
-                        ]);
+                        $routeData = $rule;
+                        $routeData['controller'] = strtolower($controller);
+                        $routeData['action'] = $action;
+                        $routeData['actionName'] = $action . 'Action';
+                        $routeData['className'] = '\\VJ\\Controller\\' . ucfirst(strtolower($controller)) . 'Controller';
+                        $r->addRoute($method, $rule['path'], $routeData);
                     }
                 }
             }, [

@@ -35,7 +35,7 @@ class CsrfTokenCheckingService
     public function onEvent(GenericEvent $event, $dispatchStatus, array $dispatchHandler = null)
     {
         if ($dispatchStatus == Dispatcher::FOUND) {
-            if (isset($dispatchHandler['routeData']['csrf']) && $dispatchHandler['routeData']['csrf'] === true) {
+            if (isset($dispatchHandler['csrf']) && $dispatchHandler['csrf'] === true) {
                 $csrfToken = $this->request->headers->get('csrfToken');
                 if ($csrfToken === null) {
                     $csrfToken = $this->request->request->get('csrfToken');
