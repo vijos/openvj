@@ -18,7 +18,7 @@ The project is still under developing. DO NOT TRY TO DEPLOY IT.
 - php-mongo
 - php-redis
 - php-mcrypt
-- MongoDB >= 2.6
+- MongoDB >= 3
 - Redis
 - [Composer](https://github.com/composer/composer)
 
