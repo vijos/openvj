@@ -16,6 +16,7 @@ email:
 
 error:
     code:
+        ip_blacklisted: <h1>Forbidden: Access denied</h1><p>您的 IP 在访问黑名单中，请在 %seconds% 秒后重试。</p>
         not_found: 该页面未找到
         missing_argument: 缺少参数 %name%
         invalid_argument: 无效参数 %name%：%msg%

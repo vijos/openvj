@@ -39,12 +39,19 @@ class AccessLimitingService
     public function onEvent(GenericEvent $event)
     {
         $identifier = $this->ir->getMixedIdentifier();
-        if ($this->redis->get('SECURITY:DENY:' . $identifier) !== false) {
-            $this->response->setStatusCode(Response::HTTP_FORBIDDEN);
-            $this->response->headers->set('content-type', 'text/html');
-            $this->response->setContent('<h1>Forbidden: Access denied</h1><p>Reason: Your IP is blacklisted temporarily. Please wait a moment and retry.</p>');
-            $this->response->send();
-            $event->stopPropagation();
+        
+        $denyExpire = $this->redis->get('SECURITY:DENY:' . $identifier);
+        if ($denyExpire === false) {
+            // not listed in blacklist
+            return;
         }
+
+        $this->response->setStatusCode(Response::HTTP_FORBIDDEN);
+        $this->response->headers->set('content-type', 'text/html');
+        $this->response->setContent(Application::trans('error.code.ip_blacklisted', [
+            'seconds' => ($denyExpire === 0 ? mt_rand() : ceil(($denyExpire - time()) / 60) * 60)
+        ]));
+        $this->response->send();
+        $event->stopPropagation();
     }
 }
