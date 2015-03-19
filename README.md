@@ -1,6 +1,8 @@
 OpenVJ
 ======
 
+[![Build Status](https://travis-ci.org/vijos/openvj.svg)](https://travis-ci.org/vijos/openvj)
+
 OpenVJ is a next-generation open-source online judge (OJ) system. It is developed and maintained by Vijos, supported by:
 
 * High School Attached to Hunan Normal University
