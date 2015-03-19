@@ -12,6 +12,7 @@ namespace VJ\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use VJ\Core\Application;
@@ -22,7 +23,9 @@ class CertificateGenerateCommand extends Command
     {
         $this
             ->setName('cert:generate')
-            ->setDescription('Generate certificates');
+            ->setDescription('Generate certificates')
+            ->addOption('default', 'd', InputOption::VALUE_NONE,
+                'If set, certificates will be generated using default field settings');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -36,9 +39,11 @@ class CertificateGenerateCommand extends Command
             'localityName' => 'Shanghai'
         ];
 
-        foreach ($options as $ask => $default) {
-            $q = new Question($ask . '[' . $default . ']: ', $default);
-            $options[$ask] = $helper->ask($input, $output, $q);
+        if (!$input->getOption('default')) {
+            foreach ($options as $ask => $default) {
+                $q = new Question($ask . '[' . $default . ']: ', $default);
+                $options[$ask] = $helper->ask($input, $output, $q);
+            }
         }
 
         $output->writeln('Generating CA private key...');
