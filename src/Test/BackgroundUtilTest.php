@@ -10,14 +10,19 @@
 
 namespace VJ\Test;
 
+use Httpful\Exception\ConnectionErrorException;
 use VJ\BackgroundUtil;
 
 class BackgroundUtilTest extends \PHPUnit_Framework_TestCase
 {
     public function testPing()
     {
-        $request = BackgroundUtil::get('/ping');
-        $response = $request->send();
-        $this->assertLessThanOrEqual(5000, time() * 1000 - $response->body->pong);
+        try {
+            $request = BackgroundUtil::get('/ping');
+            $response = $request->send();
+            $this->assertLessThanOrEqual(5000, time() * 1000 - $response->body->pong);
+        } catch (ConnectionErrorException $e) {
+            $this->markTestSkipped('Background service is not started');
+        }
     }
 }
