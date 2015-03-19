@@ -256,7 +256,7 @@ class UserManager
         // 插入记录
         try {
             $_id = new \MongoId();
-            Application::coll('User')->insert([
+            $doc = [
                 '_id' => $_id,
                 'uid' => $_id, // 将在成功插入后更新
                 'user' => $username,
@@ -269,7 +269,8 @@ class UserManager
                 'gender' => VJ::USER_GENDER_UNKNOWN,
                 'regat' => new \MongoDate(),
                 'regip' => $this->request->getClientIp(),
-            ]);
+            ];
+            Application::coll('User')->insert($doc);
         } catch (\MongoCursorException $e) {
             // 插入失败
             throw new UserException('UserManager.createUser.user_or_email_exists');

@@ -32,12 +32,13 @@ class LoginLogService
         $ip = $this->request->getClientIp();
         $userAgent = $this->request->getUserAgent();
 
-        Application::coll('LoginLog')->insert([
+        $doc = [
             'uid' => (int)$user['uid'],
             'at' => new \MongoDate(),
             'type' => (int)$type,
             'ua' => $userAgent,
             'ip' => $ip
-        ]);
+        ];
+        Application::coll('LoginLog')->insert($doc);
     }
 }

@@ -142,14 +142,15 @@ class UserCredential
             $userAgent = null;
         }
 
-        Application::coll('RememberMeToken')->insert([
+        $doc = [
             'uid' => $token['uid'],
             'token' => $token['token'],
             'ua' => $userAgent,
             'ip' => $ip,
             'at' => new \MongoDate(),
             'expireat' => new \MongoDate((int)$expire),
-        ]);
+        ];
+        Application::coll('RememberMeToken')->insert($doc);
 
         return $clientToken;
     }

@@ -101,7 +101,7 @@ class DomainManager
 
         // 操作非全局域则插入操作记录
         if (!DomainUtil::isGlobalDomainId($domainId)) {
-            Application::coll('DomainLog')->insert([
+            $doc = [
                 'uid' => $this->session->getCurrentToken(),
                 'at' => new \MongoDate(),
                 'type' => 'join',
@@ -109,7 +109,8 @@ class DomainManager
                 'ip' => $this->request->getClientIp(),
                 'target_uid' => $uid,
                 'target_domain' => $domainId,
-            ]);
+            ];
+            Application::coll('DomainLog')->insert($doc);
         }
 
         return true;

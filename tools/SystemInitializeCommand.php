@@ -31,13 +31,14 @@ class SystemInitializeCommand extends Command
     {
         $output->writeln('Creating global domain...');
         try {
-            Application::coll('Domain')->insert([
+            $doc = [
                 '_id' => DomainUtil::getGlobalDomainId(),
                 'name' => 'OpenVJ',
                 'owner' => VJ::USER_ID_SYSTEM,
                 'at' => new \MongoDate(),
-            ]);
-        } catch(\Exception $e) {
+            ];
+            Application::coll('Domain')->insert($doc);
+        } catch (\Exception $e) {
         }
     }
 }

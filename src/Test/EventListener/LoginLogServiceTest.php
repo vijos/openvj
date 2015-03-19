@@ -60,7 +60,7 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('chrome1', $rec['ua']);
         $this->assertEquals('1.2.3.4', $rec['ip']);
         $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(0, time() - $rec['at']->sec);
+        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
     }
 
     public function testAppendLogOnInteractiveLogin()
@@ -84,7 +84,7 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('chrome2', $rec['ua']);
         $this->assertEquals('2.3.4.1', $rec['ip']);
         $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(0, time() - $rec['at']->sec);
+        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
     }
 
     public function testAppendLogOnCookieLogin()
@@ -108,6 +108,6 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('chrome3', $rec['ua']);
         $this->assertEquals('4.3.2.1', $rec['ip']);
         $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(0, time() - $rec['at']->sec);
+        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
     }
 }

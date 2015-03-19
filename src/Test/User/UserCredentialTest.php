@@ -149,7 +149,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     public function testCheckPasswordCredentialPassed()
     {
         $user = Application::get('user_credential')->checkPasswordCredential('Test_User', 'test_password', true);
-        $this->assertEquals($this->fixture['User'][0], $user);
+        $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
+        $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
     }
 
     public function testCheckCookieTokenCredentialInvalid()
@@ -213,7 +214,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
     public function testCheckCookieTokenCredentialPassed()
     {
         $user = Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[0], true);
-        $this->assertEquals($this->fixture['User'][0], $user);
+        $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
+        $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
     }
 
     public function testCreateRememberMeClientToken()
@@ -224,7 +226,8 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         // assert valid
         $user = Application::get('user_credential')->checkCookieTokenCredential($clientToken, true);
-        $this->assertEquals($this->fixture['User'][0], $user);
+        $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
+        $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
 
         // assert record
         $record = Application::coll('RememberMeToken')->findOne([
