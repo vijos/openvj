@@ -29,5 +29,8 @@
         "breeswish/php-marked": "~0.3",
         "ruflin/elastica": "~1.4",
         "m6web/redis-mock": "~2.2"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
     }
 }
