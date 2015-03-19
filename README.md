@@ -1,7 +1,9 @@
 OpenVJ
 ======
 
-[![Build Status](https://travis-ci.org/vijos/openvj.svg)](https://travis-ci.org/vijos/openvj)
+[![Build Status](https://travis-ci.org/vijos/openvj.svg?branch=master)](https://travis-ci.org/vijos/openvj)
+[![Dependency Status](https://www.versioneye.com/user/projects/550a28074996eb36f7000020/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550a28074996eb36f7000020)
+[![Dependency Status](https://www.versioneye.com/user/projects/550a280f4996ebdd35000053/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550a280f4996ebdd35000053)
 
 OpenVJ is a next-generation open-source online judge (OJ) system. It is developed and maintained by Vijos, supported by:
 
