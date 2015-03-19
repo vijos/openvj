@@ -82,15 +82,16 @@ class CommentUtil
     }
 
     /**
-     * vote up comment
+     * Vote commemt
      *
      * @param \MongoId $commentId
      * @param string $ref
      * @param int $uid
+     * @param int $value
      * @return int|null
      * @throws InvalidArgumentException
      */
-    public static function voteUp(\MongoId $commentId, $ref, $uid)
+    private static function vote(\MongoId $commentId, $ref, $uid, $value)
     {
         if (!is_string($ref)) {
             throw new InvalidArgumentException('ref', 'type_invalid');
@@ -101,10 +102,24 @@ class CommentUtil
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
-        return VoteUtil::voteUp(Application::coll('Comment'), [
+        return VoteUtil::vote(Application::coll('Comment'), [
             '_id' => $commentId,
             'ref' => $ref
-        ], $uid);
+        ], $uid, $value);
+    }
+
+    /**
+     * vote up comment
+     *
+     * @param \MongoId $commentId
+     * @param string $ref
+     * @param int $uid
+     * @return int|null
+     * @throws InvalidArgumentException
+     */
+    public static function voteUp(\MongoId $commentId, $ref, $uid)
+    {
+        return self::vote($commentId, $ref, $uid, 1);
     }
 
     /**
@@ -118,19 +133,7 @@ class CommentUtil
      */
     public static function voteDown(\MongoId $commentId, $ref, $uid)
     {
-        if (!is_string($ref)) {
-            throw new InvalidArgumentException('ref', 'type_invalid');
-        }
-        if (!mb_check_encoding($ref, 'UTF-8')) {
-            throw new InvalidArgumentException('ref', 'encoding_invalid');
-        }
-        if (!Validator::int()->validate($uid)) {
-            throw new InvalidArgumentException('uid', 'type_invalid');
-        }
-        return VoteUtil::voteDown(Application::coll('Comment'), [
-            '_id' => $commentId,
-            'ref' => $ref
-        ], $uid);
+        return self::vote($commentId, $ref, $uid, -1);
     }
 
     /**

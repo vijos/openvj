@@ -39,75 +39,37 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
         return $dataset;
     }
 
-    public function testAppendLogOnWrongPassword()
+    public function testAppendLog()
     {
-        $request = new Request([], [], [], [], [], [
-            'PHP_SELF' => '/app.php',
-            'REQUEST_METHOD' => 'GET',
-            'HTTP_USER_AGENT' => 'chrome1',
-            'REMOTE_ADDR' => '1.2.3.4',
-            'SERVER_PORT' => 80,
-        ]);
+        $types = [
+            VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD,
+            VJ::LOGIN_TYPE_INTERACTIVE,
+            VJ::LOGIN_TYPE_COOKIE
+        ];
 
-        $service = new LoginLogService($request);
-        $service->onEvent(new GenericEvent(), VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, ['uid' => 123]);
+        foreach ($types as $type) {
+            $request = new Request([], [], [], [], [], [
+                'PHP_SELF' => '/app.php',
+                'REQUEST_METHOD' => 'GET',
+                'HTTP_USER_AGENT' => 'chrome',
+                'REMOTE_ADDR' => '1.2.3.4',
+                'SERVER_PORT' => 80,
+            ]);
 
-        $this->assertEquals(1, Application::coll('LoginLog')->find()->count());
-        $rec = Application::coll('LoginLog')->findOne();
-        $this->assertNotNull($rec);
-        $this->assertEquals(123, $rec['uid']);
-        $this->assertEquals(VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD, $rec['type']);
-        $this->assertEquals('chrome1', $rec['ua']);
-        $this->assertEquals('1.2.3.4', $rec['ip']);
-        $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
-    }
+            Application::coll('LoginLog')->remove();
 
-    public function testAppendLogOnInteractiveLogin()
-    {
-        $request = new Request([], [], [], [], [], [
-            'PHP_SELF' => '/app.php',
-            'REQUEST_METHOD' => 'GET',
-            'HTTP_USER_AGENT' => 'chrome2',
-            'REMOTE_ADDR' => '2.3.4.1',
-            'SERVER_PORT' => 80,
-        ]);
+            $service = new LoginLogService($request);
+            $service->onEvent(new GenericEvent(), $type, ['uid' => 123]);
 
-        $service = new LoginLogService($request);
-        $service->onEvent(new GenericEvent(), VJ::LOGIN_TYPE_INTERACTIVE, ['uid' => 321]);
-
-        $this->assertEquals(1, Application::coll('LoginLog')->find()->count());
-        $rec = Application::coll('LoginLog')->findOne();
-        $this->assertNotNull($rec);
-        $this->assertEquals(321, $rec['uid']);
-        $this->assertEquals(VJ::LOGIN_TYPE_INTERACTIVE, $rec['type']);
-        $this->assertEquals('chrome2', $rec['ua']);
-        $this->assertEquals('2.3.4.1', $rec['ip']);
-        $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
-    }
-
-    public function testAppendLogOnCookieLogin()
-    {
-        $request = new Request([], [], [], [], [], [
-            'PHP_SELF' => '/app.php',
-            'REQUEST_METHOD' => 'GET',
-            'HTTP_USER_AGENT' => 'chrome3',
-            'REMOTE_ADDR' => '4.3.2.1',
-            'SERVER_PORT' => 80,
-        ]);
-
-        $service = new LoginLogService($request);
-        $service->onEvent(new GenericEvent(), VJ::LOGIN_TYPE_COOKIE, ['uid' => 213]);
-
-        $this->assertEquals(1, Application::coll('LoginLog')->find()->count());
-        $rec = Application::coll('LoginLog')->findOne();
-        $this->assertNotNull($rec);
-        $this->assertEquals(213, $rec['uid']);
-        $this->assertEquals(VJ::LOGIN_TYPE_COOKIE, $rec['type']);
-        $this->assertEquals('chrome3', $rec['ua']);
-        $this->assertEquals('4.3.2.1', $rec['ip']);
-        $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
-        $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
+            $this->assertEquals(1, Application::coll('LoginLog')->find()->count());
+            $rec = Application::coll('LoginLog')->findOne();
+            $this->assertNotNull($rec);
+            $this->assertEquals(123, $rec['uid']);
+            $this->assertEquals($type, $rec['type']);
+            $this->assertEquals('chrome', $rec['ua']);
+            $this->assertEquals('1.2.3.4', $rec['ip']);
+            $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);
+            $this->assertGreaterThanOrEqual(-2, time() - $rec['at']->sec);
+        }
     }
 }

@@ -64,8 +64,11 @@ class VoteUtil
      * @return int|null
      * @throws InvalidArgumentException
      */
-    private static function vote(\MongoCollection $collection, array $query, $uid, $value)
+    public static function vote(\MongoCollection $collection, array $query, $uid, $value)
     {
+        if ($value !== 1 && $value !== -1) {
+            throw new InvalidArgumentException('value', 'value_invalid');
+        }
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }

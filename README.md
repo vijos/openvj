@@ -2,7 +2,9 @@ OpenVJ
 ======
 
 [![Build Status](https://travis-ci.org/vijos/openvj.svg?branch=master)](https://travis-ci.org/vijos/openvj)
+[![Code Climate](https://codeclimate.com/github/vijos/openvj/badges/gpa.svg)](https://codeclimate.com/github/vijos/openvj)
 [![Coverage Status](https://coveralls.io/repos/vijos/openvj/badge.svg?branch=master)](https://coveralls.io/r/vijos/openvj?branch=master)
+
 [![Dependency Status](https://www.versioneye.com/user/projects/550a28074996eb36f7000020/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550a28074996eb36f7000020)
 [![Dependency Status](https://www.versioneye.com/user/projects/550a280f4996ebdd35000053/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550a280f4996ebdd35000053)
 

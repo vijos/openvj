@@ -1,24 +1,24 @@
 var es = require('event-stream');
 var path = require('path');
 
-var gulp = require('gulp')
-var gutil = require('gulp-util')
-var gulpFilter = require('gulp-filter')
-var gulpIgnore = require('gulp-ignore')
-var logger = require('gulp-logger')
-var plumber = require('gulp-plumber')
-var watch = require('gulp-watch')
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var gulpFilter = require('gulp-filter');
+var gulpIgnore = require('gulp-ignore');
+var logger = require('gulp-logger');
+var plumber = require('gulp-plumber');
+var watch = require('gulp-watch');
 
-var autoprefixer = require('gulp-autoprefixer')
-var coffee = require('gulp-coffee')
-var concat = require('gulp-concat')
-var concatCSS  = require('gulp-concat-css')
-var less = require('gulp-less')
-var minifyCSS = require('gulp-minify-css')
-var replace = require('gulp-replace')
-var sourcemaps = require('gulp-sourcemaps')
-var stylus = require('gulp-stylus')
-var uglify = require('gulp-uglify')
+var autoprefixer = require('gulp-autoprefixer');
+var coffee = require('gulp-coffee');
+var concat = require('gulp-concat');
+var concatCSS  = require('gulp-concat-css');
+var less = require('gulp-less');
+var minifyCSS = require('gulp-minify-css');
+var replace = require('gulp-replace');
+var sourcemaps = require('gulp-sourcemaps');
+var stylus = require('gulp-stylus');
+var uglify = require('gulp-uglify');
 
 var components = [
     "reset",
@@ -74,7 +74,7 @@ var components = [
     "form",
     "state",
     "visibility"
-].join(',')
+].join(',');
 
 gulp.task('shared:ui', function() {
     return es.merge(
@@ -95,8 +95,8 @@ gulp.task('shared:ui', function() {
         .on('end', function() {
             gulp.start('shared:ui:style')
         })
-    )
-})
+    );
+});
 
 gulp.task('shared:ui:style', function() {
     var lessFilter = gulpFilter('**/*.less')
@@ -133,8 +133,8 @@ gulp.task('shared:ui:style', function() {
         .pipe(logger())
         .pipe(plumber())
         .pipe(gulp.dest('./static/'))
-    )
-})
+    );
+});
 
 gulp.task('shared:ui:page', function() {
     // build semantic-ui themes
@@ -167,8 +167,8 @@ gulp.task('shared:lib', function() {
         .pipe(concat('lib.js'))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./static/lib/'))
-})
+        .pipe(gulp.dest('./static/lib/'));
+});
 
 gulp.task('shared:ext', function() {
     return es.merge(
@@ -196,8 +196,8 @@ gulp.task('shared:ext', function() {
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./static/lib/twig/'))
-    )
-})
+    );
+});
 
 gulp.task('shared:core', function() {
     return gulp.src('./src/shared/**/*.coffee')
@@ -208,8 +208,8 @@ gulp.task('shared:core', function() {
         .pipe(concat('openvj.js'))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./static/lib/'))
-})
+        .pipe(gulp.dest('./static/lib/'));
+});
 
 gulp.task('page:scripts', function() {
     return gulp.src('./src/*.coffee')
@@ -219,40 +219,40 @@ gulp.task('page:scripts', function() {
         .pipe(coffee({bare: true}).on('error', gutil.log))
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./static/'))
-})
+        .pipe(gulp.dest('./static/'));
+});
 
 gulp.task('watch', function() {
     return watch(['./src/**/*', '!./src/ui/globals/site.styl'], function(file) {
         if (file.path.match(/\/src\/shared\/[\s\S]*?\.coffee$/)) {
-            console.log('modified: %s', file.path)
-            gulp.start('shared:core')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('shared:core');
+            return;
         }
         if (file.path.match(/\/src\/[^\/]*?\.coffee$/)) {
-            console.log('modified: %s', file.path)
-            gulp.start('page:scripts')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('page:scripts');
+            return;
         }
         if (file.path.indexOf('theme.config') !== -1) {
-            console.log('modified: %s', file.path)
-            gulp.start('shared:ui')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('shared:ui');
+            return;
         }
         if (file.path.indexOf('require-config.js') !== -1) {
-            console.log('modified: %s', file.path)
-            gulp.start('shared:lib')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('shared:lib');
+            return;
         }
         if (file.path.match(/(\.less|\.variables|\.overrides)$/)) {
-            console.log('modified: %s', file.path)
-            gulp.start('shared:ui:style')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('shared:ui:style');
+            return;
         }
         if (file.path.match(/\.styl$/)) {
-            console.log('modified: %s', file.path)
-            gulp.start('shared:ui:page')
-            return
+            console.log('modified: %s', file.path);
+            gulp.start('shared:ui:page');
+            return;
         }
-    })
-})
+    });
+});

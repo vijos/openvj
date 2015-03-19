@@ -29,17 +29,30 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         'Sogou web spider/4.0'
     ];
 
+    private function getRequest($ua, $https, $get = [], $cookie = [])
+    {
+        $server = [
+            'PHP_SELF' => '/app.php',
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => $this->request_url,
+            'HTTP_HOST' => 'openvj.org',
+            'HTTP_USER_AGENT' => $ua,
+        ];
+
+        if ($https) {
+            $server['SERVER_PORT'] = 443;
+            $server['HTTPS'] = 'on';
+        } else {
+            $server['SERVER_PORT'] = 80;
+        }
+
+        return new Request($get, [], [], $cookie, [], $server);
+    }
+
     public function testEnforceHttpsFalseVisitHttpFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
@@ -51,15 +64,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testEnforceHttpsFalseVisitHttpsFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
@@ -71,14 +76,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testEnforceHttpsFalseVisitHttpFromSpider()
     {
         foreach ($this->ua_http as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
@@ -91,15 +89,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     {
         // TODO: for spider, https => http?
         foreach ($this->ua_http as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
@@ -111,14 +101,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testEnforceHttpsTrueVisitHttpFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -132,15 +115,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testEnforceHttpsTrueVisitHttpsFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -152,14 +127,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testEnforceHttpsTrueVisitHttpFromSpider()
     {
         foreach ($this->ua_http as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -170,18 +138,9 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testEnforceHttpsTrueVisitHttpsFromSpider()
     {
-
         // TODO: for spider, https => http?
         foreach ($this->ua_http as $ua) {
-            $request = new Request([], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -193,14 +152,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testGetNoSSLTrueVisitHttpFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request(['nossl' => 'on'], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false, ['nossl' => 'on']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -221,15 +173,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testGetNoSSLTrueVisitHttpsFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request(['nossl' => 'on'], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true, ['nossl' => 'on']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -250,14 +194,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testCookieNoSSLTrueVisitHttpFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], ['nossl' => 'on'], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false, [], ['nossl' => 'on']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -272,15 +209,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testCookieNoSSLTrueVisitHttpsFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request([], [], [], ['nossl' => 'on'], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true, [], ['nossl' => 'on']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -295,14 +224,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testGetNoSSLFalseVisitHttpFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request(['nossl' => 'off'], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 80,
-            ]);
+            $request = $this->getRequest($ua, false, ['nossl' => 'off']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
@@ -323,15 +245,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
     public function testGetNoSSLFalseVisitHttpsFromBrowser()
     {
         foreach ($this->ua_https as $ua) {
-            $request = new Request(['nossl' => 'off'], [], [], [], [], [
-                'PHP_SELF' => '/app.php',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => $this->request_url,
-                'HTTP_HOST' => 'openvj.org',
-                'HTTP_USER_AGENT' => $ua,
-                'SERVER_PORT' => 443,
-                'HTTPS' => 'on',
-            ]);
+            $request = $this->getRequest($ua, true, ['nossl' => 'off']);
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
