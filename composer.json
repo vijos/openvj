@@ -13,6 +13,7 @@
         "ircmaxell/filterus": "dev-master",
         "ircmaxell/random-lib": "dev-master",
         "nategood/httpful": "dev-master",
+        "mongofill/mongofill": "dev-master",
         "pimple/pimple": "~3.0",
         "ezyang/htmlpurifier": "dev-master",
         "symfony/translation": "~2.6",
@@ -26,6 +27,7 @@
         "symfony/console": "~2.6",
         "phpseclib/phpseclib": "~0.3",
         "breeswish/php-marked": "~0.3",
-        "ruflin/elastica": "~1.4"
+        "ruflin/elastica": "~1.4",
+        "m6web/redis-mock": "~2.2"
     }
 }
