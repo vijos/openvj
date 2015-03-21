@@ -22,6 +22,9 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
      */
     public function __construct(\MongoCollection $collection, $ttl)
     {
+        ini_set('session.serialize_handler', 'php_serialize');
+        ini_set('session.hash_function', 'sha256');
+
         $this->collection = $collection;
         $this->ttl = $ttl;
     }
@@ -81,10 +84,7 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
      */
     public function write($sessionId, $data)
     {
-        $tmp = $_SESSION;
-        session_decode($data);
-        $new_data = $_SESSION;
-        $_SESSION = $tmp;
+        $data = unserialize($data);
 
         // we don't save empty sessions
         if (isset($new_data['_sf2_attributes']) && count($new_data['_sf2_attributes']) === 0) {
@@ -95,7 +95,7 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
             '_id' => $this->encodeSessionId($sessionId)
         ], [
             '$set' => [
-                'data' => $new_data,   // we use MongoDB native data storage
+                'data' => $data,   // we use MongoDB native data storage
                 'expireat' => new \MongoDate(time() + $this->ttl),
             ]
         ], [
@@ -123,10 +123,6 @@ class MongoDBSessionHandler implements \SessionHandlerInterface
             return '';
         }
 
-        $tmp = $_SESSION;
-        $_SESSION = $record['data'];
-        $new_data = session_encode();
-        $_SESSION = $tmp;
-        return $new_data;
+        return serialize($record['data']);
     }
 }
