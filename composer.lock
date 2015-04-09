@@ -4,19 +4,19 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4c2369254e7ceb53de076ef429d45a02",
+    "hash": "b930a5e21a0295efe7f78533366dac14",
     "packages": [
         {
             "name": "breeswish/php-marked",
             "version": "v0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/breeswish/php-marked.git",
+                "url": "https://github.com/SummerWish/php-marked.git",
                 "reference": "b67fe5bdc90beb877e03974a899e98f856e0006d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/breeswish/php-marked/zipball/b67fe5bdc90beb877e03974a899e98f856e0006d",
+                "url": "https://api.github.com/repos/SummerWish/php-marked/zipball/b67fe5bdc90beb877e03974a899e98f856e0006d",
                 "reference": "b67fe5bdc90beb877e03974a899e98f856e0006d",
                 "shasum": ""
             },
