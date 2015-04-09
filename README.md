@@ -20,7 +20,7 @@ The project is still under developing. DO NOT TRY TO DEPLOY IT.
 
 # Requirement
 
-- Linux / Mac OS X
+- Linux / OS X
 - PHP >= 5.6
 - php-mongo
 - php-redis
