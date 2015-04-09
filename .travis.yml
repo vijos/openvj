@@ -20,6 +20,7 @@ cache:
 install:
   - mkdir -p /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d
   - phpenv config-add php.ini
+  - composer config --global github-oauth.github.com 57bc356159615a3bdadaf926cd7f30bf9b48ffb6
   - travis_retry composer self-update && composer --version
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --dev --no-interaction
