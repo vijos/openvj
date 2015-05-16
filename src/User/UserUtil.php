@@ -29,6 +29,16 @@ class UserUtil
     }
 
     /**
+     * 获得批量查询 uid 接口
+     *
+     * @return UserUidResolver
+     */
+    public static function getUidResolver()
+    {
+        return new UserUidResolver();
+    }
+
+    /**
      * @param string $email
      * @return array|null
      */
