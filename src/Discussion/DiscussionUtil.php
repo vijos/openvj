@@ -164,24 +164,4 @@ class DiscussionUtil
             return null;
         }
     }
-
-    /**
-     * 获取分类名称
-     *
-     * @param \MongoId $topicId
-     * @return String|null
-     * @throws InvalidArgumentException
-     */
-    public static function queryTopicName(\MongoId $topicId)
-    {
-        $doc = Application::coll('Topic')->findOne([
-            '_id' => $topicId,
-        ]);
-
-        if ($doc === null) {
-            return null;
-        }
-
-        return $doc['name'];
-    }
 }

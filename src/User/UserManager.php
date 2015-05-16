@@ -239,7 +239,7 @@ class UserManager
         $username = VJ::removeEmoji($username);
 
         // 检查用户名和 Email 是否唯一
-        if (UserUtil::getUserByUsername($username) !== null) {
+        if (UserUtil::getUserObjectByUsername($username) !== null) {
             throw new UserException('UserManager.createUser.user_exists');
         }
         if (UserUtil::getUserObjectByEmail($email) !== null) {

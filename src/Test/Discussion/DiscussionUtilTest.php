@@ -16,7 +16,7 @@ use Zumba\PHPUnit\Extensions\Mongo\Client\Connector;
 use Zumba\PHPUnit\Extensions\Mongo\DataSet\DataSet;
 use Zumba\PHPUnit\Extensions\Mongo\TestTrait;
 
-class DiscussionTest extends \PHPUnit_Framework_TestCase
+class DiscussionUtilTest extends \PHPUnit_Framework_TestCase
 {
     use TestTrait;
 
@@ -75,12 +75,5 @@ class DiscussionTest extends \PHPUnit_Framework_TestCase
         $queryResult = DiscussionUtil::modifyDiscussion($result['_id'], $modifyMarkdown);
 
         $this->assertNotEquals(null, $queryResult);
-    }
-
-    public function testQueryTopicName()
-    {
-        $topicId = new \MongoId("5063114bd386d8fadbd6b004");
-        $queryResult = DiscussionUtil::queryTopicName($topicId);
-        $this->assertEquals('Share', $queryResult);
     }
 }

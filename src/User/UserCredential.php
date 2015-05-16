@@ -47,7 +47,7 @@ class UserCredential
         if (Validator::email()->validate($field)) {
             $user = UserUtil::getUserObjectByEmail($field);
         } else {
-            $user = UserUtil::getUserByUsername($field);
+            $user = UserUtil::getUserObjectByUsername($field);
         }
 
         if (!UserUtil::isUserObjectValid($user)) {

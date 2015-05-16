@@ -45,7 +45,7 @@ class UserUtil
      * @param string $username
      * @return array|null
      */
-    public static function getUserByUsername($username)
+    public static function getUserObjectByUsername($username)
     {
         if (!is_string($username) || !mb_check_encoding($username, 'UTF-8')) {
             return null;
