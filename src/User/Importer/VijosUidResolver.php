@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace VJ\User\Resolver;
+namespace VJ\User\Importer;
 
 use VJ\Core\Application;
 
-class VijosResolver
+class VijosUidResolver
 {
     private $source;
 
@@ -22,15 +22,15 @@ class VijosResolver
     }
 
     /**
-     * 接收 Vijos UID，返回数据库中的 _id
+     * 接收 Vijos Uid，返回其位于数据库中的 _id
      *
-     * @param $vijosUID
+     * @param $vijosUid
      * @return array
      */
-    public function resolveId($vijosUID)
+    public function resolveUid($vijosUid)
     {
         $user = Application::coll('User')->find([
-            'uid' => (int)$vijosUID
+            'uid' => (int)$vijosUid
         ]);
 
         return $user['_id'];

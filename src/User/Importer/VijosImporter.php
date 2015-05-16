@@ -12,10 +12,11 @@ namespace VJ\User\Importer;
 
 use VJ\Core\Application;
 use VJ\Core\Exception\UserException;
+use VJ\ImporterInterface;
 use VJ\User\UserUtil;
 use VJ\VJ;
 
-class VijosImporter
+class VijosImporter implements ImporterInterface
 {
     private $source;
 
