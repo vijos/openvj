@@ -59,9 +59,9 @@ class DiscussionUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
 
-        //if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            //throw new UserException('CommentUtil.content_invalid_length');
-        //}
+        if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
+            throw new UserException('DiscussionUtil.content_invalid_length');
+        }
 
         self::initParser();
         $discussionId = new \MongoId();
@@ -69,7 +69,7 @@ class DiscussionUtil
 
         $keyword = KeywordFilter::isContainGeneric(strip_tags($html));
         if ($keyword !== false) {
-            throw new UserException('CommentUtil.content_forbid', [
+            throw new UserException('DiscussionUtil.content_forbid', [
                 'keyword' => $keyword
             ]);
         }
@@ -132,7 +132,7 @@ class DiscussionUtil
             throw new InvalidArgumentException('markdown', 'encoding_invalid');
         }
         //if (!Validator::length(VJ::COMMENT_MIN, VJ::COMMENT_MAX)) {
-            //throw new UserException('CommentUtil.content_invalid_length');
+        //throw new UserException('CommentUtil.content_invalid_length');
         //}
 
         self::initParser();

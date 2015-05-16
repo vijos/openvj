@@ -29,8 +29,9 @@ before_script:
   - chmod -R 777 app/cache
   - chmod -R 777 app/logs
   - chmod +x tools/console.php
-  - php tools/console.php init:config
-  - php tools/console.php init:sys
+  - php tools/console.php config:init
+  - php tools/console.php db:init
+  - php tools/console.php db:index:rebuild
   - php tools/console.php cert:generate --default
 
 after_script:
