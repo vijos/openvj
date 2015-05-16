@@ -103,6 +103,7 @@ class PasswordEncoder
      */
     private function encodeVJ2($password, $salt, $username)
     {
+        $password = md5($password);
         return sha1(md5($username . $password) . $salt . sha1($password . $salt));
     }
 

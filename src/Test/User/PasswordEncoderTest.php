@@ -20,7 +20,7 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
         $username = '世界你好';
-        $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67';
+        $hash = 'vj2|5LiW55WM5L2g5aW9|3e22cd40e19f787e421fb9e7725119f8417cc791';
         $this->assertEquals($hash,
             Application::get('password_encoder')->encode($password, $salt, PasswordEncoder::HASH_TYPE_VJ2, $username));
     }
@@ -73,17 +73,17 @@ class PasswordEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
-        $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67'; // username="世界你好"
+        $hash = 'vj2|5LiW55WM5L2g5aW9|3e22cd40e19f787e421fb9e7725119f8417cc791'; // username="世界你好"
         $this->assertTrue(Application::get('password_encoder')->verify($password, $salt, $hash));
 
         $password = 'this_is_wrong_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
-        $hash = 'vj2|5LiW55WM5L2g5aW9|488fdef0417301a0541aefd562806ac24a4d8a67'; // username="世界你好"
+        $hash = 'vj2|5LiW55WM5L2g5aW9|3e22cd40e19f787e421fb9e7725119f8417cc791'; // username="世界你好"
         $this->assertFalse(Application::get('password_encoder')->verify($password, $salt, $hash));
 
         $password = 'this_is_test_password';
         $salt = 'a4c4faf1b8cb70c640c1ee9b8df2d31f47ad36fc';
-        $hash = 'vj2|IOS4lueVjOS9oOWlvQ==|488fdef0417301a0541aefd562806ac24a4d8a67'; // username=" 世界你好"
+        $hash = 'vj2|IOS4lueVjOS9oOWlvQ==|3e22cd40e19f787e421fb9e7725119f8417cc791'; // username=" 世界你好"
         $this->assertFalse(Application::get('password_encoder')->verify($password, $salt, $hash));
     }
 
