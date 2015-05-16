@@ -63,7 +63,7 @@ class KeywordFilter
             $tree = unserialize($value);
         }
 
-        $text = strtolower($text);
+        $text = mb_strtolower($text, 'UTF-8');
         $active = array();
         $len = strlen($text);
         for ($cur = 0; $cur < $len; ++$cur) {

@@ -82,7 +82,7 @@ class PasswordEncoder
                 throw new MissingArgumentException('username');
             }
             return self::HASH_TYPE_VJ2 . '|' .
-            base64_encode($username) . '|' .
+            base64_encode(mb_strtolower($username, 'UTF-8')) . '|' .
             self::encodeVJ2($password, $salt, $username);
         } else {
             if ($type === self::HASH_TYPE_OPENVJ) {

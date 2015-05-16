@@ -39,7 +39,7 @@ class KeywordImportCommand extends Command
         $lines = explode("\n", $file);
         foreach ($lines as $line) {
             if (strlen($line) > 0) {
-                $keywords[] = strtolower(trim($line));
+                $keywords[] = trim(mb_strtolower($line, 'UTF-8'));
             }
         }
         $keywords = array_values(array_unique($keywords));

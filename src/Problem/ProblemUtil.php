@@ -51,7 +51,7 @@ class ProblemUtil
 
     public static function canonicalizeLink($link)
     {
-        return strtolower($link);
+        return mb_strtolower($link, 'UTF-8');
     }
 
     public static function createProblem($uid, $title, array $visibleDomains)

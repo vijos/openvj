@@ -75,7 +75,7 @@ class UserUtil
      */
     public static function canonicalizeUsername($username)
     {
-        return trim(strtolower($username));
+        return trim(mb_strtolower($username, 'UTF-8'));
     }
 
     /**
@@ -85,7 +85,7 @@ class UserUtil
     public static function canonicalizeEmail($email)
     {
         // TODO: Gmail-like canonicalize
-        return trim(strtolower($email));
+        return trim(mb_strtolower($email, 'UTF-8'));
     }
 
 }
