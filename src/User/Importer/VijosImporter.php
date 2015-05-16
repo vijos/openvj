@@ -87,8 +87,12 @@ class VijosImporter
                 $doc['hash'] = 'vj2|' . base64_encode(mb_strtolower($user['user'], 'UTF-8')) . '|' . $user['pass'];
             }
 
-            Application::coll('User')->insert($doc);
-            Application::emit('user.created', [$uid]);
+            try {
+                Application::coll('User')->insert($doc);
+                Application::emit('user.created', [$uid]);
+            } catch (\MongoCursorException $e) {
+                // TODO: Duplicate user
+            }
         }
 
         // Update UID counter
