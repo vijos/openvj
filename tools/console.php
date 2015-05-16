@@ -21,4 +21,5 @@ $console->add(new \VJ\Console\KeywordImportCommand());
 $console->add(new \VJ\Console\ConfigInitializeCommand());
 $console->add(new \VJ\Console\CertificateGenerateCommand());
 $console->add(new \VJ\Console\ProblemTemplateImportCommand());
+$console->add(new \VJ\Console\UserImportCommand());
 $console->run();
