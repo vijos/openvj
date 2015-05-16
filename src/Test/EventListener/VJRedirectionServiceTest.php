@@ -34,7 +34,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, 'openvj.org', true);
-        $service->onEvent(new GenericEvent());
+        $service->onEvent(new GenericEvent(), 'route.dispatch.before');
         $this->assertEquals('https://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }
@@ -52,7 +52,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, 'openvj.org', true);
-        $service->onEvent(new GenericEvent());
+        $service->onEvent(new GenericEvent(), 'route.dispatch.before');
         $this->assertEquals('http://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }
@@ -70,7 +70,7 @@ class VJRedirectionServiceTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         $service = new VJRedirectionService($request, $response, 'openvj.org', false);
-        $service->onEvent(new GenericEvent());
+        $service->onEvent(new GenericEvent(), 'route.dispatch.before');
         $this->assertEquals('http://openvj.org/problem/100', $response->headers->get('location'));
         $this->assertEquals(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
     }

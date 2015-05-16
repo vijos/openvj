@@ -32,7 +32,7 @@ class CsrfTokenCheckingService
         $this->session = $session;
     }
 
-    public function onEvent(GenericEvent $event, $dispatchStatus, array $dispatchHandler = null)
+    public function onEvent(GenericEvent $event, $eventName, $dispatchStatus, array $dispatchHandler = null)
     {
         if ($dispatchStatus == Dispatcher::FOUND) {
             if (isset($dispatchHandler['csrf']) && $dispatchHandler['csrf'] === true) {

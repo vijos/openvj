@@ -56,7 +56,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -68,7 +68,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -80,7 +80,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -93,7 +93,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', false);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -105,7 +105,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEquals(
                 'https://openvj.org' . $this->request_url,
                 $response->headers->get('location'));
@@ -119,7 +119,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -131,7 +131,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -144,7 +144,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
         }
     }
@@ -156,7 +156,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -177,7 +177,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -198,7 +198,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -213,7 +213,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();
@@ -228,7 +228,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEquals(
                 'https://openvj.org' . $this->request_url,
                 $response->headers->get('location'));
@@ -249,7 +249,7 @@ class HttpsRedirectionServiceTest extends \PHPUnit_Framework_TestCase
             $response = new Response();
 
             $service = new HttpsRedirectionService($request, $response, 'openvj.org', true);
-            $service->onEvent(new GenericEvent());
+            $service->onEvent(new GenericEvent(), 'route.dispatch.before');
             $this->assertEmpty($response->headers->get('location'));
 
             $cookie = $response->headers->getCookies();

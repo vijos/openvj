@@ -26,7 +26,7 @@ class RememberMeLoginService
         $this->userManager = $userManager;
     }
 
-    public function onEvent(GenericEvent $event)
+    public function onEvent(GenericEvent $event, $eventName)
     {
         if (!$this->userManager->isLoggedIn() && $this->userManager->isRememberMeTokenProvided()) {
             try {

@@ -368,8 +368,8 @@ class Application
             // register event listeners
             if (isset($service_config['events'])) {
                 foreach ($service_config['events'] as $event) {
-                    self::on($event, function (GenericEvent $event) use ($service_name) {
-                        self::get($service_name)->onEvent($event, ...$event->getArgv());
+                    self::on($event, function (GenericEvent $event, $eventName) use ($service_name) {
+                        self::get($service_name)->onEvent($event, $eventName, ...$event->getArgv());
                     });
                 }
             }

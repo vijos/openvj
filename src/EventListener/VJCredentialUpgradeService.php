@@ -25,7 +25,7 @@ class VJCredentialUpgradeService
         $this->user_credential = $user_credential;
     }
 
-    public function onEvent(GenericEvent $event, $type, $user, $field = null, $password = null)
+    public function onEvent(GenericEvent $event, $eventName, $type, $user, $field = null, $password = null)
     {
         if ($type !== VJ::LOGIN_TYPE_INTERACTIVE) {
             return;

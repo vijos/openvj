@@ -36,7 +36,7 @@ class VJRedirectionService
     }
 
     // route.dispatch.before
-    public function onEvent(GenericEvent $event)
+    public function onEvent(GenericEvent $event, $eventName)
     {
         if (stripos($this->request->getRequestUri(), '.asp') !== false) {
             $ua = $this->request->getUserAgent();

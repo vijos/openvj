@@ -25,27 +25,23 @@ class UserManager
     private $session;
     private $request;
     private $response;
-    private $domain_manager;
     public $user_credential;
 
     /**
      * @param UserSession $session
      * @param Request $request
      * @param Response $response
-     * @param DomainManager $domain_manager
      * @param UserCredential $user_credential
      */
     public function __construct(
         UserSession $session,
         Request $request,
         Response $response,
-        DomainManager $domain_manager,
         UserCredential $user_credential
     ) {
         $this->session = $session;
         $this->request = $request;
         $this->response = $response;
-        $this->domain_manager = $domain_manager;
         $this->user_credential = $user_credential;
     }
 
@@ -302,8 +298,7 @@ class UserManager
             throw new UserException('UserManager.createUser.internal');
         }
 
-        // 加入全局域 此处不应有异常
-        $this->domain_manager->joinDomainById($uid, DomainUtil::getGlobalDomainId());
+        Application::emit('user.created', [$uid]);
 
         return $uid;
     }

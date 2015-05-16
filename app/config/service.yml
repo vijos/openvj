@@ -34,6 +34,11 @@ service:
         events: ['user.login.succeeded']
         class: \VJ\EventListener\VJCredentialUpgradeService
 
+    domain_service:
+        arguments: [@domain_manager]
+        events: ['user.created']
+        class: \VJ\EventListener\DomainService
+
     individual_recognizer:
         arguments: [@request, @user_session]
         class: \VJ\Security\IndividualRecognizer
@@ -68,7 +73,7 @@ service:
         class: \VJ\User\UserCredential
 
     user_manager:
-        arguments: [@user_session, @request, @response, @domain_manager, @user_credential]
+        arguments: [@user_session, @request, @response, @user_credential]
         class: \VJ\User\UserManager
 
     bgservice_mailing_provider:

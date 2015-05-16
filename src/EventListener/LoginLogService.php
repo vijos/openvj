@@ -27,7 +27,7 @@ class LoginLogService
         $this->request = $request;
     }
 
-    public function onEvent(GenericEvent $event, $type, $user)
+    public function onEvent(GenericEvent $event, $eventName, $type, $user)
     {
         $ip = $this->request->getClientIp();
         $userAgent = $this->request->getUserAgent();

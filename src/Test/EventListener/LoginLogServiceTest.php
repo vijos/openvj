@@ -41,13 +41,22 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testAppendLog()
     {
-        $types = [
-            VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD,
-            VJ::LOGIN_TYPE_INTERACTIVE,
-            VJ::LOGIN_TYPE_COOKIE
+        $cases = [
+            [
+                'type' => VJ::LOGIN_TYPE_FAILED_WRONG_PASSWORD,
+                'event' => 'user.login.failed.wrong_password'
+            ],
+            [
+                'type' => VJ::LOGIN_TYPE_INTERACTIVE,
+                'event' => 'user.login.succeeded'
+            ],
+            [
+                'type' => VJ::LOGIN_TYPE_COOKIE,
+                'event' => 'user.login.succeeded'
+            ]
         ];
 
-        foreach ($types as $type) {
+        foreach ($cases as $case) {
             $request = new Request([], [], [], [], [], [
                 'PHP_SELF' => '/app.php',
                 'REQUEST_METHOD' => 'GET',
@@ -59,13 +68,13 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
             Application::coll('LoginLog')->remove();
 
             $service = new LoginLogService($request);
-            $service->onEvent(new GenericEvent(), $type, ['uid' => 123]);
+            $service->onEvent(new GenericEvent(), $case['event'], $case['type'], ['uid' => 123]);
 
             $this->assertEquals(1, Application::coll('LoginLog')->find()->count());
             $rec = Application::coll('LoginLog')->findOne();
             $this->assertNotNull($rec);
             $this->assertEquals(123, $rec['uid']);
-            $this->assertEquals($type, $rec['type']);
+            $this->assertEquals($case['type'], $rec['type']);
             $this->assertEquals('chrome', $rec['ua']);
             $this->assertEquals('1.2.3.4', $rec['ip']);
             $this->assertLessThanOrEqual(5, time() - $rec['at']->sec);

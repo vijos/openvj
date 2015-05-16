@@ -37,7 +37,7 @@ class HttpsRedirectionService
     }
 
     // route.dispatch.before
-    public function onEvent(GenericEvent $event)
+    public function onEvent(GenericEvent $event, $eventName)
     {
         if (!$this->enforceHttps) {
             return;

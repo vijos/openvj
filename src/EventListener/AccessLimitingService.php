@@ -36,10 +36,10 @@ class AccessLimitingService
         $this->redis = $redis;
     }
 
-    public function onEvent(GenericEvent $event)
+    public function onEvent(GenericEvent $event, $eventName)
     {
         $identifier = $this->ir->getMixedIdentifier();
-        
+
         $denyExpire = $this->redis->get('SECURITY:DENY:' . $identifier);
         if ($denyExpire === false) {
             // not listed in blacklist
