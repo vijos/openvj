@@ -14,6 +14,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use VJ\Core\Application;
+use VJ\User\DomainUtil;
 
 class DatabaseInitializeCommand extends Command
 {
@@ -27,7 +28,7 @@ class DatabaseInitializeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // 导入题目模板
-        
+
         $output->writeln('Importing problem template...');
         $template = file_get_contents(__DIR__ . '/data/problem-template.md');
         Application::coll('System')->update([
@@ -41,7 +42,7 @@ class DatabaseInitializeCommand extends Command
         ]);
 
         // 创建全局域
-        
+
         $output->writeln('Creating global domain...');
         try {
             $doc = [
@@ -55,7 +56,7 @@ class DatabaseInitializeCommand extends Command
         }
 
         // 导入关键字
-        
+
         $this->importKeyword($output, 'keywords-general-base64.txt', 'general');
         $this->importKeyword($output, 'keywords-name-base64.txt', 'name');
     }
