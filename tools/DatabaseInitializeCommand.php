@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use VJ\Core\Application;
 use VJ\User\DomainUtil;
+use VJ\VJ;
 
 class DatabaseInitializeCommand extends Command
 {
