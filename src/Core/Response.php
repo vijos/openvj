@@ -25,8 +25,11 @@ class Response extends \Symfony\Component\HttpFoundation\Response
     {
         $this->setStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND);
         $this->headers->set('content-type', 'text/plain');
-        $this->headers->set('Location', $url);
-        $this->setContent('Redirected to: ' . $url);
+        $this->headers->set('location', $url);
+        if ('cli' !== PHP_SAPI) {
+            // we must set content here. otherwise headers won't be sent immediately
+            $this->setContent('Redirected to: ' . $url);
+        }
         $this->send();
     }
 
