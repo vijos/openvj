@@ -20,8 +20,8 @@ class ConfigInitializeCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('init:config')
-            ->setDescription('Initialize default config file.');
+            ->setName('config:init')
+            ->setDescription('Initialize default config file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

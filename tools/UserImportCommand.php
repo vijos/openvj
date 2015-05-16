@@ -66,6 +66,7 @@ class UserImportCommand extends Command
         $count = 0;
 
         $output->writeln('Begin importing...');
+
         $importer = new VijosImporter($db);
         $importer->import(function ($uid, $username) use (&$output, &$count) {
             $output->writeln('Importing #' . $uid . ' ' . $username);
