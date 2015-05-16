@@ -206,7 +206,7 @@ class UserManager
             throw new InvalidArgumentException('password', 'type_invalid');
         }
         if (!is_string($email)) {
-            throw new InvalidArgumentException('password', 'type_invalid');
+            throw new InvalidArgumentException('email', 'type_invalid');
         }
 
         // 检查用户名
