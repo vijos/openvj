@@ -15,7 +15,7 @@ use VJ\Core\Application;
 class TopicUtil
 {
     /**
-     * 获取分类名称
+     * 获取分类
      *
      * @param \MongoId $topicId
      * @return array|null
@@ -27,5 +27,15 @@ class TopicUtil
         ]);
 
         return $doc;
+    }
+
+    /**
+     * 获取批量查询分类接口
+     *
+     * @return TopicResolver
+     */
+    public static function getResolver()
+    {
+        return new TopicResolver();
     }
 }
