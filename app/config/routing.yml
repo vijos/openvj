@@ -5,8 +5,12 @@ routing:
         controller: index:index
     login:
         path: /login
-        methods: [GET, POST]
+        methods: [GET]
         controller: index:login
+    login_post:
+        path: /login
+        methods: [POST]
+        controller: index:loginPost
     reg:
         path: /reg
         methods: [GET]
