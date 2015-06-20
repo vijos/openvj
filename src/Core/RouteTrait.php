@@ -26,6 +26,8 @@ trait RouteTrait
         $response = Application::get('response');
 
         Application::emit('route.dispatch.before');
+
+        //Why? Comments needed.
         if (headers_sent()) {
             return;
         }
