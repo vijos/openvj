@@ -16,3 +16,4 @@
 /.idea/
 !.gitkeep
 .DS_Store
+Vagrantfile
