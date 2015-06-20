@@ -1,4 +1,7 @@
 page:
+    index:
+        title: 首页
+        hello: 你好
     login:
         title: 登录
         form_username: 用户名或邮箱

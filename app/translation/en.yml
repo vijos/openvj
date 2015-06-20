@@ -1,4 +1,7 @@
 page:
+    index:
+        title: Home
+        hello: Hello
     login:
         title: Sign In
         form_username: Username or Email

@@ -11,24 +11,24 @@ routing:
         path: /login
         methods: [POST]
         controller: index:loginPost
-    reg:
-        path: /reg
-        methods: [GET]
-        controller: index:registration
-    reg_send:
-        path: /reg/send
-        methods: [POST]
-        controller: index:registrationSendMail
-    reg_complete:
-        path: /reg/complete
-        methods: [POST]
-        controller: index:registrationComplete
-    reg_verified:
-        path: /reg/{token}
-        methods: [GET]
-        controller: index:registrationVerified
     logout:
         path: /logout
         methods: [GET]
         controller: index:logout
         csrf: true
+    reg:
+        path: /reg
+        methods: [GET]
+        controller: Registration:registration
+    reg_send:
+        path: /reg/send
+        methods: [POST]
+        controller: Registration:sendMail
+    reg_complete:
+        path: /reg/complete
+        methods: [POST]
+        controller: Registration:complete
+    reg_verified:
+        path: /reg/{token}
+        methods: [GET]
+        controller: Registration:verified
