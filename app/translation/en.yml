@@ -1,0 +1,43 @@
+page:
+    login:
+        title: Sign In
+        form_username: Username or Email
+        form_password: Password
+        form_rememberme: Remenber me in 1 month
+        form_login: Sign In
+    reg:
+        title: Sign Up
+        verified:
+            title: Sign Up Completed
+
+email:
+    reg_validation:
+        subject: Sign Up Validation
+
+error:
+    code:
+        ip_blacklisted: <h1>Forbidden: Access denied</h1><p>Your IP address is in the denied list, please try again after %seconds% second(s).</p>
+        not_found: This page is not found.
+        missing_argument: Missing arguement: %name%
+        invalid_argument: Invalid arguement %name%: %msg%
+        invalid_csrf_token: Invalid CSRF token
+        UserCredential:
+            checkPasswordCredential:
+                user_not_valid: This user is not found.
+                wrong_password: Username or password is wrong.
+        UserManager:
+            createUser:
+                user_exists: This username already exists.
+        controller:
+            reg:
+                invalid_email: This email address is invalid, please type correct email address.
+                duplicate_email: Sorry, this email address has been used by another account.
+                invalid_token: This validation link is expired, please validate again.
+                password_mismatch: The passwords you typed twice are not the same.
+    msg:
+        too_short:          Arguement is too short.
+        type_invalid:       Arguement type is invalid.
+        value_invalid:      Arguement value is invalid.
+        format_invalid:     Arguement format is invalid.
+        encoding_invalid:   Arguement encoding is invalid.
+        sign_invalid:       Arguement signature is invalid.

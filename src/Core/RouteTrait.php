@@ -27,16 +27,18 @@ trait RouteTrait
 
         Application::emit('route.dispatch.before');
 
-        //Why? Comments needed.
+        //判断Event是否已经发送过响应
         if (headers_sent()) {
             return;
         }
 
         $urlParts = parse_url($request->getRequestUri());
         $route = $dispatcher->dispatch($request->getMethod(), $urlParts['path']);
+        //[0]: Dispatch Status, [1]: handler, [2]: vars
 
-        // 0: Dispatch Status, 1: handler, 2: vars
         Application::emit('route.dispatch', $route);
+
+        //同上
         if (headers_sent()) {
             return;
         }
