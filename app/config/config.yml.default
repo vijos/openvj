@@ -5,6 +5,7 @@ translation:
     default: zh_CN
     availables:
         - zh_CN
+        - en
 
 security:
     secret: some_secret_here
