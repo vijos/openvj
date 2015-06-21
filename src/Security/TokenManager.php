@@ -47,31 +47,54 @@ class TokenManager
 
         $token = Application::get('random')->generateString($length, VJ::RANDOM_CHARS);
 
-        try {
-            $result = Application::coll('Token')->update([
-                'purpose' => $purpose,
-                'identifier' => $identifier
-            ], [
-                '$set' => [
+        if ($identifier !== null) {
+            try {
+                $result = Application::coll('Token')->update([
+                    'purpose' => $purpose,
+                    'identifier' => $identifier
+                ], [
+                    '$set' => [
+                        'token' => $token,
+                        'expireat' => new \MongoDate($expireAt),
+                        'data' => $data
+                    ]
+                ], [
+                    'upsert' => true
+                ]);
+
+                return [
+                    'token' => $token,
+                    'update' => $result['updatedExisting']
+                ];
+            } catch (\MongoException $ex) {
+                if ($ex->getCode() === 12) {
+                    throw new InvalidArgumentException('data', 'encoding_invalid');
+                } else {
+                    throw $ex;
+                }
+            }
+        } else {
+            try {
+                $result = Application::coll('Token')->insert([
+                    'purpose' => $purpose,
+                    'identifier' => null,
                     'token' => $token,
                     'expireat' => new \MongoDate($expireAt),
                     'data' => $data
-                ]
-            ], [
-                'upsert' => true
-            ]);
+                ]);
 
-            return [
-                'token' => $token,
-                'update' => $result['updatedExisting']
-            ];
-        } catch (\MongoException $ex) {
-            if ($ex->getCode() === 12) {
-                throw new InvalidArgumentException('data', 'encoding_invalid');
-            } else {
-                throw $ex;
+                return [
+                    'token' => $token
+                ];
+            } catch (\MongoException $ex) {
+                if ($ex->getCode() === 12) {
+                    throw new InvalidArgumentException('data', 'encoding_invalid');
+                } else {
+                    throw $ex;
+                }
             }
         }
+
     }
 
     /**

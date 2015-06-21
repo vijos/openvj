@@ -12,6 +12,7 @@ namespace VJ\User;
 
 use Respect\Validation\Validator;
 use VJ\Core\Application;
+use VJ\Core\Exception\Exception;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\Core\Exception\UserException;
 use VJ\VJ;
@@ -85,35 +86,27 @@ class UserCredential
     public function checkRememberMeClientTokenCredential($clientToken, $secretly = false)
     {
         try {
-            $token = $this->rememberme_encoder->parseClientToken($clientToken);
+            $tokenRec = Application::get('token_manager')->find('rememberme', $clientToken);
+
+            if ($tokenRec === null) {
+                throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
+            }
+
+            //是否需要检查 user-agent 和 ip 地址呢
+
+            $user = UserUtil::getUserObjectByUid($tokenRec['data']['uid']);
+
+            if (!UserUtil::isUserObjectValid($user)) {
+                throw new UserException('UserCredential.checkRememberMeClientTokenCredential.user_not_valid');
+            }
+
+            if (!$secretly) {
+                Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_TOKEN, $user]);
+                Application::info('credential.login.ok', ['uid' => $user['uid']]);
+            }
         } catch (InvalidArgumentException $e) {
             throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
         }
-
-        $record = Application::coll('RememberMeToken')->findOne([
-            'uid' => $token['uid'],
-            'token' => $token['token'],
-        ]);
-
-        if ($record === null) {
-            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
-        }
-
-        if ($record['expireat']->sec < time()) {
-            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
-        }
-
-        $user = UserUtil::getUserObjectByUid($record['uid']);
-
-        if (!UserUtil::isUserObjectValid($user)) {
-            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.user_not_valid');
-        }
-
-        if (!$secretly) {
-            Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_TOKEN, $user]);
-            Application::info('credential.login.ok', ['uid' => $user['uid']]);
-        }
-        return $user;
     }
 
     /**
@@ -135,24 +128,22 @@ class UserCredential
             throw new InvalidArgumentException('expireAt', 'type_invalid');
         }
 
-        $clientToken = $this->rememberme_encoder->generateClientToken((int)$uid, (int)$expireAt);
-        $token = $this->rememberme_encoder->parseClientToken($clientToken);
-
         if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
             $userAgent = null;
         }
 
-        $doc = [
-            'uid' => $token['uid'],
-            'token' => $token['token'],
+        if (!is_string($ip) || !mb_check_encoding($ip, 'UTF-8')) {
+            $ip = null;
+        }
+
+        $tokenMixed = Application::get('token_manager')->generate('rememberme', null, $expireAt, [
+            'uid' => $uid,
             'ua' => $userAgent,
             'ip' => $ip,
-            'at' => new \MongoDate(),
-            'expireat' => new \MongoDate((int)$expireAt),
-        ];
-        Application::coll('RememberMeToken')->insert($doc);
+            'at' => new \MongoDate()
+        ]);
 
-        return $clientToken;
+        return $tokenMixed['token'];
     }
 
     /**
@@ -164,15 +155,7 @@ class UserCredential
     public function invalidateRememberMeClientToken($clientToken)
     {
         try {
-            $token = $this->rememberme_encoder->parseClientToken($clientToken);
-
-            Application::coll('RememberMeToken')->remove([
-                'uid' => $token['uid'],
-                'token' => $token['token'],
-            ], [
-                'justOne' => true
-            ]);
-            return true;
+            return Application::get('token_manager')->invalidate('rememberme', $clientToken);
         } catch (\InvalidArgumentException $e) {
             return false;
         }
