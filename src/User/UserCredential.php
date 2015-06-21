@@ -20,18 +20,12 @@ use VJ\VJ;
 class UserCredential
 {
     public $password_encoder;
-    public $rememberme_encoder;
 
     /**
      * @param PasswordEncoder $password_encoder
-     * @param RememberMeEncoder $rememberme_encoder
      */
-    public function __construct(
-        PasswordEncoder $password_encoder,
-        RememberMeEncoder $rememberme_encoder
-    ) {
+    public function __construct(PasswordEncoder $password_encoder) {
         $this->password_encoder = $password_encoder;
-        $this->rememberme_encoder = $rememberme_encoder;
     }
 
     /**

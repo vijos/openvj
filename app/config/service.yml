@@ -65,9 +65,6 @@ service:
     password_encoder:
         class: \VJ\User\PasswordEncoder
 
-    rememberme_encoder:
-        class: \VJ\User\RememberMeEncoder
-
     user_credential:
         arguments: [@password_encoder, @rememberme_encoder]
         class: \VJ\User\UserCredential
