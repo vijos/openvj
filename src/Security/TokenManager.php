@@ -38,7 +38,10 @@ class TokenManager
         if (!mb_check_encoding($purpose, 'UTF-8')) {
             throw new InvalidArgumentException('purpose', 'encoding_invalid');
         }
-        if (is_string($identifier) && !mb_check_encoding($identifier, 'UTF-8')) {
+        if (is_string($identifier)) {
+            throw new InvalidArgumentException('identifier', 'type_invalid');
+        }
+        if (!mb_check_encoding($identifier, 'UTF-8')) {
             throw new InvalidArgumentException('identifier', 'encoding_invalid');
         }
         if (!Validator::int()->validate($expireAt)) {
@@ -47,8 +50,8 @@ class TokenManager
 
         $token = Application::get('random')->generateString($length, VJ::RANDOM_CHARS);
 
-        if ($identifier !== null) {
-            try {
+        try {
+            if ($identifier !== null) {
                 $result = Application::coll('Token')->update([
                     'purpose' => $purpose,
                     'identifier' => $identifier
@@ -66,15 +69,7 @@ class TokenManager
                     'token' => $token,
                     'update' => $result['updatedExisting']
                 ];
-            } catch (\MongoException $ex) {
-                if ($ex->getCode() === 12) {
-                    throw new InvalidArgumentException('data', 'encoding_invalid');
-                } else {
-                    throw $ex;
-                }
-            }
-        } else {
-            try {
+            } else {
                 $result = Application::coll('Token')->insert([
                     'purpose' => $purpose,
                     'identifier' => null,
@@ -86,15 +81,14 @@ class TokenManager
                 return [
                     'token' => $token
                 ];
-            } catch (\MongoException $ex) {
-                if ($ex->getCode() === 12) {
-                    throw new InvalidArgumentException('data', 'encoding_invalid');
-                } else {
-                    throw $ex;
-                }
+            }
+        } catch (\MongoException $ex) {
+            if ($ex->getCode() === 12) {
+                throw new InvalidArgumentException('data', 'encoding_invalid');
+            } else {
+                throw $ex;
             }
         }
-
     }
 
     /**
