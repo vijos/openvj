@@ -6,7 +6,7 @@ page:
         title: Sign In
         form_username: Username or Email
         form_password: Password
-        form_rememberme: Remenber me in 1 month
+        form_rememberme: Remenber me for 1 month
         form_login: Sign In
     reg:
         title: Sign Up
@@ -21,25 +21,25 @@ error:
     code:
         ip_blacklisted: <h1>Forbidden: Access denied</h1><p>Your IP address is in the denied list, please try again after %seconds% second(s).</p>
         not_found: This page is not found.
-        missing_argument: Missing arguement: %name%
-        invalid_argument: Invalid arguement %name%: %msg%
+        missing_argument: Missing argument: %name%
+        invalid_argument: Invalid argument %name%: %msg%
         invalid_csrf_token: Invalid CSRF token
         UserCredential:
             checkPasswordCredential:
-                user_not_valid: This user is not found.
-                wrong_password: Username or password is wrong.
+                user_not_valid: This user does not exist.
+                wrong_password: Invalid username or password.
             checkRememberMeClientTokenCredential:
-                invalid_rememberme_token: This RememberMe Token is invalid.
-                user_not_valid: This user is not found.
+                invalid_rememberme_token: The remember-me token is invalid.
+                user_not_valid: This user does not exist.
         UserManager:
             createUser:
-                user_exists: This username already exists.
+                user_exists: This username has already been taken.
         controller:
             reg:
-                invalid_email: This email address is invalid, please type correct email address.
-                duplicate_email: Sorry, this email address has been used by another account.
+                invalid_email: This email address is invalid, please use a correct email address.
+                duplicate_email: Sorry, this email address has already been used by another account.
                 invalid_token: This validation link is expired, please validate again.
-                password_mismatch: The passwords you typed twice are not the same.
+                password_mismatch: Password does not match the comfirm password.
     msg:
         too_short:          Arguement is too short.
         type_invalid:       Arguement type is invalid.
