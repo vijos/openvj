@@ -57,6 +57,8 @@ class HttpsRedirectionService
 
         if (!$this->request->isSecure() && $this->request->cookies->get('nossl') === null) {
             $ua = $this->request->getUserAgent();
+
+            //Unsafe search engine friendly
             if (
                 $ua !== null &&
                 stripos($ua, 'Baiduspider') === false &&

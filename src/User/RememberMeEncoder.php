@@ -17,8 +17,11 @@ use VJ\VJ;
 
 class RememberMeEncoder
 {
+    const REMEMBERME_TOKEN_LENGTH = 32;
+
     /**
      * 解析客户端 token
+     * uid|expire(unix time)|token_string
      *
      * @param string $clientToken
      * @return array
@@ -45,7 +48,7 @@ class RememberMeEncoder
         if ((int)$token_parts[1] <= 0) {
             throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
-        if (strlen($token_parts[2]) !== 32) {
+        if (strlen($token_parts[2]) !== REMEMBERME_TOKEN_LENGTH) {
             throw new InvalidArgumentException('clientToken', 'format_invalid');
         }
         return [
@@ -57,6 +60,7 @@ class RememberMeEncoder
 
     /**
      * 生成一个返回给客户端的 token
+     * uid|expire(unix time)|token_string
      *
      * @param int $uid
      * @param int $expire
@@ -68,7 +72,7 @@ class RememberMeEncoder
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
-        $token = Application::get('random')->generateString(32, VJ::RANDOM_CHARS);
+        $token = Application::get('random')->generateString(REMEMBERME_TOKEN_LENGTH, VJ::RANDOM_CHARS);
         return (int)$uid . '|' . (int)$expire . '|' . $token;
     }
 

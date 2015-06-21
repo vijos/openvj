@@ -108,7 +108,7 @@ class PasswordEncoder
     }
 
     /**
-     * 按照 VJ3 格式哈希
+     * 按照 OpenVJ 格式哈希
      *
      * @param string $password
      * @param string $salt
