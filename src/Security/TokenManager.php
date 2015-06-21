@@ -21,7 +21,7 @@ class TokenManager
      * 创建并返回一个 token
      *
      * @param string $purpose
-     * @param string $identifier
+     * @param string $identifier 唯一标识，为空则不需要
      * @param int $expireAt
      * @param mixed $data
      * @param int $length
@@ -38,12 +38,6 @@ class TokenManager
         if (!mb_check_encoding($purpose, 'UTF-8')) {
             throw new InvalidArgumentException('purpose', 'encoding_invalid');
         }
-        if (is_string($identifier)) {
-            throw new InvalidArgumentException('identifier', 'type_invalid');
-        }
-        if (!mb_check_encoding($identifier, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
-        }
         if (!Validator::int()->validate($expireAt)) {
             throw new InvalidArgumentException('expireAt', 'type_invalid');
         }
@@ -52,6 +46,14 @@ class TokenManager
 
         try {
             if ($identifier !== null) {
+
+                if (!is_string($identifier)) {
+                    throw new InvalidArgumentException('identifier', 'type_invalid');
+                }
+                if (!mb_check_encoding($identifier, 'UTF-8')) {
+                    throw new InvalidArgumentException('identifier', 'encoding_invalid');
+                }
+
                 $result = Application::coll('Token')->update([
                     'purpose' => $purpose,
                     'identifier' => $identifier

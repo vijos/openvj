@@ -41,9 +41,9 @@ error:
                 invalid_token: This validation link is expired, please validate again.
                 password_mismatch: Password does not match the comfirm password.
     msg:
-        too_short:          Arguement is too short.
-        type_invalid:       Arguement type is invalid.
-        value_invalid:      Arguement value is invalid.
-        format_invalid:     Arguement format is invalid.
-        encoding_invalid:   Arguement encoding is invalid.
-        sign_invalid:       Arguement signature is invalid.
+        too_short:          Argument is too short.
+        type_invalid:       Argument type is invalid.
+        value_invalid:      Argument value is invalid.
+        format_invalid:     Argument format is invalid.
+        encoding_invalid:   Argument encoding is invalid.
+        sign_invalid:       Argument signature is invalid.
