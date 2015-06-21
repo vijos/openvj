@@ -21,7 +21,7 @@ class TokenManager
      * 创建并返回一个 token
      *
      * @param string $purpose
-     * @param string $identifier 唯一标识，为空则不需要
+     * @param string|null $identifier 唯一标识，为空则不需要
      * @param int $expireAt
      * @param mixed $data
      * @param int $length

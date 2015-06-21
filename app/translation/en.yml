@@ -47,3 +47,8 @@ error:
         format_invalid:     Argument format is invalid.
         encoding_invalid:   Argument encoding is invalid.
         sign_invalid:       Argument signature is invalid.
+
+permission:
+    user:
+        logout: Sign Out
+        register: Register

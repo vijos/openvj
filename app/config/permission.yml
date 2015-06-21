@@ -4,5 +4,8 @@
 # domain_owner: 适用于 DOMAIN_OWNER
 # domain_member: 适用于 DOMAIN_MEMBER
 
-user.logout:        {text: "允许登出", everyone: false }
-user.register:      {text: "允许注册"}
+permission:
+    user:
+        logout:
+            everyone: false
+        register:

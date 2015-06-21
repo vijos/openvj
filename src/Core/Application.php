@@ -37,7 +37,7 @@ class Application
 {
     use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, TranslationTrait;
 
-    public static $instance = null;
+    private static $instance = null;
     public static $container;
 
     public static $APP_DIRECTORY;
@@ -54,11 +54,10 @@ class Application
      */
     public static function Instance()
     {
-        static $inst = null;
-        if ($inst === null) {
-            $inst = new Application();
+        if (self::$instance === null) {
+            $i = new Application();
         }
-        return $inst;
+        return self::$instance;
     }
 
     private function __construct()
@@ -139,7 +138,8 @@ class Application
                     self::loadConfigFile('config.yml', $resources),
                     self::loadConfigFile('db.yml', $resources),
                     self::loadConfigFile('routing.yml', $resources),
-                    self::loadConfigFile('service.yml', $resources)
+                    self::loadConfigFile('service.yml', $resources),
+                    self::loadConfigFile('permission.yml', $resources)
                 );
                 $cache->write('<?php return ' . var_export($data, true) . ';', $resources);
             }
@@ -150,7 +150,8 @@ class Application
             self::$resources = array_merge(
                 ['debug' => false],
                 self::loadConfigFile('routing.yml', $resources),
-                self::loadConfigFile('service.yml', $resources)
+                self::loadConfigFile('service.yml', $resources),
+                self::loadConfigFile('permission.yml', $resources)
             );
         }
         if (MODE_TEST) {
