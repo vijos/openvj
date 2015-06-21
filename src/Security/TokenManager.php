@@ -15,7 +15,7 @@ use VJ\Core\Application;
 use VJ\Core\Exception\InvalidArgumentException;
 use VJ\VJ;
 
-class TokenGenerator
+class TokenManager
 {
     /**
      * 创建并返回一个 token
@@ -36,7 +36,7 @@ class TokenGenerator
             throw new InvalidArgumentException('purpose', 'type_invalid');
         }
         if (!mb_check_encoding($purpose, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
+            throw new InvalidArgumentException('purpose', 'encoding_invalid');
         }
         if (is_string($identifier) && !mb_check_encoding($identifier, 'UTF-8')) {
             throw new InvalidArgumentException('identifier', 'encoding_invalid');
@@ -88,13 +88,13 @@ class TokenGenerator
             throw new InvalidArgumentException('purpose', 'type_invalid');
         }
         if (!mb_check_encoding($purpose, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
+            throw new InvalidArgumentException('purpose', 'encoding_invalid');
         }
         if (!is_string($token)) {
-            throw new InvalidArgumentException('purpose', 'type_invalid');
+            throw new InvalidArgumentException('token', 'type_invalid');
         }
         if (!mb_check_encoding($token, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
+            throw new InvalidArgumentException('token', 'encoding_invalid');
         }
 
         $record = Application::coll('Token')->findOne([
@@ -125,13 +125,13 @@ class TokenGenerator
             throw new InvalidArgumentException('purpose', 'type_invalid');
         }
         if (!mb_check_encoding($purpose, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
+            throw new InvalidArgumentException('purpose', 'encoding_invalid');
         }
         if (!is_string($token)) {
-            throw new InvalidArgumentException('purpose', 'type_invalid');
+            throw new InvalidArgumentException('token', 'type_invalid');
         }
         if (!mb_check_encoding($token, 'UTF-8')) {
-            throw new InvalidArgumentException('identifier', 'encoding_invalid');
+            throw new InvalidArgumentException('token', 'encoding_invalid');
         }
 
         $result = Application::coll('Token')->remove([

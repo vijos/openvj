@@ -43,7 +43,7 @@ class RegistrationController extends Controller
         }
 
         // generate one-time token
-        $token = Application::get('token_generator')->generate(
+        $token = Application::get('token_manager')->generate(
             'reg',
             UserUtil::canonicalizeEmail($email),
             time() + 4 * 60 * 60, //4 hours
@@ -89,7 +89,7 @@ class RegistrationController extends Controller
         }
 
         Application::get('user_manager')->createUser($username, $password, $email);
-        Application::get('token_generator')->invalidate('reg', $token);
+        Application::get('token_manager')->invalidate('reg', $token);
         Application::get('user_manager')->interactiveLogin($username, $password);
         $this->response->json([]);
         return null;
@@ -100,7 +100,7 @@ class RegistrationController extends Controller
         if (strlen($params['token']) !== 30) {
             throw new NotFoundException();
         }
-        $tokenRec = Application::get('token_generator')->find('reg', $params['token']);
+        $tokenRec = Application::get('token_manager')->find('reg', $params['token']);
         if ($tokenRec === null) {
             // TODO: show error on reg page
             throw new UserException('controller.reg.invalid_token');

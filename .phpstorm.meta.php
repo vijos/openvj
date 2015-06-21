@@ -28,7 +28,7 @@ namespace PHPSTORM_META {                                                 // we 
             'vj2_credential_upgrade_service' instanceof \VJ\EventListener\VJCredentialUpgradeService,
 
             'keyword_filter' instanceof \VJ\Security\KeywordFilter,
-            'token_generator' instanceof \VJ\Security\TokenGenerator,
+            'token_manager' instanceof \VJ\Security\TokenManager,
             'message_signer' instanceof \VJ\Security\MessageSigner,
             'user_session' instanceof \VJ\User\UserSession,
             'domain_manager' instanceof \VJ\User\DomainManager,
