@@ -158,10 +158,10 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // invalid format
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential('1|2|a', true);
+            Application::get('user_credential')->checkRememberMeClientTokenCredential('1|2|a', true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -169,10 +169,10 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // null
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential(null, true);
+            Application::get('user_credential')->checkRememberMeClientTokenCredential(null, true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -180,11 +180,11 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // not exist
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential('1|100|12345678123456781234567812345678',
+            Application::get('user_credential')->checkRememberMeClientTokenCredential('1|100|12345678123456781234567812345678',
                 true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -192,10 +192,10 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // expired
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[1], true);
+            Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[1], true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -203,17 +203,17 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // user banned
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[2], true);
+            Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[2], true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.user_not_valid', $e->getUserErrorCode());
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.user_not_valid', $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
     }
 
     public function testCheckCookieTokenCredentialPassed()
     {
-        $user = Application::get('user_credential')->checkCookieTokenCredential($this->rememberMeClientTokens[0], true);
+        $user = Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[0], true);
         $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
         $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
     }
@@ -225,7 +225,7 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
 
         // assert valid
-        $user = Application::get('user_credential')->checkCookieTokenCredential($clientToken, true);
+        $user = Application::get('user_credential')->checkRememberMeClientTokenCredential($clientToken, true);
         $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
         $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
 
@@ -249,10 +249,10 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
         $throw = false;
         try {
-            Application::get('user_credential')->checkCookieTokenCredential($clientToken, true);
+            Application::get('user_credential')->checkRememberMeClientTokenCredential($clientToken, true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkCookieTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');

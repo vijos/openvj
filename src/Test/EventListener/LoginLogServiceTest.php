@@ -51,7 +51,7 @@ class LoginLogServiceTest extends \PHPUnit_Framework_TestCase
                 'event' => 'user.login.succeeded'
             ],
             [
-                'type' => VJ::LOGIN_TYPE_COOKIE,
+                'type' => VJ::LOGIN_TYPE_TOKEN,
                 'event' => 'user.login.succeeded'
             ]
         ];

@@ -111,7 +111,7 @@ class UserManager
         $token_field = Application::get('config')['session']['remember_token'];
         $clientToken = $this->request->cookies->get($token_field);
         try {
-            $user = $this->user_credential->checkCookieTokenCredential($clientToken);
+            $user = $this->user_credential->checkRememberMeClientTokenCredential($clientToken);
         } catch (UserException $e) {
             // 对于无效 token 需要删除 cookie
             $this->invalidateRememberMeToken();
@@ -123,7 +123,7 @@ class UserManager
         $this->invalidateRememberMeToken();
         $this->generateRememberMeTokenForObject($user, $token['expire']);
 
-        $this->prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_COOKIE);
+        $this->prepareLoginSessionByObject($user, VJ::LOGIN_TYPE_TOKEN);
 
         return $user;
     }

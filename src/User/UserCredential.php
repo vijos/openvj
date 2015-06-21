@@ -75,19 +75,19 @@ class UserCredential
     }
 
     /**
-     * 检查记忆令牌是否正确
+     * 检查 记住我 token 是否正确
      *
      * @param string $clientToken
      * @param bool $secretly
      * @return array
      * @throws UserException
      */
-    public function checkCookieTokenCredential($clientToken, $secretly = false)
+    public function checkRememberMeClientTokenCredential($clientToken, $secretly = false)
     {
         try {
             $token = $this->rememberme_encoder->parseClientToken($clientToken);
         } catch (InvalidArgumentException $e) {
-            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
         }
 
         $record = Application::coll('RememberMeToken')->findOne([
@@ -96,46 +96,46 @@ class UserCredential
         ]);
 
         if ($record === null) {
-            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
         }
 
         if ($record['expireat']->sec < time()) {
-            throw new UserException('UserCredential.checkCookieTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
         }
 
         $user = UserUtil::getUserObjectByUid($record['uid']);
 
         if (!UserUtil::isUserObjectValid($user)) {
-            throw new UserException('UserCredential.checkCookieTokenCredential.user_not_valid');
+            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.user_not_valid');
         }
 
         if (!$secretly) {
-            Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_COOKIE, $user]);
+            Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_TOKEN, $user]);
             Application::info('credential.login.ok', ['uid' => $user['uid']]);
         }
         return $user;
     }
 
     /**
-     * 创建一个记忆令牌
+     * 创建一个 记住我 token
      *
      * @param int $uid
      * @param string $ip
      * @param string $userAgent
-     * @param int $expire
+     * @param int $expireAt
      * @return string
      * @throws InvalidArgumentException
      */
-    public function createRememberMeClientToken($uid, $ip, $userAgent, $expire)
+    public function createRememberMeClientToken($uid, $ip, $userAgent, $expireAt)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
         }
-        if (!Validator::int()->validate($expire)) {
-            throw new InvalidArgumentException('expire', 'type_invalid');
+        if (!Validator::int()->validate($expireAt)) {
+            throw new InvalidArgumentException('expireAt', 'type_invalid');
         }
 
-        $clientToken = $this->rememberme_encoder->generateClientToken((int)$uid, (int)$expire);
+        $clientToken = $this->rememberme_encoder->generateClientToken((int)$uid, (int)$expireAt);
         $token = $this->rememberme_encoder->parseClientToken($clientToken);
 
         if (!is_string($userAgent) || !mb_check_encoding($userAgent, 'UTF-8')) {
@@ -148,7 +148,7 @@ class UserCredential
             'ua' => $userAgent,
             'ip' => $ip,
             'at' => new \MongoDate(),
-            'expireat' => new \MongoDate((int)$expire),
+            'expireat' => new \MongoDate((int)$expireAt),
         ];
         Application::coll('RememberMeToken')->insert($doc);
 
@@ -156,7 +156,7 @@ class UserCredential
     }
 
     /**
-     * 使一个记忆令牌无效
+     * 使一个 记住我 token 无效
      *
      * @param string $clientToken
      * @return bool

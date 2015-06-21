@@ -28,6 +28,9 @@ error:
             checkPasswordCredential:
                 user_not_valid: This user is not found.
                 wrong_password: Username or password is wrong.
+            checkRememberMeClientTokenCredential:
+                invalid_rememberme_token: This RememberMe Token is invalid.
+                user_not_valid: This user is not found.
         UserManager:
             createUser:
                 user_exists: This username already exists.
