@@ -47,8 +47,8 @@ service:
         arguments: [@redis]
         class: \VJ\Security\KeywordFilter
 
-    token_generator:
-        class: \VJ\Security\TokenGenerator
+    token_manager:
+        class: \VJ\Security\TokenManager
 
     message_signer:
         arguments: ['sha256', %security.secret]
