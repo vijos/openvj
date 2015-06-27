@@ -35,9 +35,8 @@ use Whoops\Run;
 
 class Application
 {
-    use ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, TranslationTrait;
+    use SingletonTrait, ContainerTrait, LoggerTrait, EventTrait, RouteTrait, MongoTrait, TranslationTrait;
 
-    private static $instance = null;
     public static $container;
 
     public static $APP_DIRECTORY;
@@ -49,25 +48,8 @@ class Application
 
     public static $resources = [];
 
-    /**
-     * @return Application
-     */
-    public static function Instance()
-    {
-        if (self::$instance === null) {
-            $i = new Application();
-        }
-        return self::$instance;
-    }
-
     private function __construct()
     {
-        if (self::$instance === null) {
-            self::$instance = $this;
-        } else {
-            return;
-        }
-
         self::$container = new Container();
 
         self::$APP_DIRECTORY = dirname(dirname(__DIR__)) . '/app';
