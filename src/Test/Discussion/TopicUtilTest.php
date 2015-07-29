@@ -84,8 +84,7 @@ class TopicUtilTest extends \PHPUnit_Framework_TestCase
             $resolver->resolve($doc['topicId'])->to($doc['topicObj']);
             // 这里是一般的逻辑，注意需要使用引用
             $result[] = &$doc;
-            // 注意一定要有这行
-            unset($doc);
+            unset($doc); // 注意一定要有这行
         }
         // 最后需要调用 done() 执行
         $resolver->done();
