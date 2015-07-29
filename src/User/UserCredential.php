@@ -77,13 +77,13 @@ class UserCredential
      * @return array
      * @throws UserException
      */
-    public function checkRememberMeClientTokenCredential($clientToken, $secretly = false)
+    public function checkRememberMeTokenCredential($token, $secretly = false)
     {
         try {
-            $tokenRec = Application::get('token_manager')->find('rememberme', $clientToken);
+            $tokenRec = Application::get('token_manager')->find('rememberme', $token);
 
             if ($tokenRec === null) {
-                throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
+                throw new UserException('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token');
             }
 
             //是否需要检查 user-agent 和 ip 地址呢
@@ -91,15 +91,17 @@ class UserCredential
             $user = UserUtil::getUserObjectByUid($tokenRec['data']['uid']);
 
             if (!UserUtil::isUserObjectValid($user)) {
-                throw new UserException('UserCredential.checkRememberMeClientTokenCredential.user_not_valid');
+                throw new UserException('UserCredential.checkRememberMeTokenCredential.user_not_valid');
             }
 
             if (!$secretly) {
                 Application::emit('user.login.succeeded', [VJ::LOGIN_TYPE_TOKEN, $user]);
                 Application::info('credential.login.ok', ['uid' => $user['uid']]);
             }
+
+            return $user;
         } catch (InvalidArgumentException $e) {
-            throw new UserException('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token');
+            throw new UserException('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token');
         }
     }
 
@@ -113,7 +115,7 @@ class UserCredential
      * @return string
      * @throws InvalidArgumentException
      */
-    public function createRememberMeClientToken($uid, $ip, $userAgent, $expireAt)
+    public function createRememberMeToken($uid, $ip, $userAgent, $expireAt)
     {
         if (!Validator::int()->validate($uid)) {
             throw new InvalidArgumentException('uid', 'type_invalid');
@@ -146,10 +148,10 @@ class UserCredential
      * @param string $clientToken
      * @return bool
      */
-    public function invalidateRememberMeClientToken($clientToken)
+    public function invalidateRememberMeToken($token)
     {
         try {
-            return Application::get('token_manager')->invalidate('rememberme', $clientToken);
+            return Application::get('token_manager')->invalidate('rememberme', $token);
         } catch (\InvalidArgumentException $e) {
             return false;
         }

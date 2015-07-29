@@ -41,40 +41,27 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
                 'hash' => 'openvj|$2y$10$5b26d1542f68297831044eOCPuejIMxU6peNfQQUw.HUz8CoxOZ1.',
                 'banned' => true,
             ]
-        ],
-        'RememberMeToken' => []
+        ]
     ];
-    private $rememberMeClientTokens = [];
+    private $rememberMeTokens = [];
 
     public function __construct()
     {
         // generate client token
         // valid
         $expire = time() + 24 * 60 * 60;
-        $clientToken = Application::get('rememberme_encoder')->generateClientToken(0, (int)$expire);
-        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
-        $token['expireat'] = new \MongoDate($token['expire']);
-        unset($token['expire']);
-        $this->rememberMeClientTokens[] = $clientToken;
-        $this->fixture['RememberMeToken'][] = $token;
+        $token = Application::get('user_credential')->createRememberMeToken(0, "127.0.0.1", "VJTest/233", (int)$expire);
+        $this->rememberMeTokens[] = $token;
 
         // expired
         $expire = time() - 24 * 60 * 60;
-        $clientToken = Application::get('rememberme_encoder')->generateClientToken(0, (int)$expire);
-        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
-        $token['expireat'] = new \MongoDate($token['expire']);
-        unset($token['expire']);
-        $this->rememberMeClientTokens[] = $clientToken;
-        $this->fixture['RememberMeToken'][] = $token;
+        $token = Application::get('user_credential')->createRememberMeToken(0, "127.0.0.1", "VJTest/233", (int)$expire);
+        $this->rememberMeTokens[] = $token;
 
         // user not valid
         $expire = time() + 24 * 60 * 60;
-        $clientToken = Application::get('rememberme_encoder')->generateClientToken(1, (int)$expire);
-        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
-        $token['expireat'] = new \MongoDate($token['expire']);
-        unset($token['expire']);
-        $this->rememberMeClientTokens[] = $clientToken;
-        $this->fixture['RememberMeToken'][] = $token;
+        $token = Application::get('user_credential')->createRememberMeToken(1, "127.0.0.1", "VJTest/233", (int)$expire);
+        $this->rememberMeTokens[] = $token;
     }
 
     public function getMongoConnection()
@@ -155,24 +142,14 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckCookieTokenCredentialInvalid()
     {
-        // invalid format
-        $throw = false;
-        try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential('1|2|a', true);
-        } catch (UserException $e) {
-            $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
-                $e->getUserErrorCode());
-        }
-        $this->assertTrue($throw, 'Expect thrown exception');
 
         // null
         $throw = false;
         try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential(null, true);
+            Application::get('user_credential')->checkRememberMeTokenCredential(null, true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -180,11 +157,11 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // not exist
         $throw = false;
         try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential('1|100|12345678123456781234567812345678',
+            Application::get('user_credential')->checkRememberMeTokenCredential('123456789012345678901234567890',
                 true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -192,10 +169,10 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // expired
         $throw = false;
         try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[1], true);
+            Application::get('user_credential')->checkRememberMeTokenCredential($this->rememberMeTokens[1], true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
@@ -203,63 +180,60 @@ class UserCredentialTest extends \PHPUnit_Framework_TestCase
         // user banned
         $throw = false;
         try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[2], true);
+            Application::get('user_credential')->checkRememberMeTokenCredential($this->rememberMeTokens[2], true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.user_not_valid', $e->getUserErrorCode());
+            $this->assertEquals('UserCredential.checkRememberMeTokenCredential.user_not_valid', $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
     }
 
     public function testCheckCookieTokenCredentialPassed()
     {
-        $user = Application::get('user_credential')->checkRememberMeClientTokenCredential($this->rememberMeClientTokens[0], true);
+        $user = Application::get('user_credential')->checkRememberMeTokenCredential($this->rememberMeTokens[0], true);
         $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
         $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
     }
 
     public function testCreateRememberMeClientToken()
     {
-        $clientToken = Application::get('user_credential')->createRememberMeClientToken(0, '1.2.3.4', null,
+        $token = Application::get('user_credential')->createRememberMeToken(0, '1.2.3.4', "VJTest/233",
             time() + 60);
-        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
 
         // assert valid
-        $user = Application::get('user_credential')->checkRememberMeClientTokenCredential($clientToken, true);
+        $user = Application::get('user_credential')->checkRememberMeTokenCredential($token, true);
         $this->assertEquals($this->fixture['User'][0]['uid'], $user['uid']);
         $this->assertEquals($this->fixture['User'][0]['user'], $user['user']);
 
         // assert record
-        $record = Application::coll('RememberMeToken')->findOne([
-            'uid' => $token['uid'],
-            'token' => $token['token'],
+        $record = Application::coll('Token')->findOne([
+            'purpose' => 'rememberme',
+            'token' => $token,
         ]);
-        $this->assertEquals('1.2.3.4', $record['ip']);
-        $this->assertEquals(null, $record['ua']);
-        $this->assertEquals($token['expire'], $record['expireat']->sec);
+        $this->assertEquals('1.2.3.4', $record['data']['ip']);
+        $this->assertEquals("VJTest/233", $record['data']['ua']);
     }
 
     public function testInvalidateRememberMeClientToken()
     {
-        $clientToken = Application::get('user_credential')->createRememberMeClientToken(0, '1.2.3.4', null,
+        $token = Application::get('user_credential')->createRememberMeToken(0, '1.2.3.4', "VJTest/233",
             time() + 60);
-        $token = Application::get('rememberme_encoder')->parseClientToken($clientToken);
 
-        Application::get('user_credential')->invalidateRememberMeClientToken($clientToken);
+        Application::get('user_credential')->invalidateRememberMeToken($token);
 
         $throw = false;
         try {
-            Application::get('user_credential')->checkRememberMeClientTokenCredential($clientToken, true);
+            Application::get('user_credential')->checkRememberMeTokenCredential($token, true);
         } catch (UserException $e) {
             $throw = true;
-            $this->assertEquals('UserCredential.checkRememberMeClientTokenCredential.invalid_rememberme_token',
+            $this->assertEquals('UserCredential.checkRememberMeTokenCredential.invalid_rememberme_token',
                 $e->getUserErrorCode());
         }
         $this->assertTrue($throw, 'Expect thrown exception');
 
-        $record = Application::coll('RememberMeToken')->findOne([
-            'uid' => $token['uid'],
-            'token' => $token['token'],
+        $record = Application::coll('Token')->findOne([
+            'purpose' => 'rememberme',
+            'token' => $token,
         ]);
         $this->assertNull($record);
     }

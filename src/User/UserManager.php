@@ -111,7 +111,7 @@ class UserManager
         $token_field = Application::get('config')['session']['remember_token'];
         $clientToken = $this->request->cookies->get($token_field);
         try {
-            $user = $this->user_credential->checkRememberMeClientTokenCredential($clientToken);
+            $user = $this->user_credential->checkRememberMeTokenCredential($clientToken);
         } catch (UserException $e) {
             // 对于无效 token 需要删除 cookie
             $this->invalidateRememberMeToken();
@@ -136,7 +136,7 @@ class UserManager
         $token_field = Application::get('config')['session']['remember_token'];
         $clientToken = $this->request->cookies->get($token_field);
         if ($clientToken !== null) {
-            $this->user_credential->invalidateRememberMeClientToken($clientToken);
+            $this->user_credential->invalidateRememberMeToken($clientToken);
         }
         $this->request->cookies->remove($token_field);
         $this->response->headers->clearCookie($token_field);
@@ -154,7 +154,7 @@ class UserManager
         if ($expire === null) {
             $expire = time() + (int)Application::get('config')['session']['remember_ttl'];
         }
-        $clientToken = $this->user_credential->createRememberMeClientToken($user['uid'],
+        $clientToken = $this->user_credential->createRememberMeToken($user['uid'],
             $this->request->getClientIp(),
             $this->request->getUserAgent(),
             $expire

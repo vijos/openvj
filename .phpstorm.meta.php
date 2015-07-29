@@ -33,7 +33,6 @@ namespace PHPSTORM_META {                                                 // we 
             'user_session' instanceof \VJ\User\UserSession,
             'domain_manager' instanceof \VJ\User\DomainManager,
             'password_encoder' instanceof \VJ\User\PasswordEncoder,
-            'rememberme_encoder' instanceof \VJ\User\RememberMeEncoder,
             'user_credential' instanceof \VJ\User\UserCredential,
             'user_manager' instanceof \VJ\User\UserManager,
             'bgservice_mailing_provider' instanceof \VJ\Mail\BgServiceMailingProvider,
