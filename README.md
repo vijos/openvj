@@ -1,3 +1,12 @@
+
+# Repository Obsoleted
+
+Why? We found that we were using PHP as languages like Java in this project, which made us unhappy. Too long, too slow, not elegant.
+
+# Good News!
+
+We are developing a totally new version of OpenVJ, written in Python, significantly reduced the code size while keeping high performance thanks to the new async feature provided by Python. It will provide similar functionalities as planned in OpenVJ (at least SaaS). It will be released under open source license to replace this repository soon. Keep an eye on it :-)
+
 OpenVJ
 ======
 
