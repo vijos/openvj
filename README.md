@@ -1,7 +1,7 @@
 
 # Repository Obsoleted
 
-Why? We found that we were using PHP as languages like Java in this project, which made us unhappy. Too long, too slow, not elegant.
+Why? We found that we were using PHP(the best language) as languages like Java in this project, which made us unhappy(but PM said that he was happy). Too long, too slow, not elegant.
 
 # Good News!
 
