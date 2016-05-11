@@ -1,3 +1,4 @@
+# Replaced By [VJ4](https://github.com/vijos/vj4)!
 
 # Repository Obsoleted
 
